@@ -1,52 +1,20 @@
 #include "Shop.h"
 
-void Shop::create_new_robot_arm(){
-
-	std::string name;
-	int model_num;
-
-	std::cout << "Name?" << std::endl;
-	getline(std::cin, name);
-
-	std::cout << "Model number?" << std::endl;
-	std::cin >> model_num;
-	std::cin.ignore();
+void Shop::create_new_robot_arm(std::string name, int model_num){
 
 	Arm arm(name, model_num);
 	arms.push_back(arm);
 
 }
 
-void Shop::create_new_robot_head(){
-
-	std::string name;
-	int model_num;
-
-	std::cout << "Name?" << std::endl;
-	getline(std::cin, name);
-
-	std::cout << "Model number?" << std::endl;
-	std::cin >> model_num;
-	std::cin.ignore();
+void Shop::create_new_robot_head(std::string name, int model_num){
 
 	Head head(name, model_num);
 	heads.push_back(head);
 
 }
 
-void Shop::create_new_robot_torso(){
-
-	
-
-	std::string name;
-	int model_num;
-
-	std::cout << "Name?" << std::endl;
-	getline(std::cin, name);
-
-	std::cout << "Model number?" << std::endl;
-	std::cin >> model_num;
-	std::cin.ignore();
+void Shop::create_new_robot_torso(std::string name, int model_num){
 
 	Torso Torso(name, model_num);
 	torsos.push_back(Torso);
@@ -56,34 +24,17 @@ void Shop::create_new_robot_torso(){
 
 }
 
-void Shop::create_new_robot_battery(){
-
-	std::string name;
-	int model_num;
-
-	std::cout << "Name?" << std::endl;
-	getline(std::cin, name);
-
-	std::cout << "Model number?" << std::endl;
-	std::cin >> model_num;
-	std::cin.ignore();
+void Shop::create_new_robot_battery(std::string name,
+									 int model_num){
 
 	Battery battery(name, model_num);
 	batteries.push_back(battery);
 
 }
 
-void Shop::create_new_robot_locomotor(){
+void Shop::create_new_robot_locomotor(std::string name, 
+									int model_num){
 
-	std::string name;
-	int model_num;
-
-	std::cout << "Name?" << std::endl;
-	getline(std::cin, name);
-
-	std::cout << "Model number?" << std::endl;
-	std::cin >> model_num;
-	std::cin.ignore();
 
 	Locomotor locomotor(name, model_num);
 	locomotors.push_back(locomotor);
@@ -115,22 +66,16 @@ Locomotor Shop::get_robot_locomotor(int index){
 }
 
 
-void Shop::create_new_robot_model(Arm arm, 
+void Shop::create_new_robot_model(std::string name,
+								int model_num,
+								Arm arm, 
 								Head head, 
 								Torso torso,
 								Battery battery, 
 								Locomotor locomotor){
 
 
-	std::string name;
-	int model_num;
 
-	std::cout << "Name?" << std::endl;
-	getline(std::cin, name);
-
-	std::cout << "Model number?" << std::endl;
-	std::cin >> model_num;
-	std::cin.ignore();
 
 	Robot_model Robot(name, model_num, arm, head, torso,
 						battery, locomotor);

@@ -12,17 +12,20 @@
 
 class Shop{
 public:
-	void create_new_robot_arm();
-	void create_new_robot_head();
-	void create_new_robot_torso();
-	void create_new_robot_battery();
-	void create_new_robot_locomotor();
+	void create_new_robot_arm(std::string name, int model_num);
+	void create_new_robot_head(std::string name, int model_num);
+	void create_new_robot_torso(std::string name, int model_num);
+	void create_new_robot_battery(std::string name, int model_num);
+	void create_new_robot_locomotor(std::string name, 
+									int model_num);
 	Arm get_robot_arm(int index);
 	Head get_robot_head(int index);
 	Torso get_robot_torso(int index);
 	Battery get_robot_battery(int index);
 	Locomotor get_robot_locomotor(int index);
-	void create_new_robot_model(Arm arm, 
+	void create_new_robot_model(std::string name,
+								int model_num,
+								Arm arm, 
 								Head head, 
 								Torso torsos,
 								Battery battery, 
