@@ -1,8 +1,10 @@
-#include <iostream>
 #ifndef TORSO_H
 #define TORSO_H
 
-class Torso : Robot_part{
+#include <iostream>
+#include "Robot_part.h"
+
+class Torso : public Robot_part{
 
 public:
 

@@ -1,8 +1,10 @@
-#include <iostream>
 #ifndef BATTERY_H
 #define BATTERY_H
 
-class Battery : Robot_part{
+#include <iostream>
+#include "Robot_part.h"
+
+class Battery : public Robot_part{
 
 public:
 

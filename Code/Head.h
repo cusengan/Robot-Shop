@@ -1,8 +1,10 @@
-#include <iostream>
 #ifndef HEAD_H
 #define HEAD_H
 
-class Head : Robot_part{
+#include <iostream>
+#include "Robot_part.h"
+
+class Head : public Robot_part{
 
 public:
 

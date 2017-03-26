@@ -1,8 +1,10 @@
-#include <iostream>
 #ifndef LOCOMOTOR_H
 #define LOCOMOTOR_H
 
-class Locomotor : Robot_part{
+#include <iostream>
+#include "Robot_part.h"
+
+class Locomotor : public Robot_part{
 
 public:
 

@@ -1,8 +1,10 @@
-#include <iostream>
 #ifndef ARM_H
 #define ARM_H
 
-class Arm : Robot_part{
+#include <iostream>
+#include "Robot_part.h"
+
+class Arm : public Robot_part{
 
 public:
 	Arm(double _length, double _max_power): length(_length), 
