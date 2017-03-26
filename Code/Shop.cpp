@@ -83,3 +83,27 @@ void Shop::create_new_robot_model(std::string name,
 	robot_models.push_back(Robot);
 
 }
+
+int Shop::number_of_arms(){
+	return arms.size();
+}
+
+int Shop::number_torsos(){
+	return torsos.size();
+}
+
+int Shop::number_of_batteries(){
+	return batteries.size();
+}
+
+int Shop::number_of_heads(){
+	return heads.size();
+}
+
+int Shop::number_of_locomotors(){
+	return locomotors.size();
+}
+
+int Shop::number_of_models(){
+	return robot_models.size();
+}

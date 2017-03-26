@@ -30,6 +30,12 @@ public:
 								Torso torsos,
 								Battery battery, 
 								Locomotor locomotor);
+	int number_of_arms();
+	int number_torsos();
+	int number_of_batteries();
+	int number_of_heads();
+	int number_of_locomotors();
+	int number_of_models();
 
 private:
 	std::vector<Robot_model> robot_models;
