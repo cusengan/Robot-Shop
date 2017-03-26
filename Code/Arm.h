@@ -7,9 +7,7 @@
 class Arm : public Robot_part{
 
 public:
-	Arm(double _length, double _max_power): length(_length), 
-											max_power(_max_power){}
-
+	
 
 private:
 	
