@@ -9,7 +9,5 @@ int main(){
 	View view(shop);
 	Controller controller(shop, view);
 
-	shop.create_new_robot_torso();
-	shop.create_new_robot_torso();
 
 }

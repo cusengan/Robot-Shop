@@ -1,9 +1,5 @@
 #include "Shop.h"
 
-void Shop::create_new_robot_parts(){ 
-
-}
-
 void Shop::create_new_robot_arm(){
 
 	std::string name;
@@ -94,20 +90,51 @@ void Shop::create_new_robot_locomotor(){
 
 }
 
-// std::string name;
-// 	int model_num
+Arm Shop::get_robot_arm(int index){
+	return arms[index];
 
-// std::cout << "Name?" << std::endl;
-// 	getline(std::cin, name);
+}
 
-// 	std::cout << "Model number?" << std::endl;
-// 	std::cin >> model_num;
-// 	std::cin.ignore();
-// 	Torso Torso(name, model_num);
-// 	torsos.push_back(Torso);
-// 	std::cout << torsos[0].get_info();
+Head Shop::get_robot_head(int index){
+	return heads[index];
+
+}
+
+Torso Shop::get_robot_torso(int index){
+	return torsos[index];
+
+}
+
+Battery Shop::get_robot_battery(int index){
+	return batteries[index];
+
+}
+
+Locomotor Shop::get_robot_locomotor(int index){
+	return locomotors[index];
+}
 
 
-void Shop::create_new_robot_model(){
+void Shop::create_new_robot_model(Arm arm, 
+								Head head, 
+								Torso torso,
+								Battery battery, 
+								Locomotor locomotor){
+
+
+	std::string name;
+	int model_num;
+
+	std::cout << "Name?" << std::endl;
+	getline(std::cin, name);
+
+	std::cout << "Model number?" << std::endl;
+	std::cin >> model_num;
+	std::cin.ignore();
+
+	Robot_model Robot(name, model_num, arm, head, torso,
+						battery, locomotor);
+
+	robot_models.push_back(Robot);
 
 }
