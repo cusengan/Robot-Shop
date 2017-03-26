@@ -7,6 +7,9 @@
 class Arm : public Robot_part{
 
 public:
+	Arm(std::string _name, int _model_number) : 
+			Robot_part(_name,_model_number) {}
+	std::string get_info();
 	
 
 private:
