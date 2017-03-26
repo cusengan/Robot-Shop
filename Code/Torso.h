@@ -1,6 +1,8 @@
 #include <iostream>
+#ifndef TORSO_H
+#define TORSO_H
 
-class Torso{
+class Torso : Robot_part{
 
 public:
 
@@ -9,3 +11,5 @@ private:
 	int max_arms;
 
 };
+
+#endif
