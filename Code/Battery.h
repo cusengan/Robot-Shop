@@ -1,7 +1,10 @@
+#ifndef BATTERY_H
+#define BATTERY_H
+
 #include <iostream>
+#include "Robot_part.h"
 
-
-class Battery{
+class Battery : public Robot_part{
 
 public:
 
@@ -10,3 +13,5 @@ private:
 	double max_energy;
 
 };
+
+#endif
