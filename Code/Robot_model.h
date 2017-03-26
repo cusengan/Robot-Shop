@@ -28,6 +28,12 @@ public:
 				battery(_battery),
 				locomotor(_locomotor) { }
 
+	Arm get_robot_arm();
+	Head get_robot_head();
+	Torso get_robot_torso();
+	Battery get_robot_battery();
+	Locomotor get_robot_locomotor();
+
 	double cost();
 	double max_speed();
 	double max_battery_life();
