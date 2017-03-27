@@ -13,15 +13,34 @@
 
 void Controller::execute_cmd(int cmd){
 	if(cmd == 1){
+		
+		//variable declarations
 		std::string name;
-		int model_num;
-
+		int model_num, choice;
+		
+		//start submenu here
+		std::cout << view.parts_menu() << std::endl;
+                std::cout << "Choose an action: ";
+                std::cin >> choice;
+                std::cin.ignore();
+		
+		//post-select action
 		std::cout << "Name?" << std::endl;
 		getline(std::cin, name);
 
 		std::cout << "Model number?" << std::endl;
 		std::cin >> model_num;
 		std::cin.ignore();
+		
+		//actual storing 
+		switch(choice){
+		case 1: shop.create_new_robot_head(name, model_num); break;
+		case 2: shop.create_new_robot_torso(name, model_num); break;
+		case 3: shop.create_new_robot_arm(name, model_num); break;
+		case 4: shop.create_new_robot_battery(name, model_num); break;
+		case 5: shop.create_new_robot_locomotor(name, model_num); break;
+		
+		}
 
 
 	}
@@ -30,7 +49,7 @@ void Controller::execute_cmd(int cmd){
 	}
 	else if(cmd == 3){
 		int choice;
-		std::cout << view.view_parts_menu() << std::endl;
+		std::cout << view.parts_menu() << std::endl;
 		std::cout << "Choose an action: ";
 		std::cin >> choice;
 		std::cin.ignore();
@@ -55,6 +74,6 @@ void Controller::cli(){
 		std::cin.ignore();
 		execute_cmd(cmd);
 
-	}
+	} //loops till manual exit at 0
 
 }

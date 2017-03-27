@@ -26,7 +26,7 @@ std::string View::get_robot_models(){
 
 }
 
-std::string View::view_parts_menu(){
+std::string View::parts_menu(){
 
 std::string menu = R"(Which of these parts would you like to view?
 1) Head
