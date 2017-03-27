@@ -12,6 +12,8 @@
 //these were in the create_robot_part functions in shop
 
 void Controller::execute_cmd(int cmd){
+	
+	//create a part
 	if(cmd == 1){
 		
 		//variable declarations
@@ -44,19 +46,72 @@ void Controller::execute_cmd(int cmd){
 
 
 	}
+	
+	//create a model
 	else if(cmd ==2){
-
+	
+	//variable declarations
+        std::string name;
+        int model_num, index;
+	
+	//if not enough parts for a model
+		
+	//tells you which vectors are null
+	if (shop.number_of_arms() == 0){
+		std::cout <<"There aren't any arm parts for you to make a model"<<std::endl;
 	}
+	if (shop.number_of_heads() == 0){
+		std::cout <<"There aren't any head parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_torsos() == 0){
+		std::cout <<"There aren't any torso parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_batteries() == 0){
+		std::cout <<"There aren't any battery parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_locomotors() == 0) {
+		std::cout << "There aren't any locomotor parts for you to make a model"<<std::endl;
+	}
+
+	//this actually throws you out 
+	if ( 
+        shop.number_of_arms() == 0 ||
+        shop.number_of_heads() == 0 ||
+        shop.number_of_torsos() == 0 ||
+        shop.number_of_batteries() == 0 ||
+        shop.number_of_locomotors() == 0 ){
+	//do nothing
+	}
+	
+	//all parts needed are presence
+	else {
+	//model info
+		std::cout << "Name?" << std::endl;
+                getline(std::cin, name);
+                std::cout << "Model number?" << std::endl;
+                std::cin >> model_num;
+                std::cin.ignore();
+	//assigning parts to the model
+	
+	}
+	
+	}//end cmd 2
+		
+	
+	//view parts
 	else if(cmd == 3){
 		int choice;
+		//submenu
 		std::cout << view.parts_menu() << std::endl;
 		std::cout << "Choose an action: ";
 		std::cin >> choice;
 		std::cin.ignore();
+		//print a list of the specific parts
 		std::cout << view.get_robot_parts(choice) << std::endl;
 
 	}
 
+	//view models
 	else if(cmd == 4){
 
 	}
