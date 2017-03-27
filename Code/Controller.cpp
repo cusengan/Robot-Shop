@@ -19,7 +19,7 @@ void Controller::execute_cmd(int cmd){
 		int model_num, choice;
 		
 		//start submenu here
-		std::cout << view.view_parts_menu() << std::endl;
+		std::cout << view.parts_menu() << std::endl;
                 std::cout << "Choose an action: ";
                 std::cin >> choice;
                 std::cin.ignore();
