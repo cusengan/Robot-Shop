@@ -52,51 +52,93 @@ void Controller::execute_cmd(int cmd){
 	
 	//variable declarations
         std::string name;
-        int model_num, index;
+        int model_num, 
+	    arm_num, 
+	    head_num,
+	    torso_num,
+	    battery_num,
+	    locomotor_num;
 	
 	//if not enough parts for a model
-		
-	//tells you which vectors are null
-	if (shop.number_of_arms() == 0){
-		std::cout <<"There aren't any arm parts for you to make a model"<<std::endl;
-	}
-	if (shop.number_of_heads() == 0){
-		std::cout <<"There aren't any head parts for you to make a model"<<std::endl;
-	}
-	if (shop.number_of_torsos() == 0){
-		std::cout <<"There aren't any torso parts for you to make a model"<<std::endl;
-	}
-	if (shop.number_of_batteries() == 0){
-		std::cout <<"There aren't any battery parts for you to make a model"<<std::endl;
-	}
-	if (shop.number_of_locomotors() == 0) {
-		std::cout << "There aren't any locomotor parts for you to make a model"<<std::endl;
-	}
-
-	//this actually throws you out 
-	if ( 
+        if (
         shop.number_of_arms() == 0 ||
         shop.number_of_heads() == 0 ||
         shop.number_of_torsos() == 0 ||
         shop.number_of_batteries() == 0 ||
         shop.number_of_locomotors() == 0 ){
-	//do nothing
-	}
+ 
+	std::cout << std::endl << "Error! You cannot make a model for the following reason or reasons:" << std::endl;
 	
+        }
+
+	//tells you which vectors are null
+	if (shop.number_of_arms() == 0){
+		std::cout <<"-There aren't any arm parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_heads() == 0){
+		std::cout <<"-There aren't any head parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_torsos() == 0){
+		std::cout <<"-There aren't any torso parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_batteries() == 0){
+		std::cout <<"-There aren't any battery parts for you to make a model"<<std::endl;
+	}
+	if (shop.number_of_locomotors() == 0) {
+		std::cout << "-There aren't any locomotor parts for you to make a model"<<std::endl;
+	}
+
 	//all parts needed are presence
-	else {
-	//model info
-		std::cout << "Name?" << std::endl;
+	if ( 
+        shop.number_of_arms() != 0 &&
+        shop.number_of_heads() != 0 &&
+        shop.number_of_torsos() != 0 &&
+        shop.number_of_batteries() != 0 &&
+        shop.number_of_locomotors() != 0 ){
+	
+	 //model info
+                std::cout << "Name?" << std::endl;
                 getline(std::cin, name);
                 std::cout << "Model number?" << std::endl;
                 std::cin >> model_num;
                 std::cin.ignore();
-	//assigning parts to the model
+
+        //assigning parts to the model
+	//arm
+		std::cout<<"Please input the part # for the arm you would like for this model:"<<std::endl;
+		std::cin >> arm_num;
+                std::cin.ignore();
+	//head
+		std::cout<<"Please input the part # for the head you would like for this model:"<<std::endl;
+                std::cin >> head_num;
+                std::cin.ignore();
 	
-	}
-	
-	}//end cmd 2
+	//torso
+		std::cout<<"Please input the part # for the torso you would like for this model:"<<std::endl;
+                std::cin >> torso_num;
+                std::cin.ignore();
 		
+	//battery
+		std::cout<<"Please input the part # for the battery you would like for this model:"<<std::endl;
+                std::cin >> battery_num;
+                std::cin.ignore();
+	
+	//locomotor
+		std::cout<<"Please input the part # for the arm you would like for this model:"<<std::endl;
+                std::cin >> locomotor_num;
+                std::cin.ignore();
+
+	//put the parts together
+		shop.create_new_robot_model(
+		name,
+		model_num,
+		shop.get_robot_arm(arm_num),
+		shop.get_robot_head(head_num),
+		shop.get_robot_torso(torso_num),
+		shop.get_robot_battery(battery_num),
+		shop.get_robot_locomotor(locomotor_num));
+		}
+	}//end cmd 2
 	
 	//view parts
 	else if(cmd == 3){
