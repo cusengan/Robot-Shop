@@ -29,9 +29,32 @@ List of Robot Models
 
 for (int i = 0; i < shop.number_of_models(); ++i) {
         list += "Robot Model #"+std::to_string(i)+'\n';
-        list += shop.get_robot_model(i).get_robot_arm().get_info()+'\n';
+       	list += shop.get_robot_model(i).get_info();
+
+       	list += "\nHead info:\n";
+       	list += shop.get_robot_model(i).get_robot_head().get_info();
+
+       	list +="\nTorso info:\n";
+       	list += shop.get_robot_model(i).get_robot_torso().get_info();
+
+       	list += "\nArm info:\n";
+       	list += shop.get_robot_model(i).get_robot_arm().get_info();
+
+       	list += "\nBattery info:\n";
+       	list += shop.get_robot_model(i).get_robot_battery().get_info();
+
+       	list += "\nLocomotor info:\n";
+       	list += shop.get_robot_model(i).get_robot_locomotor().get_info();
+
+       	list += "----------------------------------------------\n";
 	
 	}
+
+
+
+
+return list;
+
 }
 
 std::string View::parts_menu(){
@@ -51,7 +74,22 @@ return menu;
 
 std::string View::get_robot_parts(int choice){
 
-std::string part = "parts";
+std::string part;
+
+if(choice == 1){
+	part = "Heads";
+
+}else if(choice == 2){
+	part = "Torsos";
+}else if(choice == 3){
+	part = "Arms";
+}else if(choice == 4){
+	part = "Batteries";
+}else if(choice == 5){
+	part = "Batteries";
+}
+
+
 
 std::string list = R"(
 ==================

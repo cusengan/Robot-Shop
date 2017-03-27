@@ -2,6 +2,8 @@
 #define CONTROLLER_H
 
 #include <iostream>
+#include <sstream>
+#include <ios>
 #include "View.h"
 
 class Controller{

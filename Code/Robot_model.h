@@ -28,6 +28,7 @@ public:
 				battery(_battery),
 				locomotor(_locomotor) { }
 
+	std::string get_info();
 	Arm get_robot_arm();
 	Head get_robot_head();
 	Torso get_robot_torso();

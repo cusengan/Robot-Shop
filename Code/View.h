@@ -12,6 +12,7 @@ public:
 	std::string get_robot_parts(int choice);
 	std::string create_a_part();
 
+
 private:
 	Shop& shop;
 };

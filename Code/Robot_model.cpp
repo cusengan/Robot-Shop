@@ -1,5 +1,10 @@
 #include "Robot_model.h"
 
+std::string Robot_model::get_info(){
+	std::string info = "Name: " + name + "\n" 
+						"Model number: " + std::to_string(model_number) + "\n";
+	return info;
+}
 
 Arm Robot_model::get_robot_arm(){
 	return arm;
