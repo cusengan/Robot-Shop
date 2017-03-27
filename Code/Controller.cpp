@@ -67,7 +67,7 @@ void Controller::execute_cmd(int cmd){
         shop.number_of_batteries() == 0 ||
         shop.number_of_locomotors() == 0 ){
  
-	std::cout << std::endl << "Error! You cannot make a model for the following reason or reasons:" << std::endl;
+	std::cerr << std::endl << "Error! You cannot make a model for the following reason or reasons:" << std::endl;
 	
         }
 
@@ -88,7 +88,7 @@ void Controller::execute_cmd(int cmd){
 		std::cout << "-There aren't any locomotor parts for you to make a model"<<std::endl;
 	}
 
-	//all parts needed are presence
+	//all parts needed are present
 	if ( 
         shop.number_of_arms() != 0 &&
         shop.number_of_heads() != 0 &&
@@ -105,26 +105,46 @@ void Controller::execute_cmd(int cmd){
 
         //assigning parts to the model
 	//arm
-		std::cout<<"Please input the part # for the arm you would like for this model:"<<std::endl;
-		std::cin >> arm_num;
+		std::cout<<"Please input the part # for the arm you would like for this model:\n"<<std::endl;
+				std::cout << view.get_robot_parts(3) << std::endl;
+				std::cin >> arm_num;
+				if(arm_num >= shop.number_of_arms()){
+					std::cerr << "Error! Invalid input." << std::endl;
+				}
                 std::cin.ignore();
 	//head
 		std::cout<<"Please input the part # for the head you would like for this model:"<<std::endl;
+				std::cout << view.get_robot_parts(1) << std::endl;
                 std::cin >> head_num;
+                if(arm_num >= shop.number_of_heads()){
+					std::cerr << "Error! Invalid input." << std::endl;
+				}
                 std::cin.ignore();
 	
 	//torso
 		std::cout<<"Please input the part # for the torso you would like for this model:"<<std::endl;
+				std::cout << view.get_robot_parts(2) << std::endl;
+				if(arm_num >= shop.number_of_torsos()){
+					std::cerr << "Error! Invalid input." << std::endl;
+				}
                 std::cin >> torso_num;
                 std::cin.ignore();
 		
 	//battery
 		std::cout<<"Please input the part # for the battery you would like for this model:"<<std::endl;
+				std::cout << view.get_robot_parts(4) << std::endl;
+				if(arm_num >= shop.number_of_batteries()){
+					std::cerr << "Error! Invalid input." << std::endl;
+				}
                 std::cin >> battery_num;
                 std::cin.ignore();
 	
 	//locomotor
 		std::cout<<"Please input the part # for the arm you would like for this model:"<<std::endl;
+				std::cout << view.get_robot_parts(5) << std::endl;
+				if(arm_num >= shop.number_of_locomotors()){
+					std::cerr << "Error! Invalid input." << std::endl;
+				}
                 std::cin >> locomotor_num;
                 std::cin.ignore();
 
