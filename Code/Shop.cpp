@@ -65,6 +65,9 @@ Locomotor Shop::get_robot_locomotor(int index){
 	return locomotors[index];
 }
 
+Robot_model Shop::get_robot_model(int index){
+	return robot_models[index];
+}
 
 void Shop::create_new_robot_model(std::string name,
 								int model_num,
@@ -107,3 +110,5 @@ int Shop::number_of_locomotors(){
 int Shop::number_of_models(){
 	return robot_models.size();
 }
+
+

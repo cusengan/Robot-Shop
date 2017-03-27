@@ -23,6 +23,7 @@ public:
 	Torso get_robot_torso(int index);
 	Battery get_robot_battery(int index);
 	Locomotor get_robot_locomotor(int index);
+	Robot_model get_robot_model(int index);
 	void create_new_robot_model(std::string name,
 								int model_num,
 								Arm arm, 
