@@ -27,7 +27,7 @@ public:
 								int model_num,
 								Arm arm, 
 								Head head, 
-								Torso torsos,
+								Torso torso,
 								Battery battery, 
 								Locomotor locomotor);
 	int number_of_arms();
