@@ -21,9 +21,17 @@ return menu;
 
 std::string View::get_robot_models(){
 
+std::string list = R"(
+=====================
+List of Robot Models 
+=====================
+)";
 
-
-
+for (int i = 0; i < shop.number_of_models(); ++i) {
+        list += "Robot Model #"+std::to_string(i)+'\n';
+        list += shop.get_robot_model(i).get_robot_arm().get_info()+'\n';
+	
+	}
 }
 
 std::string View::parts_menu(){

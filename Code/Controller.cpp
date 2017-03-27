@@ -181,6 +181,8 @@ void Controller::execute_cmd(int cmd){
 
 	//view models
 	else if(cmd == 4){
+		
+	std::cout << view.get_robot_models() << std::endl;
 
 	}
 	else if(cmd == 0){
