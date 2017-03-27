@@ -88,7 +88,7 @@ int Shop::number_of_arms(){
 	return arms.size();
 }
 
-int Shop::number_torsos(){
+int Shop::number_of_torsos(){
 	return torsos.size();
 }
 

@@ -8,7 +8,9 @@ public:
 	View(Shop& market) : shop(market){}
 	std::string get_menu();
 	std::string get_robot_models();
-	std::string get_robot_parts();
+	std::string view_parts_menu();
+	std::string get_robot_parts(int choice);
+	std::string create_a_part();
 
 private:
 	Shop& shop;

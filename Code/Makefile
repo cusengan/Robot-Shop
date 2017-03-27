@@ -2,8 +2,10 @@
 CC = g++
 CFLAGS = -g -w -std=c++11 -c 
 
-main: Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Robot_part.o Controller.o
-	$(CC) Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Robot_part.o Controller.o main_cli.cpp
+main: Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Robot_part.o Controller.o
+	$(CC) Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Robot_part.o Controller.o main_cli.cpp
+Locomotor.o: Locomotor.cpp Locomotor.h
+	$(CC) $(CFLAGS) Locomotor.cpp
 Battery.o: Battery.cpp Battery.h
 	$(CC) $(CFLAGS) Battery.cpp
 Head.o: Head.cpp Head.h

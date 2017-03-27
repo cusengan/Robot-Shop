@@ -31,7 +31,7 @@ public:
 								Battery battery, 
 								Locomotor locomotor);
 	int number_of_arms();
-	int number_torsos();
+	int number_of_torsos();
 	int number_of_batteries();
 	int number_of_heads();
 	int number_of_locomotors();
