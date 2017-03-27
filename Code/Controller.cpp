@@ -17,22 +17,37 @@ void Controller::execute_cmd(int cmd){
 	if(cmd == 1){
 		
 		//variable declarations
-		std::string name;
+		std::string name, strInput;
 		int model_num, choice;
 		
 		//start submenu here
-		std::cout << view.parts_menu() << std::endl;
-                std::cout << "Choose an action: ";
-                std::cin >> choice;
-                std::cin.ignore();
+
+		while(true){ //this loop validates integer input
+			std::cout << view.parts_menu() << std::endl;
+			std::cout << "Choose an action: ";
+			getline(std::cin, strInput);
+			//This will convert string to number safely
+			std::stringstream myStream(strInput);
+			if((myStream >> choice)){
+				break;
+			}
+			std::cout << "\nPlease enter a valid integer" << std::endl;
+		}
 		
 		//post-select action
 		std::cout << "Name?" << std::endl;
 		getline(std::cin, name);
 
-		std::cout << "Model number?" << std::endl;
-		std::cin >> model_num;
-		std::cin.ignore();
+		while(true){ //this loop validates integer input
+			std::cout << "Enter a model number: ";
+			getline(std::cin, strInput);
+			//This will convert string to number safely
+			std::stringstream myStream(strInput);
+			if((myStream >> model_num)){
+				break;
+			}
+			std::cout << "\nPlease enter a valid integer" << std::endl;
+		}
 		
 		//actual storing 
 		switch(choice){
@@ -51,7 +66,7 @@ void Controller::execute_cmd(int cmd){
 	else if(cmd ==2){
 	
 	//variable declarations
-        std::string name;
+        std::string name, strInput;
         int model_num, 
 	    arm_num, 
 	    head_num,
@@ -99,14 +114,22 @@ void Controller::execute_cmd(int cmd){
 	 //model info
                 std::cout << "Name?" << std::endl;
                 getline(std::cin, name);
-                std::cout << "Model number?" << std::endl;
-                std::cin >> model_num;
-                std::cin.ignore();
+               while(true){ //this loop validates integer input
 
+					std::cout << "Enter a model number: ";
+					getline(std::cin, strInput);
+
+					//This will convert string to number safely
+					std::stringstream myStream(strInput);
+					if((myStream >> model_num)){
+						break;
+					}
+					std::cout << "\nPlease enter a valid integer" << std::endl;
+				}
         //assigning parts to the model
 	//arm
         std::cout << view.get_robot_parts(3) << std::endl;
-		std::cout<<"Please input the part # for the arm you would like for this model:\n"<<std::endl;
+		std::cout<<"Please input the part # for the arm you would like for this model:"<<std::endl;
 				std::cin >> arm_num;
 				if(arm_num >= shop.number_of_arms()){
 					std::cerr << "Error! Invalid input." << std::endl;
@@ -169,11 +192,28 @@ void Controller::execute_cmd(int cmd){
 	//view parts
 	else if(cmd == 3){
 		int choice;
+		std::string strInput;
 		//submenu
-		std::cout << view.parts_menu() << std::endl;
-		std::cout << "Choose an action: ";
-		std::cin >> choice;
-		std::cin.ignore();
+
+		while(true){ //this loop validates integer input
+			std::cout << view.parts_menu() << std::endl;
+
+			std::cout << "Choose an action: ";
+			getline(std::cin, strInput);
+
+			//This will convert string to number safely
+			std::stringstream myStream(strInput);
+			if((myStream >> choice)){
+				break;
+			}
+			std::cout << "\nPlease enter a valid integer" << std::endl;
+		}
+
+		if(choice < 1 || choice > 5){
+			std::cerr << "Error! Invalid input" << std::endl;
+			return;
+		}
+
 		//print a list of the specific parts
 		std::cout << view.get_robot_parts(choice) << std::endl;
 
