@@ -8,7 +8,7 @@
 
 class Controller{
 public:
-	Controller(Shop& market, View& _view) : shop(market), 
+	Controller(Shop& _shop, View& _view) : shop(_shop), 
 											view(_view) {}
 	void execute_cmd(int cmd);
 	void cli();

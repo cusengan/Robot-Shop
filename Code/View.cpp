@@ -12,7 +12,11 @@ Which one of these options would you like to choose?
 2)Create a robot model 
 3)View robot parts 
 4)View robot models
+5)Create a Customer
+6)Create a Sales Associate
 0)Exit
+
+====================================================
 )";
 
 return menu;
@@ -59,12 +63,17 @@ return list;
 
 std::string View::parts_menu(){
 
-std::string menu = R"(Which of these parts would you like to view?
+std::string menu = R"(
+============================================
+Which of these parts would you like to view?
+============================================
+
 1) Head
 2) Torso
 3) Arm
 4) Battery
 5) Locomotor
+============================================
 )";
 
 return menu;
