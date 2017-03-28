@@ -1,22 +1,22 @@
 #include "Shop.h"
 
-void Shop::create_new_robot_arm(std::string name, int model_num){
+void Shop::create_new_robot_arm(std::string name, int model_num, double price, std::string description){
 
-	Arm arm(name, model_num);
+	Arm arm(name, model_num, price, description);
 	arms.push_back(arm);
 
 }
 
-void Shop::create_new_robot_head(std::string name, int model_num){
+void Shop::create_new_robot_head(std::string name, int model_num, double price, std::string description){
 
-	Head head(name, model_num);
+	Head head(name, model_num, price, description);
 	heads.push_back(head);
 
 }
 
-void Shop::create_new_robot_torso(std::string name, int model_num){
+void Shop::create_new_robot_torso(std::string name, int model_num, double price, std::string description){
 
-	Torso Torso(name, model_num);
+	Torso Torso(name, model_num, price, description);
 	torsos.push_back(Torso);
 
 	
@@ -24,17 +24,17 @@ void Shop::create_new_robot_torso(std::string name, int model_num){
 
 }
 
-void Shop::create_new_robot_battery(std::string name, int model_num){
+void Shop::create_new_robot_battery(std::string name, int model_num, double price, std::string description){
 
-	Battery battery(name, model_num);
+	Battery battery(name, model_num, price, description);
 	batteries.push_back(battery);
 
 }
 
-void Shop::create_new_robot_locomotor(std::string name, int model_num){
+void Shop::create_new_robot_locomotor(std::string name, int model_num, double price, std::string description){
 
 
-	Locomotor locomotor(name, model_num);
+	Locomotor locomotor(name, model_num, price, description);
 	locomotors.push_back(locomotor);
 
 }

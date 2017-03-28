@@ -4,6 +4,9 @@
 std::string View::get_menu(){
 
 std::string menu = R"(
+
+
+
 ====================================================
 Which one of these options would you like to choose? 
 ====================================================
@@ -52,7 +55,7 @@ for (int i = 0; i < shop.number_of_models(); ++i) {
        	list += "\nLocomotor info:\n";
        	list += shop.get_robot_model(i).get_robot_locomotor().get_info();
 
-       	list += "----------------------------------------------\n";
+       	list += "\n================================================\n";
 	
 	}
 
@@ -110,42 +113,42 @@ List of )"+ part + R"(
 
 switch (choice) {
 
-case 1: part = "Heads";
-for (int i = 0; i < shop.number_of_heads(); ++i) {
-	list += "Part #"+std::to_string(i)+'\n';
-	list += shop.get_robot_head(i).get_info() +'\n';
-};
-break;
+	case 1: part = "Heads";
+		for (int i = 0; i < shop.number_of_heads(); ++i) {
+			list += "Part #"+std::to_string(i)+'\n';
+			list += shop.get_robot_head(i).get_info() +'\n';
+			list += "--------------------------------------------\n";
+			};break;
 
-case 2: part = "Torsos"; 
-for (int i = 0; i < shop.number_of_torsos(); ++i) {
-	list += "Part #"+std::to_string(i)+'\n';
-	list += shop.get_robot_torso(i).get_info() +'\n';
-};
-break;
+	case 2: part = "Torsos"; 
+		for (int i = 0; i < shop.number_of_torsos(); ++i) {
+			list += "Part #"+std::to_string(i)+'\n';
+			list += shop.get_robot_torso(i).get_info() +'\n';
+			list += "--------------------------------------------\n";
+			};break;
 
-case 3: part = "Arms";
-for (int i = 0; i < shop.number_of_arms(); ++i) {
-	list += "Part #"+std::to_string(i)+'\n';
-	list += shop.get_robot_arm(i).get_info() +'\n';
-};
-break;
+	case 3: part = "Arms";
+		for (int i = 0; i < shop.number_of_arms(); ++i) {
+			list += "Part #"+std::to_string(i)+'\n';
+			list += shop.get_robot_arm(i).get_info() +'\n';
+			list += "--------------------------------------------\n";
+			};break;
 
-case 4: part = "Batteries";
-for (int i = 0; i < shop.number_of_batteries(); ++i) {
-	list += "Part #"+std::to_string(i)+'\n';
-	list += shop.get_robot_battery(i).get_info() +'\n';
-};
-break;
+	case 4: part = "Batteries";
+		for (int i = 0; i < shop.number_of_batteries(); ++i) {
+			list += "Part #"+std::to_string(i)+'\n';
+			list += shop.get_robot_battery(i).get_info() +'\n';
+			list += "--------------------------------------------\n";
+			};break;
 
-case 5: part = "Locomotors"; 
-for (int i = 0; i < shop.number_of_locomotors(); ++i) {
-	list += "Part #"+std::to_string(i)+'\n';
-	list += shop.get_robot_locomotor(i).get_info() +'\n';
-};
-break;
+	case 5: part = "Locomotors"; 
+		for (int i = 0; i < shop.number_of_locomotors(); ++i) {
+			list += "Part #"+std::to_string(i)+'\n';
+			list += shop.get_robot_locomotor(i).get_info() +'\n';
+			list += "--------------------------------------------\n";
+			};break;
 
-}// end switch
+		}// end switch
 
 return list;
 

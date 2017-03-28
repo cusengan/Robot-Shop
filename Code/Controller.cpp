@@ -5,7 +5,9 @@ void Controller::execute_cmd(int cmd){
 	//create a part
 	if(cmd == 1){
 		
+
 		new_robot_part();
+
 		
 		
 
@@ -140,7 +142,7 @@ int Controller::validate_integer(std::string prompt){
 			if((myStream >> num)){
 				break;
 			}
-			std::cout << "\nPlease enter a valid integer" << std::endl;
+			std::cout << "\nPlease enter a valid integer\n" << std::endl;
 		}
 
 	return num;
@@ -160,20 +162,40 @@ void Controller::new_robot_part(){
 		
 		
 		//post-select action
-		std::cout << "Name?" << std::endl;
+		std::cout << "Enter a name: " << std::endl;
 		getline(std::cin, name);
+
 
 		model_num = validate_integer("Enter a model number: ");//getting user input for model number
 
 		
+
+		
+		while(true){ //this loop validates integer input
+                        std::cout << "Enter a a price (usd): ";
+                        getline(std::cin, strInput);
+                        //This will convert string to number safely
+                        std::stringstream myStream(strInput);
+                        if((myStream >> price)){
+                                break;
+                        }
+                        std::cout << "\nPlease enter a valid price\n" << std::endl;
+                }
+		
+		std::cout << "Enter a description: " << std::endl;
+                getline(std::cin, description);	
 		
 		//actual storing 
 		switch(choice){
-		case 1: shop.create_new_robot_head(name, model_num); break;
-		case 2: shop.create_new_robot_torso(name, model_num); break;
-		case 3: shop.create_new_robot_arm(name, model_num); break;
-		case 4: shop.create_new_robot_battery(name, model_num); break;
-		case 5: shop.create_new_robot_locomotor(name, model_num); break;
+
+		case 1: shop.create_new_robot_head(name, model_num, price, description); break;
+		case 2: shop.create_new_robot_torso(name, model_num, price, description); break;
+		case 3: shop.create_new_robot_arm(name, model_num, price, description); break;
+		case 4: shop.create_new_robot_battery(name, model_num, price, description); break;
+		case 5: shop.create_new_robot_locomotor(name, model_num, price, description); break;
+		
+
+		
 		}
 }
 
@@ -229,8 +251,10 @@ void Controller::new_robot_model(){
                 std::cout << "Name?" << std::endl;
                 getline(std::cin, name);
 
+
                 model_num = validate_integer("Enter a model number: "); //getting user input for model number
                
+
         //assigning parts to the model
 	//arm
         std::cout << view.get_robot_parts(3) << std::endl;
@@ -305,4 +329,127 @@ void Controller::view_robot_parts(){
 
 		//print a list of the specific parts
 		std::cout << view.get_robot_parts(choice) << std::endl;
+
+	}//****************** END cmd == 3 ********************* 
+
+	//view models
+	else if(cmd == 4){
+		
+	std::cout << view.get_robot_models() << std::endl;
+
+	}//****************** END cmd == 4 ********************* 
+	
+	//create a customer
+	else if (cmd == 5){
+	
+		//variable declaration
+		std::string name, email, input;
+		int id, phone;
+	
+		std::cout<<"Enter beloved customer's name: ";
+		getline(std::cin, name);
+		
+		//ask for number and validate it is a number
+                while (true) {
+                        std::cout << "Enter the beloved customer's id: ";
+                        getline(std::cin, input);
+                        std::stringstream myStream(input);
+                        if((myStream >> id)){
+                                break;
+                        }
+                        std::cout<<"\nPlease enter valid integers\n"<<std::endl;
+                }
+		
+		//ask for number and validate it is a number
+                while (true) {
+                        std::cout << "Enter the beloved customer's phone number: ";
+                        getline(std::cin, input);
+                        std::stringstream myStream(input);
+                        if((myStream >> phone)){
+                                break;
+                        }
+                        std::cout<<"\nPlease enter valid integers\n"<<std::endl;
+                }
+		
+		std::cout<<"Enter beloved customer's email: ";
+                getline(std::cin, email);
+	
+		shop.create_new_beloved_customer(name, id, phone, email);
+	
+	}//****************** END cmd == 5 ********************* 
+	
+	//create a sales associate
+	else if (cmd == 6){
+        	
+		//variable declaration
+                std::string name, input;
+                int id;
+
+                std::cout<<"Enter the sales associate's name: ";
+                getline(std::cin, name); 
+        
+		//ask for number and validate it is a number
+		while (true) {
+			std::cout << "Enter the sales associate's id: ";
+			getline(std::cin, input);
+			std::stringstream myStream(input);
+			if((myStream >> id)){
+				break;
+			}
+			std::cout<<"\nPlease enter valid integers\n"<<std::endl;
+		}
+        	
+		shop.create_new_sales_associate(name, id);
+		
+        }//****************** END cmd == 6 *********************
+	
+	//load
+	else if(cmd == 7){
+	
+	
+	}//****************** END cmd == 7 *********************
+	
+	//save
+	else if(cmd == 8){
+	
+	
+	}//****************** END cmd == 8 *********************
+	
+	//exit
+	else if(cmd == 0){
+
+	}
+	else if(cmd == 99){//testing 
+		shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
+		shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
+		shop.create_new_robot_torso("Torso1", 8211, 99, "Savaged from the power rangers' last robot");
+		shop.create_new_robot_battery("Batter1", 11711, 61, "The energizer bunny got nothing on this");
+		shop.create_new_robot_locomotor("Locomotor1", 1111, 77, "The loco locomotor" );
+		shop.create_new_robot_model("RoboMan", 999811,
+									shop.get_robot_arm(0),
+									shop.get_robot_head(0),
+									shop.get_robot_torso(0),
+									shop.get_robot_battery(0),
+									shop.get_robot_locomotor(0));
+	}
+	
+	//for out of bound errors
+	else{
+		std::cerr << "Error! Invalid input" << std::endl;
+	}
+
+}
+
+void Controller::cli(){
+	int cmd = -1;
+	while(cmd != 0){
+		std::cout << view.get_menu() << std::endl;
+		std::cout << "Choose an action: ";
+		std::cin >> cmd;
+		std::cin.ignore();
+		execute_cmd(cmd);
+
+	} //loops till manual exit at 0
+
+
 }

@@ -14,11 +14,11 @@
 
 class Shop{
 public:
-	void create_new_robot_arm(std::string name, int model_num);
-	void create_new_robot_head(std::string name, int model_num);
-	void create_new_robot_torso(std::string name, int model_num);
-	void create_new_robot_battery(std::string name, int model_num);
-	void create_new_robot_locomotor(std::string name, int model_num);
+	void create_new_robot_arm(std::string name, int model_num, double price, std::string description);
+	void create_new_robot_head(std::string name, int model_num, double price, std::string description);
+	void create_new_robot_torso(std::string name, int model_num, double price, std::string description);
+	void create_new_robot_battery(std::string name, int model_num, double price, std::string description);
+	void create_new_robot_locomotor(std::string name, int model_num, double price, std::string description);
 	void create_new_sales_associate(std::string name, int id);
 	void create_new_beloved_customer(std::string name, int id, int phone, std::string email);	
 	
