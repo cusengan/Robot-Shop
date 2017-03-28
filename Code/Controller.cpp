@@ -294,7 +294,19 @@ void Controller::execute_cmd(int cmd){
 		shop.create_new_sales_associate(name, id);
 		
         }//****************** END cmd == 6 *********************
-
+	
+	//load
+	else if(cmd == 7){
+	
+	
+	}//****************** END cmd == 7 *********************
+	
+	//save
+	else if(cmd == 8){
+	
+	
+	}//****************** END cmd == 8 *********************
+	
 	//for out of bound errors
 	else{
 		std::cerr << "Error! Invalid input" << std::endl;

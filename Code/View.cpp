@@ -14,6 +14,8 @@ Which one of these options would you like to choose?
 4)View robot models
 5)Create a Customer
 6)Create a Sales Associate
+7)Load
+8)Save
 0)Exit
 
 ====================================================
