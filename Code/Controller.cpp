@@ -5,32 +5,9 @@ void Controller::execute_cmd(int cmd){
 	//create a part
 	if(cmd == 1){
 		
-		//variable declarations
-		std::string name, strInput;
-		int model_num, choice;
-		
-		//start submenu here
-
-		choice = validate_integer(view.parts_menu()); //getting choice for main menu
+		new_robot_part();
 		
 		
-		//post-select action
-		std::cout << "Name?" << std::endl;
-		getline(std::cin, name);
-
-		model_num = validate_integer("Enter a model number: ");//getting user input for model number
-
-		
-		
-		//actual storing 
-		switch(choice){
-		case 1: shop.create_new_robot_head(name, model_num); break;
-		case 2: shop.create_new_robot_torso(name, model_num); break;
-		case 3: shop.create_new_robot_arm(name, model_num); break;
-		case 4: shop.create_new_robot_battery(name, model_num); break;
-		case 5: shop.create_new_robot_locomotor(name, model_num); break;
-		
-		}
 
 	}//****************** END cmd == 1 *********************	
 
@@ -44,21 +21,8 @@ void Controller::execute_cmd(int cmd){
 	
 	//view parts
 	else if(cmd == 3){
-		int choice;
-		std::string strInput;
-		//submenu
-
-		choice = validate_integer(view.parts_menu()); //getting user input for choice
 		
-
-		if(choice < 1 || choice > 5){
-			std::cerr << "Error! Invalid input" << std::endl;
-			return;
-		}
-
-		//print a list of the specific parts
-		std::cout << view.get_robot_parts(choice) << std::endl;
-
+		view_robot_parts();
 	}//****************** END cmd == 3 ********************* 
 
 	//view models
@@ -185,6 +149,34 @@ int Controller::validate_integer(std::string prompt){
 
 }
 
+void Controller::new_robot_part(){
+	//variable declarations
+		std::string name, strInput;
+		int model_num, choice;
+		
+		//start submenu here
+
+		choice = validate_integer(view.parts_menu()); //getting choice for main menu
+		
+		
+		//post-select action
+		std::cout << "Name?" << std::endl;
+		getline(std::cin, name);
+
+		model_num = validate_integer("Enter a model number: ");//getting user input for model number
+
+		
+		
+		//actual storing 
+		switch(choice){
+		case 1: shop.create_new_robot_head(name, model_num); break;
+		case 2: shop.create_new_robot_torso(name, model_num); break;
+		case 3: shop.create_new_robot_arm(name, model_num); break;
+		case 4: shop.create_new_robot_battery(name, model_num); break;
+		case 5: shop.create_new_robot_locomotor(name, model_num); break;
+		}
+}
+
 void Controller::new_robot_model(){
 
 	//variable declarations
@@ -296,4 +288,21 @@ void Controller::new_robot_model(){
 		shop.get_robot_locomotor(locomotor_num));
 		}
 
+}
+
+void Controller::view_robot_parts(){
+	int choice;
+		std::string strInput;
+		//submenu
+
+		choice = validate_integer(view.parts_menu()); //getting user input for choice
+		
+
+		if(choice < 1 || choice > 5){
+			std::cerr << "Error! Invalid input" << std::endl;
+			return;
+		}
+
+		//print a list of the specific parts
+		std::cout << view.get_robot_parts(choice) << std::endl;
 }
