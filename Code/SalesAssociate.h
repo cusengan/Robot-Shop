@@ -16,6 +16,6 @@ public:
 	
 	std::string get_info();
 
-}
+};
 
-#endif "SALES_ASSOCIATE_H"
+#endif 

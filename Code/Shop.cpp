@@ -111,4 +111,12 @@ int Shop::number_of_models(){
 	return robot_models.size();
 }
 
+int Shop::number_of_associates(){
+        return associates.size();
+}
+
+int Shop::number_of_customers(){
+        return customers.size();
+}
+
 
