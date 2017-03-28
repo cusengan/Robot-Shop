@@ -7,6 +7,8 @@
 #include "Battery.h"
 #include "Locomotor.h"
 #include "Arm.h"
+#include "SalesAssociate.h"
+#include "Customer.h"
 
 #include <vector>
 
@@ -37,6 +39,8 @@ public:
 	int number_of_heads();
 	int number_of_locomotors();
 	int number_of_models();
+	int number_of_associates();
+	int number_of_customers();
 
 private:
 	std::vector<Robot_model> robot_models;
@@ -45,7 +49,8 @@ private:
 	std::vector<Locomotor> locomotors;
 	std::vector<Battery> batteries;
 	std::vector<Arm> arms;
-
+	std::vector<SalesAssociate> associates;
+	std::vector<Customer> customers;
 };
 
 #endif
