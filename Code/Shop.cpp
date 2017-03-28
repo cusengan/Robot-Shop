@@ -24,20 +24,33 @@ void Shop::create_new_robot_torso(std::string name, int model_num){
 
 }
 
-void Shop::create_new_robot_battery(std::string name,
-									 int model_num){
+void Shop::create_new_robot_battery(std::string name, int model_num){
 
 	Battery battery(name, model_num);
 	batteries.push_back(battery);
 
 }
 
-void Shop::create_new_robot_locomotor(std::string name, 
-									int model_num){
+void Shop::create_new_robot_locomotor(std::string name, int model_num){
 
 
 	Locomotor locomotor(name, model_num);
 	locomotors.push_back(locomotor);
+
+}
+
+void Shop::create_new_sales_associate(std::string name, int id){
+	
+	SalesAssociate associate(name, id);
+	associates.push_back(associate);
+
+}
+
+void Shop::create_new_beloved_customer
+(std::string name, int id, int phone, std::string email){
+
+	Customer customer(name, id, phone, email);
+	customers.push_back(customer);
 
 }
 
@@ -109,6 +122,14 @@ int Shop::number_of_locomotors(){
 
 int Shop::number_of_models(){
 	return robot_models.size();
+}
+
+int Shop::number_of_associates(){
+        return associates.size();
+}
+
+int Shop::number_of_customers(){
+        return customers.size();
 }
 
 
