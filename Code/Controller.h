@@ -12,6 +12,11 @@ public:
 											view(_view) {}
 	void execute_cmd(int cmd);
 	void cli();
+	int validate_integer(std::string prompt);
+	void new_robot_part();
+	void new_robot_model();
+	void view_robot_parts();
+
 
 private:
 	Shop& shop;
