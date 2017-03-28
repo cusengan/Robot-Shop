@@ -13,6 +13,7 @@ public:
 	void execute_cmd(int cmd);
 	void cli();
 	int validate_integer(std::string prompt);
+	void new_robot_model();
 
 private:
 	Shop& shop;
