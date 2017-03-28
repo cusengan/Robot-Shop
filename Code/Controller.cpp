@@ -11,32 +11,16 @@ void Controller::execute_cmd(int cmd){
 		
 		//start submenu here
 
-		while(true){ //this loop validates integer input
-			std::cout << view.parts_menu() << std::endl;
-			std::cout << "Choose an action: ";
-			getline(std::cin, strInput);
-			//This will convert string to number safely
-			std::stringstream myStream(strInput);
-			if((myStream >> choice)){
-				break;
-			}
-			std::cout << "\nPlease enter a valid integer" << std::endl;
-		}
+		choice = validate_integer(view.parts_menu()); //getting choice for main menu
+		
 		
 		//post-select action
 		std::cout << "Name?" << std::endl;
 		getline(std::cin, name);
 
-		while(true){ //this loop validates integer input
-			std::cout << "Enter a model number: ";
-			getline(std::cin, strInput);
-			//This will convert string to number safely
-			std::stringstream myStream(strInput);
-			if((myStream >> model_num)){
-				break;
-			}
-			std::cout << "\nPlease enter a valid integer" << std::endl;
-		}
+		model_num = validate_integer("Enter a model number: ");//getting user input for model number
+
+		
 		
 		//actual storing 
 		switch(choice){
@@ -102,18 +86,9 @@ void Controller::execute_cmd(int cmd){
 	 //model info
                 std::cout << "Name?" << std::endl;
                 getline(std::cin, name);
-               while(true){ //this loop validates integer input
 
-					std::cout << "Enter a model number: ";
-					getline(std::cin, strInput);
-
-					//This will convert string to number safely
-					std::stringstream myStream(strInput);
-					if((myStream >> model_num)){
-						break;
-					}
-					std::cout << "\nPlease enter a valid integer" << std::endl;
-				}
+                model_num = validate_integer("Enter a model number"); //getting user input for model number
+               
         //assigning parts to the model
 	//arm
         std::cout << view.get_robot_parts(3) << std::endl;
@@ -183,19 +158,8 @@ void Controller::execute_cmd(int cmd){
 		std::string strInput;
 		//submenu
 
-		while(true){ //this loop validates integer input
-			std::cout << view.parts_menu() << std::endl;
-
-			std::cout << "Choose an action: ";
-			getline(std::cin, strInput);
-
-			//This will convert string to number safely
-			std::stringstream myStream(strInput);
-			if((myStream >> choice)){
-				break;
-			}
-			std::cout << "\nPlease enter a valid integer" << std::endl;
-		}
+		choice = validate_integer(view.parts_menu()); //getting user input for choice
+		
 
 		if(choice < 1 || choice > 5){
 			std::cerr << "Error! Invalid input" << std::endl;
@@ -242,26 +206,13 @@ void Controller::execute_cmd(int cmd){
 		getline(std::cin, name);
 		
 		//ask for number and validate it is a number
-                while (true) {
-                        std::cout << "Enter the beloved customer's id: ";
-                        getline(std::cin, input);
-                        std::stringstream myStream(input);
-                        if((myStream >> id)){
-                                break;
-                        }
-                        std::cout<<"\nPlease enter valid integers\n"<<std::endl;
-                }
-		
+
+		id = validate_integer("Enter the beloved customer's id: ");
+                
 		//ask for number and validate it is a number
-                while (true) {
-                        std::cout << "Enter the beloved customer's phone number: ";
-                        getline(std::cin, input);
-                        std::stringstream myStream(input);
-                        if((myStream >> phone)){
-                                break;
-                        }
-                        std::cout<<"\nPlease enter valid integers\n"<<std::endl;
-                }
+
+		phone = validate_integer("Enter the beloved customer's phone number: ");
+                
 		
 		std::cout<<"Enter beloved customer's email: ";
                 getline(std::cin, email);
@@ -281,15 +232,9 @@ void Controller::execute_cmd(int cmd){
                 getline(std::cin, name); 
         
 		//ask for number and validate it is a number
-		while (true) {
-			std::cout << "Enter the sales associate's id: ";
-			getline(std::cin, input);
-			std::stringstream myStream(input);
-			if((myStream >> id)){
-				break;
-			}
-			std::cout<<"\nPlease enter valid integers\n"<<std::endl;
-		}
+
+        id = validate_integer("Enter the sales associate's id: ");
+		
         	
 		shop.create_new_sales_associate(name, id);
 		
@@ -326,5 +271,22 @@ void Controller::cli(){
 		execute_cmd(cmd);
 
 	} //loops till manual exit at 0
+
+}
+
+int Controller::validate_integer(std::string prompt){
+	std::string strInput;
+	int num;
+
+	while(true){ //this loop validates integer input
+			std::cout << prompt;
+			getline(std::cin, strInput);
+			//This will convert string to number safely
+			std::stringstream myStream(strInput);
+			if((myStream >> num)){
+				break;
+			}
+			std::cout << "\nPlease enter a valid integer" << std::endl;
+		}
 
 }
