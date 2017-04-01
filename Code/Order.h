@@ -14,7 +14,7 @@ public:
 		model(_model), 
 		customer(_customer),
 		seller(_seller) {}
-
+	std::string save_to_file();
 	std::string get_info();
 
 private:

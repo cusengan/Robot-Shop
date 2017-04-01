@@ -157,7 +157,7 @@ void Controller::new_robot_model(){
 					std::cerr << "Error! Invalid input." << std::endl;
 					return;
 				}
-                
+        
 	//head
         std::cout << view.get_robot_parts(1) << std::endl;
         head_num = validate_integer("Please input the part # for the head you would like for this model:\n");
@@ -203,7 +203,8 @@ void Controller::new_robot_model(){
 		shop.get_robot_head(head_num),
 		shop.get_robot_torso(torso_num),
 		shop.get_robot_battery(battery_num),
-		shop.get_robot_locomotor(locomotor_num));
+		shop.get_robot_locomotor(locomotor_num),
+		arm_num, head_num, torso_num, battery_num, locomotor_num);
 		}
 
 }
@@ -346,7 +347,8 @@ void Controller::use_test(){
 								shop.get_robot_head(0),
 								shop.get_robot_torso(0),
 								shop.get_robot_battery(0),
-								shop.get_robot_locomotor(0));
+								shop.get_robot_locomotor(0),
+								0, 0, 0, 0, 0);
 	shop.create_new_beloved_customer("William Truong", 5612221, 8172221345, "customer@gmail.com");
 	shop.create_new_sales_associate("Nathan Drake", 22111);
 	shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0));
@@ -399,6 +401,22 @@ void Controller::save_data(){
 	//// Saving Locomotors ////
 	for(int i = 0; i < shop.number_of_locomotors(); i++){
 		ofs << shop.get_robot_locomotor(i).save_to_file() << std::endl;
+	}
+
+	//// Saving Robot Models///
+	for(int i = 0; i < shop.number_of_robot_models(); i++){
+		ofs << shop.get_robot_model(i).save_to_file() << std::endl;
+	}
+
+
+	//// Saving Customers ////
+	for(int i = 0; i < shop.number_of_customers(); i++){
+		ofs << shop.get_customer(i).save_to_file() << std::endl;
+	}
+
+	//// Saving Sales Associates ////
+	for(int i = 0; i < shop.number_of_associates(); i++){
+		ofs << shop.get_sales_associate(i).save_to_file() << std::endl;
 	}
 
 	std::cout << "Information saved!" << std::endl;

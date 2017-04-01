@@ -29,7 +29,8 @@ public:
 								Head head, 
 								Torso torso,
 								Battery battery, 
-								Locomotor locomotor);
+								Locomotor locomotor,
+								int arm_num, int head_num, int torso_num,  int battery_num,  int locomotor_num);
 
 
 	Arm get_robot_arm(int index);

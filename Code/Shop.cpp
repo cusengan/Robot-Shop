@@ -88,13 +88,19 @@ void Shop::create_new_robot_model(std::string name,
 								Head head, 
 								Torso torso,
 								Battery battery, 
-								Locomotor locomotor){
+								Locomotor locomotor,
+								int arm_num, int head_num, int torso_num,  int battery_num,  int locomotor_num){
 
 
 
 
 	Robot_model Robot(name, model_num, arm, head, torso,
 						battery, locomotor);
+	Robot.add_choice(arm_num);
+	Robot.add_choice(head_num);
+	Robot.add_choice(torso_num);
+	Robot.add_choice(battery_num);
+	Robot.add_choice(locomotor_num);
 
 	robot_models.push_back(Robot);
 
