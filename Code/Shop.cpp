@@ -100,6 +100,10 @@ void Shop::create_new_robot_model(std::string name,
 
 }
 
+int Shop::number_of_robot_models(){
+	return robot_models.size();
+}
+
 int Shop::number_of_arms(){
 	return arms.size();
 }
@@ -130,6 +134,30 @@ int Shop::number_of_associates(){
 
 int Shop::number_of_customers(){
         return customers.size();
+}
+
+int Shop::number_of_orders(){
+	return orders.size();
+}
+
+SalesAssociate Shop::get_sales_associate(int index){
+	return associates[index];
+
+}
+
+Customer Shop::get_customer(int index){
+	return customers[index];
+
+}
+
+void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller){
+	Order order(robot, customer, seller);
+	orders.push_back(order);
+}
+
+Order Shop::get_order(int index){
+	return orders[index];
+
 }
 
 

@@ -9,6 +9,7 @@
 #include "Arm.h"
 #include "SalesAssociate.h"
 #include "Customer.h"
+#include "Order.h"
 
 #include <vector>
 
@@ -21,13 +22,7 @@ public:
 	void create_new_robot_locomotor(std::string name, int model_num, double price, std::string description);
 	void create_new_sales_associate(std::string name, int id);
 	void create_new_beloved_customer(std::string name, int id, int phone, std::string email);	
-	
-	Arm get_robot_arm(int index);
-	Head get_robot_head(int index);
-	Torso get_robot_torso(int index);
-	Battery get_robot_battery(int index);
-	Locomotor get_robot_locomotor(int index);
-	Robot_model get_robot_model(int index);
+	void create_order(Robot_model robot, Customer customer, SalesAssociate seller);
 	void create_new_robot_model(std::string name,
 								int model_num,
 								Arm arm, 
@@ -35,6 +30,18 @@ public:
 								Torso torso,
 								Battery battery, 
 								Locomotor locomotor);
+
+
+	Arm get_robot_arm(int index);
+	Head get_robot_head(int index);
+	Torso get_robot_torso(int index);
+	Battery get_robot_battery(int index);
+	Locomotor get_robot_locomotor(int index);
+	Robot_model get_robot_model(int index);
+	SalesAssociate get_sales_associate(int index);
+	Customer get_customer(int index);
+	Order get_order(int index);
+	int number_of_robot_models();
 	int number_of_arms();
 	int number_of_torsos();
 	int number_of_batteries();
@@ -43,6 +50,8 @@ public:
 	int number_of_models();
 	int number_of_associates();
 	int number_of_customers();
+	int number_of_orders();
+
 
 private:
 	std::vector<Robot_model> robot_models;
@@ -53,6 +62,7 @@ private:
 	std::vector<Arm> arms;
 	std::vector<SalesAssociate> associates;
 	std::vector<Customer> customers;
+	std::vector<Order> orders;
 };
 
 #endif

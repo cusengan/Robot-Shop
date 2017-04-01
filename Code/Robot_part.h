@@ -17,6 +17,7 @@ public:
 		   description(_description){}
 
 	std::string get_info();
+	double get_price();
 
 protected:
 	std::string name;
