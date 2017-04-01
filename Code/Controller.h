@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <sstream>
-#include <ios>
+#include <fstream>
 #include "View.h"
 
 class Controller{
@@ -23,6 +23,8 @@ public:
 	void use_test();
 	void view_customers();
 	void view_sales_associates();
+	void load_data();
+	void save_data();
 
 
 private:

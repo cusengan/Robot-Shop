@@ -15,7 +15,7 @@ public:
                    _model_number,
                    _price,
                    _description) {}
-	
+	std::string save_to_file();
 	std::string get_info();
 
 private:

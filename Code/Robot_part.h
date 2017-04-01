@@ -17,6 +17,7 @@ public:
 		   description(_description){}
 
 	std::string get_info();
+	std::string save_to_file();
 	double get_price();
 
 protected:

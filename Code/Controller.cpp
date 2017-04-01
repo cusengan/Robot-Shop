@@ -13,8 +13,8 @@ void Controller::execute_cmd(int cmd){
 		case 8: view_customers(); break;
 		case 9: view_sales_associates(); break;
 		case 10: view_orders(); break;
-		case 11: break; //load
-		case 12: break; //save
+		case 11: load_data(); break; //load
+		case 12: save_data(); break; //save
 		case 0: break;//exit
 		case 99: use_test(); break;
 		default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -364,6 +364,45 @@ void Controller::view_sales_associates(){
 
 void Controller::view_orders(){
 	std::cout << view.view_orders_menu();
+}
+
+void Controller::load_data(){
+
+}
+
+void Controller::save_data(){
+	std::ofstream ofs{"data.txt"};
+
+	if(!ofs) 
+		std::cerr << "Can't open output file" << std::endl;
+
+	///// Saving Arms /////
+	for(int i = 0; i < shop.number_of_arms(); i++){
+		ofs << shop.get_robot_arm(i).save_to_file() << std::endl;
+	}
+
+	//// Saving Heads ////
+	for(int i = 0; i < shop.number_of_heads(); i++){
+		ofs << shop.get_robot_head(i).save_to_file() << std::endl;
+	}
+
+	//// Saving Torsos ////
+	for(int i = 0; i < shop.number_of_torsos(); i++){
+		ofs << shop.get_robot_torso(i).save_to_file() << std::endl;
+	}
+
+	//// Saving Batteries ////
+	for(int i = 0; i < shop.number_of_batteries(); i++){
+		ofs << shop.get_robot_battery(i).save_to_file() << std::endl;
+	}
+
+	//// Saving Locomotors ////
+	for(int i = 0; i < shop.number_of_locomotors(); i++){
+		ofs << shop.get_robot_locomotor(i).save_to_file() << std::endl;
+	}
+
+	std::cout << "Information saved!" << std::endl;
+
 }
 
 
