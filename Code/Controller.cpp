@@ -326,7 +326,7 @@ void Controller::create_order(){
 
 	//////// Creating order object and adding it to the shop //////////
 
-	shop.create_order(robot, buyer, sales_associate);
+	shop.create_order(robot, buyer, sales_associate, model, seller, customer);
 	
 
 
@@ -351,7 +351,7 @@ void Controller::use_test(){
 								0, 0, 0, 0, 0);
 	shop.create_new_beloved_customer("William Truong", 5612221, 8172221345, "customer@gmail.com");
 	shop.create_new_sales_associate("Nathan Drake", 22111);
-	shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0));
+	shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0), 0, 0, 0);
 }
 
 void Controller::view_customers(){
@@ -408,7 +408,6 @@ void Controller::save_data(){
 		ofs << shop.get_robot_model(i).save_to_file() << std::endl;
 	}
 
-
 	//// Saving Customers ////
 	for(int i = 0; i < shop.number_of_customers(); i++){
 		ofs << shop.get_customer(i).save_to_file() << std::endl;
@@ -417,6 +416,11 @@ void Controller::save_data(){
 	//// Saving Sales Associates ////
 	for(int i = 0; i < shop.number_of_associates(); i++){
 		ofs << shop.get_sales_associate(i).save_to_file() << std::endl;
+	}
+
+	//// Saving orders ////
+	for(int i = 0; i < shop.number_of_orders(); i++){
+		ofs << shop.get_order(i).save_to_file() << std::endl;
 	}
 
 	std::cout << "Information saved!" << std::endl;

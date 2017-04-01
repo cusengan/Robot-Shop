@@ -1,6 +1,7 @@
 #ifndef ORDER_H
 #define ORDER_H
 
+#include <vector>
 #include "Robot_model.h"
 #include "SalesAssociate.h"
 #include "Customer.h"
@@ -16,11 +17,13 @@ public:
 		seller(_seller) {}
 	std::string save_to_file();
 	std::string get_info();
+	void add_choice(int choice);
 
 private:
 	Robot_model model;
 	Customer customer;
 	SalesAssociate seller;
+	std::vector<int> choices;
 
 
 };

@@ -10,7 +10,11 @@ std::string Robot_model::get_info(){
 std::string Robot_model::save_to_file(){
 	std::string info = "Robot_Identifier\n" + name + "\n" 
 						+ std::to_string(model_number) + "\n"
-						+ std::to_string(cost());
+						+ std::to_string(choices[0]) + "\n"
+						+ std::to_string(choices[1]) + "\n"
+						+ std::to_string(choices[2]) + "\n"
+						+ std::to_string(choices[3]) + "\n"
+						+ std::to_string(choices[4]);
 	return info;
 }
 
@@ -43,10 +47,6 @@ double Robot_model::cost(){
 void Robot_model::add_choice(int choice){
 	choices.push_back(choice);
 
-}
-
-int Robot_model::get_choice(int index){
-	return choices[index];
 }
 
 double Robot_model::max_speed(){

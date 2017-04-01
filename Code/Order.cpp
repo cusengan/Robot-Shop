@@ -7,6 +7,13 @@ std::string Order::get_info(){
 }
 
 std::string Order::save_to_file(){
-	std::string info = "Order_Identifier\n" + model.save_to_file() + "\n";
+	std::string info = "Order_Identifier\n" + std::to_string(choices[0]) + "\n"
+						+ std::to_string(choices[1]) + "\n"
+						+ std::to_string(choices[2]);
+	return info;
 
+}
+
+void Order::add_choice(int choice){
+	choices.push_back(choice);
 }

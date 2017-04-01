@@ -156,8 +156,11 @@ Customer Shop::get_customer(int index){
 
 }
 
-void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller){
+void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller, int model, int buyer, int associate){
 	Order order(robot, customer, seller);
+	order.add_choice(model);
+	order.add_choice(buyer);
+	order.add_choice(associate);
 	orders.push_back(order);
 }
 

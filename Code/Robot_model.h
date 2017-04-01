@@ -36,7 +36,6 @@ public:
 	Battery get_robot_battery();
 	Locomotor get_robot_locomotor();
 	void add_choice(int choice);
-	int get_choice(int index);
 	double cost();
 	double max_speed();
 	double max_battery_life();
