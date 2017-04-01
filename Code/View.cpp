@@ -4,9 +4,6 @@
 std::string View::get_menu(){
 
 std::string menu = R"(
-
-
-
 ====================================================
 Which one of these options would you like to choose? 
 ====================================================
@@ -17,8 +14,12 @@ Which one of these options would you like to choose?
 4)View robot models
 5)Create a Customer
 6)Create a Sales Associate
-7)Load
-8)Save
+7)Create an Order
+8)View Customers
+9)View Sales Associates
+10)View Orders
+11)Load
+12)Save
 0)Exit
 
 ====================================================
@@ -154,7 +155,76 @@ return list;
 
 }
 
-std::string View::create_a_part(){
+std::string View::create_a_part_menu(){
+
+std::string menu = R"(
+============================================
+Which of these parts would you like to create?
+============================================
+
+1) Head
+2) Torso
+3) Arm
+4) Battery
+5) Locomotor
+============================================
+)";
+
+return menu;
+
+
+}
+
+std::string View::view_customers_menu(){
+
+std::string list = R"(
+=====================
+List of Customers
+=====================
+)";
+
+	for (int i = 0; i < shop.number_of_customers(); ++i) {
+		list += "Customer #"+std::to_string(i)+'\n';
+		list += shop.get_customer(i).get_info() +'\n';
+		list += "--------------------------------------------\n";
+	}
+
+	return list;
+}
+
+std::string View::view_sales_associates_menu(){
+
+std::string list = R"(
+=========================
+List of Sales Associates 
+=========================
+)";
+
+	for (int i = 0; i < shop.number_of_customers(); ++i) {
+		list += "Sales Associate #"+std::to_string(i)+'\n';
+		list += shop.get_sales_associate(i).get_info() +'\n';
+		list += "--------------------------------------------\n";
+	}
+
+	return list;
+
+}
+
+std::string View::view_orders_menu(){
+
+std::string list = R"(
+=========================
+List of Orders 
+=========================
+)";
+
+	for (int i = 0; i < shop.number_of_orders(); ++i) {
+		list += "Order #"+std::to_string(i)+'\n';
+		list += shop.get_order(i).get_info() +'\n';
+		list += "--------------------------------------------\n";
+	}
+
+	return list;
 
 }
 

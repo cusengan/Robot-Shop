@@ -18,7 +18,11 @@ public:
 	void view_robot_parts();
 	void create_new_customer();
 	void create_new_sales_associate();
+	void create_order();
+	void view_orders();
 	void use_test();
+	void view_customers();
+	void view_sales_associates();
 
 
 private:

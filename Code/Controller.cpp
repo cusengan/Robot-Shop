@@ -7,10 +7,14 @@ void Controller::execute_cmd(int cmd){
 		case 2: new_robot_model(); break;
 		case 3: view_robot_parts(); break;
 		case 4: std::cout << view.get_robot_models() << std::endl; break;
-		case 5: create_new_customer();
-		case 6: create_new_sales_associate();
-		case 7: break;//save
-		case 8: break;//load
+		case 5: create_new_customer(); break;
+		case 6: create_new_sales_associate(); break;
+		case 7: create_order(); break;
+		case 8: view_customers(); break;
+		case 9: view_sales_associates(); break;
+		case 10: view_orders(); break;
+		case 11: break; //load
+		case 12: break; //save
 		case 0: break;//exit
 		case 99: use_test(); break;
 		default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -48,7 +52,7 @@ void Controller::new_robot_part(){
 		
 		//start submenu here
 
-		choice = validate_integer(view.parts_menu()); //getting choice for main menu
+		choice = validate_integer(view.create_a_part_menu()); //getting choice for main menu
 		
 		
 		//post-select action
@@ -280,29 +284,94 @@ void Controller::create_new_sales_associate(){
 	shop.create_new_sales_associate(name, id);
 }
 
-void Controller::use_test(){
-	shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
-		shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
-		shop.create_new_robot_torso("Torso1", 8211, 99, "Savaged from the power rangers' last robot");
-		shop.create_new_robot_battery("Batter1", 11711, 61, "The energizer bunny got nothing on this");
-		shop.create_new_robot_locomotor("Locomotor1", 1111, 77, "The loco locomotor" );
-		shop.create_new_robot_model("RoboMan", 999811,
-									shop.get_robot_arm(0),
-									shop.get_robot_head(0),
-									shop.get_robot_torso(0),
-									shop.get_robot_battery(0),
-									shop.get_robot_locomotor(0));
+void Controller::create_order(){
+
+	int model, seller, customer;
+
+	//////// Choose a robot model /////////
+	std::cout << view.get_robot_models() << std::endl;
+	model = validate_integer("What robot model is being bought?: ");
+
+	if(model < 0 || model >= shop.number_of_robot_models()){
+			std::cerr << "Error! Invalid input" << std::endl;
+			return;
+	}
+
+	Robot_model robot = shop.get_robot_model(model);
+
+	//////// Chose a customer ///////////
+
+	std::cout << view.view_customers_menu() << std::endl;
+	customer = validate_integer("Who is buying this robot?: ");
+
+	if(customer < 0 || customer >= shop.number_of_customers()){
+			std::cerr << "Error! Invalid input" << std::endl;
+			return;
+	}
+
+	Customer buyer = shop.get_customer(customer);
+
+	//////// Chose a seller ////////////
+	
+	std::cout << view.view_sales_associates_menu() << std::endl;
+	seller = validate_integer("Who is selling this robot?: ");
+
+	if(seller < 0 || seller >= shop.number_of_associates()){
+			std::cerr << "Error! Invalid input" << std::endl;
+			return;
+	}
+
+	SalesAssociate sales_associate = shop.get_sales_associate(seller);
+
+	//////// Creating order object and adding it to the shop //////////
+
+	shop.create_order(robot, buyer, sales_associate);
+	
+
+
+
+
+
+
 }
 
+void Controller::use_test(){
+	shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
+	shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
+	shop.create_new_robot_torso("Torso1", 8211, 99, "Savaged from the power rangers' last robot");
+	shop.create_new_robot_battery("Batter1", 11711, 61, "The energizer bunny got nothing on this");
+	shop.create_new_robot_locomotor("Locomotor1", 1111, 77, "The loco locomotor" );
+	shop.create_new_robot_model("RoboMan", 999811,
+								shop.get_robot_arm(0),
+								shop.get_robot_head(0),
+								shop.get_robot_torso(0),
+								shop.get_robot_battery(0),
+								shop.get_robot_locomotor(0));
+	shop.create_new_beloved_customer("William Truong", 5612221, 8172221345, "customer@gmail.com");
+	shop.create_new_sales_associate("Nathan Drake", 22111);
+	shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0));
+}
+
+void Controller::view_customers(){
+
+	std::cout << view.view_customers_menu();
+
+}
+
+void Controller::view_sales_associates(){
+	std::cout << view.view_sales_associates_menu();
+}
+
+void Controller::view_orders(){
+	std::cout << view.view_orders_menu();
+}
 
 
 void Controller::cli(){
 	int cmd = -1;
 	while(cmd != 0){
 		std::cout << view.get_menu() << std::endl;
-		std::cout << "Choose an action: ";
-		std::cin >> cmd;
-		std::cin.ignore();
+		cmd = validate_integer("Choose an action: ");
 		execute_cmd(cmd);
 
 	} //loops till manual exit at 0

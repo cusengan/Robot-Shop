@@ -2,7 +2,8 @@
 
 std::string Robot_model::get_info(){
 	std::string info = "Name: " + name + "\n" 
-						"Model number: " + std::to_string(model_number) + "\n";
+						"Model number: " + std::to_string(model_number) + "\n"
+						"Cost: " + std::to_string(cost()) + "\n";
 	return info;
 }
 
@@ -28,6 +29,7 @@ Locomotor Robot_model::get_robot_locomotor(){
 }
 
 double Robot_model::cost(){
+	return torso.get_price() + head.get_price() + arm.get_price() + locomotor.get_price() + battery.get_price();
 
 }
 
