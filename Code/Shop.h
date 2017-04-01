@@ -51,6 +51,7 @@ public:
 	int number_of_associates();
 	int number_of_customers();
 	int number_of_orders();
+	int siphon();
 
 
 private:
