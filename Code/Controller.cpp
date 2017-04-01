@@ -15,8 +15,6 @@ void Controller::execute_cmd(int cmd){
 		case 99: use_test(); break;
 		default: std::cerr << "Error! Invalid input" << std::endl; break;
 	}
-	
-
 
 }
 
@@ -36,7 +34,6 @@ int Controller::validate_integer(std::string prompt){
 		}
 
 	return num;
-
 
 
 }
@@ -294,8 +291,6 @@ void Controller::use_test(){
 									shop.get_robot_locomotor(0));
 }
 
-
-
 void Controller::cli(){
 	int cmd = -1;
 	while(cmd != 0){
@@ -307,5 +302,7 @@ void Controller::cli(){
 
 	} //loops till manual exit at 0
 
-
 }
+
+
+
