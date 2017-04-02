@@ -369,8 +369,121 @@ void Controller::view_orders(){
 }
 
 void Controller::load_data(){
+	std::ifstream ifs{"data.txt"};
+	std::string input, name, model_num, id, email, 
+	phone, description, cost, choice1, choice2, choice3, choice4, choice5;
+
+
+	if(!ifs) //if file is not opened
+		std::cerr << "Can't open input file" << std::endl;
+	else
+		std::cout << "File opened" << std::endl;
+
+	while(!ifs.eof()){
+		getline(ifs, input);
+		
+		if(input == "Arm_Identifier"){
+			getline(ifs, name);
+			getline(ifs, model_num);
+			getline(ifs, cost);
+			getline(ifs, description);
+			shop.create_new_robot_arm(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+		}
+		else if(input == "Head_Identifier"){
+			getline(ifs, name);
+			getline(ifs, model_num);
+			getline(ifs, cost);
+			getline(ifs, description);
+			shop.create_new_robot_head(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+		}
+		else if(input == "Torso_Identifier"){
+			getline(ifs, name);
+			getline(ifs, model_num);
+			getline(ifs, cost);
+			getline(ifs, description);
+			shop.create_new_robot_torso(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+		}
+		else if(input == "Battery_Identifier"){
+			getline(ifs, name);
+			getline(ifs, model_num);
+			getline(ifs, cost);
+			getline(ifs, description);
+			shop.create_new_robot_battery(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+		}
+		else if(input == "Locomotor_Identifier"){
+			getline(ifs, name);
+			getline(ifs, model_num);
+			getline(ifs, cost);
+			getline(ifs, description);
+
+			shop.create_new_robot_locomotor(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+		}
+		else if(input == "Robot_Identifier"){
+			int model, first, second, third, fourth, fifth;
+
+			getline(ifs, name);
+			getline(ifs, model_num);
+			model = atoi(model_num.c_str());
+			getline(ifs, choice1);
+			first = atoi(choice1.c_str());
+			getline(ifs, choice2);
+			second = atoi(choice2.c_str());
+			getline(ifs, choice3);
+			third = atoi(choice3.c_str());
+			getline(ifs, choice4);
+			fourth = atoi(choice4.c_str());
+			getline(ifs, choice5);
+			fifth = atoi(choice5.c_str());
+
+
+			shop.create_new_robot_model(name, model,
+											shop.get_robot_arm(first),
+											shop.get_robot_head(second),
+											shop.get_robot_torso(third),
+											shop.get_robot_battery(fourth),
+											shop.get_robot_locomotor(fifth),
+											first, second, third, fourth, fifth);
+
+		}
+		else if(input == "Customer_Identifier"){
+			getline(ifs, name);
+			getline(ifs, id);
+			getline(ifs, phone);
+			getline(ifs, email);
+			shop.create_new_beloved_customer(name, atoi(id.c_str()), atof(phone.c_str()), email);
+
+		}
+		else if(input == "Sales_Associate_Identifier"){
+			getline(ifs, name);
+			getline(ifs, id);
+			shop.create_new_sales_associate(name, atoi(id.c_str()));
+
+		}
+		else if(input == "Order_Identifier"){
+			int first, second, third;
+			getline(ifs, choice1);
+			first = atoi(choice1.c_str());
+			getline(ifs, choice2);
+			second = atoi(choice2.c_str());
+			getline(ifs, choice3);
+			third = atoi(choice3.c_str());
+			shop.create_order(shop.get_robot_model(first), 
+							shop.get_customer(second), 
+							shop.get_sales_associate(third),
+							first, second, third);
+		}
+
+		
+
+	}
 
 }
+
 
 void Controller::save_data(){
 	std::ofstream ofs{"data.txt"};

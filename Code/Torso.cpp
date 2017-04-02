@@ -8,6 +8,6 @@ std::string Torso::get_info(){
 }
 
 std::string Torso::save_to_file(){
-	std::string info = "Torso_Identifier \n"  + Robot_part::save_to_file();
+	std::string info = "Torso_Identifier\n"  + Robot_part::save_to_file();
 	return info;
 }

@@ -6,6 +6,6 @@ std::string Locomotor::get_info(){
 }
 
 std::string Locomotor::save_to_file(){
-	std::string info = "Locomotor_Identifier \n"  + Robot_part::save_to_file();
+	std::string info = "Locomotor_Identifier\n"  + Robot_part::save_to_file();
 	return info;
 }

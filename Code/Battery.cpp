@@ -6,6 +6,6 @@ std::string Battery::get_info(){
 }
 
 std::string Battery::save_to_file(){
-	std::string info = "Battery_Identifier \n"  + Robot_part::save_to_file();
+	std::string info = "Battery_Identifier\n"  + Robot_part::save_to_file();
 	return info;
 }
