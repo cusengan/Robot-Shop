@@ -368,7 +368,12 @@ void Controller::view_orders(){
 	std::cout << view.view_orders_menu();
 }
 
-void Controller::load_data(){
+//load_data()
+//we are using the Indentifers in the file to know how to load the data, once we see an identifer,
+//we take specific actions to the various robots/customers/associates etc.
+//we known what steps to follow because we saved the data in such a way where we can just create parts
+
+void Controller::load_data(){ 
 	std::ifstream ifs{"data.txt"};
 	std::string input, name, model_num, id, email, 
 	phone, description, cost, choice1, choice2, choice3, choice4, choice5;
@@ -379,7 +384,7 @@ void Controller::load_data(){
 	else
 		std::cout << "File opened" << std::endl;
 
-	while(!ifs.eof()){
+	while(!ifs.eof()){ 
 		getline(ifs, input);
 		
 		if(input == "Arm_Identifier"){
@@ -484,7 +489,9 @@ void Controller::load_data(){
 
 }
 
-
+//save_data()
+//using the save_to_file methods, we can save the information of the robots/customers/orders etc in a specific format
+//so that we can load the data later using load_data()
 void Controller::save_data(){
 	std::ofstream ofs{"data.txt"};
 
