@@ -2,6 +2,7 @@
 #define ROBOT_MODEL_H
 
 #include <iostream>
+#include <vector>
 #include "Robot_part.h"
 #include "Torso.h"
 #include "Head.h"
@@ -27,14 +28,14 @@ public:
 				torso(_torso),
 				battery(_battery),
 				locomotor(_locomotor) { }
-
+	std::string save_to_file();
 	std::string get_info();
 	Arm get_robot_arm();
 	Head get_robot_head();
 	Torso get_robot_torso();
 	Battery get_robot_battery();
 	Locomotor get_robot_locomotor();
-
+	void add_choice(int choice);
 	double cost();
 	double max_speed();
 	double max_battery_life();
@@ -47,6 +48,7 @@ private:
 	Locomotor locomotor;
 	Arm arm;
 	Battery battery;
+	std::vector<int> choices;//this vector keeps track of what was chosen
 
 };
 

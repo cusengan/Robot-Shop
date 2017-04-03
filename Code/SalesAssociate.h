@@ -9,6 +9,7 @@ class SalesAssociate{
 public:
 	SalesAssociate(std::string _name, int _id):
 	name (_name), id (_id) {}
+	std::string save_to_file();
 	std::string get_info();
 
 private:

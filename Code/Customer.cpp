@@ -11,3 +11,10 @@ std::string Customer::get_info(){
 
 }
 
+std::string Customer::save_to_file(){
+	std::string info = "Customer_Identifier\n" + name + "\n" 
+						+ std::to_string(id) + "\n" + 
+						std::to_string(phone) + "\n" +
+						email;
+	return info;
+}

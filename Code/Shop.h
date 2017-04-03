@@ -22,14 +22,15 @@ public:
 	void create_new_robot_locomotor(std::string name, int model_num, double price, std::string description);
 	void create_new_sales_associate(std::string name, int id);
 	void create_new_beloved_customer(std::string name, int id, int phone, std::string email);	
-	void create_order(Robot_model robot, Customer customer, SalesAssociate seller);
+	void create_order(Robot_model robot, Customer customer, SalesAssociate seller, int model, int buyer, int associate);
 	void create_new_robot_model(std::string name,
 								int model_num,
 								Arm arm, 
 								Head head, 
 								Torso torso,
 								Battery battery, 
-								Locomotor locomotor);
+								Locomotor locomotor,
+								int arm_num, int head_num, int torso_num,  int battery_num,  int locomotor_num);
 
 
 	Arm get_robot_arm(int index);
@@ -51,6 +52,7 @@ public:
 	int number_of_associates();
 	int number_of_customers();
 	int number_of_orders();
+	
 
 
 private:

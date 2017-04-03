@@ -7,6 +7,17 @@ std::string Robot_model::get_info(){
 	return info;
 }
 
+std::string Robot_model::save_to_file(){
+	std::string info = "Robot_Identifier\n" + name + "\n" 
+						+ std::to_string(model_number) + "\n"
+						+ std::to_string(choices[0]) + "\n"
+						+ std::to_string(choices[1]) + "\n"
+						+ std::to_string(choices[2]) + "\n"
+						+ std::to_string(choices[3]) + "\n"
+						+ std::to_string(choices[4]);
+	return info;
+}
+
 Arm Robot_model::get_robot_arm(){
 	return arm;
 
@@ -30,6 +41,11 @@ Locomotor Robot_model::get_robot_locomotor(){
 
 double Robot_model::cost(){
 	return torso.get_price() + head.get_price() + arm.get_price() + locomotor.get_price() + battery.get_price();
+
+}
+
+void Robot_model::add_choice(int choice){
+	choices.push_back(choice);
 
 }
 

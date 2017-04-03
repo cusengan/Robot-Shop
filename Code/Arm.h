@@ -17,6 +17,7 @@ public:
 	  	   _description) {}
 	
 	std::string get_info();
+	std::string save_to_file();
 	
 
 private:

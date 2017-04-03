@@ -10,7 +10,7 @@ class Customer{
 public:
 	Customer(std::string _name, int _id, int _phone, std::string _email) :
 	name(_name), id(_id), phone(_phone), email(_email) {}
-	
+	std::string save_to_file();
 	std::string get_info();
 
 private:

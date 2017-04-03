@@ -10,3 +10,9 @@ std::string SalesAssociate::get_info(){
 
 }
 
+std::string SalesAssociate::save_to_file(){
+	std::string info = "Sales_Associate_Identifier\n" + name + "\n" +
+						std::to_string(id);
+	return info;
+}
+
