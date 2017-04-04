@@ -4,8 +4,6 @@
 #include <FL/Fl_Menu_Bar.H>
 #include <iostream>
 
-using namespace std;
-
 
 // Widgets
 
@@ -16,30 +14,30 @@ Fl_Menu_Bar *menubar;
 // callbacks
 
 //File submenu callbacks
-void NewCB (Fl_Widget* w, void* p) {cout<<"New Shop"<<endl;}
-void LoadCB (Fl_Widget* w, void* p) {cout<<"Load Shop"<<endl;}
-void SaveCB (Fl_Widget* w, void* p) {cout<<"Save  Shop"<<endl;}
+void NewCB (Fl_Widget* w, void* p) {std::cout<<"New Shop"<<std::endl;}
+void LoadCB (Fl_Widget* w, void* p) {std::cout<<"Load Shop"<<std::endl;}
+void SaveCB (Fl_Widget* w, void* p) {std::cout<<"Save  Shop"<<std::endl;}
 void ExitCB (Fl_Widget* w, void* p) {win->hide();}
 
 //Edit submenu callbacks
-void CutCB (Fl_Widget* w, void* p) {cout<<"Cut"<<endl;}
-void CopyCB (Fl_Widget* w, void* p) {cout<<"Copy"<<endl;}
-void PasteCB (Fl_Widget* w, void* p) {cout<<"Paste"<<endl;}
-void PrefCB (Fl_Widget* w, void* p) {cout<<"Preferences"<<endl;}
+void CutCB (Fl_Widget* w, void* p) {std::cout<<"Cut"<<std::endl;}
+void CopyCB (Fl_Widget* w, void* p) {std::cout<<"Copy"<<std::endl;}
+void PasteCB (Fl_Widget* w, void* p) {std::cout<<"Paste"<<std::endl;}
+void PrefCB (Fl_Widget* w, void* p) {std::cout<<"Preferences"<<std::endl;}
 
 //Create submenu callbacks
-void OrderCB (Fl_Widget* w, void* p) {cout<<"Order"<<endl;}
-void BL_CB (Fl_Widget* w, void* p) {cout<<"Customer"<<endl;}
-void SA_CB (Fl_Widget* w, void* p) {cout<<"Sales Associate"<<endl;}
-void ModelCB (Fl_Widget* w, void* p) {cout<<"Robot Model"<<endl;}
-void ComponentCB (Fl_Widget* w, void* p) {cout<<"Robot Component"<<endl;}
+void OrderCB (Fl_Widget* w, void* p) {std::cout<<"Order"<<std::endl;}
+void BL_CB (Fl_Widget* w, void* p) {std::cout<<"Customer"<<std::endl;}
+void SA_CB (Fl_Widget* w, void* p) {std::cout<<"Sales Associate"<<std::endl;}
+void ModelCB (Fl_Widget* w, void* p) {std::cout<<"Robot Model"<<std::endl;}
+void ComponentCB (Fl_Widget* w, void* p) {std::cout<<"Robot Component"<<std::endl;}
 
 //View submenu callbacks
-void OrdersCB (Fl_Widget* w, void* p) {cout<<"Orders"<<endl;}
-void BLs_CB (Fl_Widget* w, void* p) {cout<<"Customers"<<endl;}
-void SAs_CB (Fl_Widget* w, void* p) {cout<<"Sales Associates"<<endl;}
-void ModelsCB (Fl_Widget* w, void* p) {cout<<"Robot Models"<<endl;}
-void ComponentsCB (Fl_Widget* w, void* p) {cout<<"Robot Components"<<endl;}
+void OrdersCB (Fl_Widget* w, void* p) {std::cout<<"Orders"<<std::endl;}
+void BLs_CB (Fl_Widget* w, void* p) {std::cout<<"Customers"<<std::endl;}
+void SAs_CB (Fl_Widget* w, void* p) {std::cout<<"Sales Associates"<<std::endl;}
+void ModelsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Models"<<std::endl;}
+void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
 // note that this menu shows list of the create
 // all callbacks in view is a plural form of their create counterpart
 
@@ -47,9 +45,9 @@ void ComponentsCB (Fl_Widget* w, void* p) {cout<<"Robot Components"<<endl;}
 //nothing so far (extra credit stuff)
 
 //Help submenu callbacks
-void QuickCB (Fl_Widget* w, void* p) {cout<<"Quick Start"<<endl;}
-void ManualCB (Fl_Widget* w, void* p) {cout<<"Manual"<<endl;}
-void AboutCB (Fl_Widget* w, void* p) {cout<<"About"<<endl;}
+void QuickCB (Fl_Widget* w, void* p) {std::cout<<"Quick Start"<<std::endl;}
+void ManualCB (Fl_Widget* w, void* p) {std::cout<<"Manual"<<std::endl;}
+void AboutCB (Fl_Widget* w, void* p) {std::cout<<"About"<<std::endl;}
 
 
 //Menu

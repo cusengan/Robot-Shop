@@ -17,3 +17,4 @@ std::string Order::save_to_file(){
 void Order::add_choice(int choice){
 	choices.push_back(choice);
 }
+
