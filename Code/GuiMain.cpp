@@ -1,5 +1,4 @@
-#include "Callback.h"
-#include "Callback.cpp"
+#include "GuiController.cpp"
 
 
 int main(){
@@ -8,7 +7,7 @@ int main(){
    const int y = 660;
 
    // create window
-   win = new Fl_Window(x,y, "lRobot");
+   win = new Fl_Window(x,y, "Can't think of a name robot shop");
    win->color(FL_WHITE);
 
    //install menu bar
@@ -18,6 +17,7 @@ int main(){
    //wrap it up and let FLTK do the rest
    win->end();
    win->show();
-   return(Fl::run());
+   return(Fl::run());        
+	
 }
 

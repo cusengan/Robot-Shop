@@ -1,9 +1,9 @@
 #include "Callback.h"
 
 //File submenu callbacks
-void NewCB (Fl_Widget* w, void* p) {std::cout<<"New Shop"<<std::endl;}
-void LoadCB (Fl_Widget* w, void* p) {std::cout<<"Load Shop"<<std::endl;}
-void SaveCB (Fl_Widget* w, void* p) {std::cout<<"Save  Shop"<<std::endl;}
+void NewCB (Fl_Widget* w, void* p) {}
+void LoadCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(11)*/}
+void SaveCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(12)*/}
 void ExitCB (Fl_Widget* w, void* p) {win->hide();}
 
 //Edit submenu callbacks
@@ -13,18 +13,18 @@ void PasteCB (Fl_Widget* w, void* p) {std::cout<<"Paste"<<std::endl;}
 void PrefCB (Fl_Widget* w, void* p) {std::cout<<"Preferences"<<std::endl;}
 
 //Create submenu callbacks
-void OrderCB (Fl_Widget* w, void* p) {std::cout<<"Order"<<std::endl;}
-void BL_CB (Fl_Widget* w, void* p) {std::cout<<"Customer"<<std::endl;}
-void SA_CB (Fl_Widget* w, void* p) {std::cout<<"Sales Associate"<<std::endl;}
-void ModelCB (Fl_Widget* w, void* p) {std::cout<<"Robot Model"<<std::endl;}
-void ComponentCB (Fl_Widget* w, void* p) {std::cout<<"Robot Component"<<std::endl;}
+void OrderCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(7)*/}
+void BL_CB (Fl_Widget* w, void* p) {/*controller.execute_cmd(5)*/}
+void SA_CB (Fl_Widget* w, void* p) {/*controller.execute_cmd(6)*/}
+void ModelCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(2)*/}
+void ComponentCB (Fl_Widget* w, void* p) {controller.execute_cmd(1);}
 
 //View submenu callbacks
-void OrdersCB (Fl_Widget* w, void* p) {std::cout<<"Orders"<<std::endl;}
-void BLs_CB (Fl_Widget* w, void* p) {std::cout<<"Customers"<<std::endl;}
-void SAs_CB (Fl_Widget* w, void* p) {std::cout<<"Sales Associates"<<std::endl;}
-void ModelsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Models"<<std::endl;}
-void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
+void OrdersCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(13)*/}
+void BLs_CB (Fl_Widget* w, void* p) {/*controller.execute_cmd(8)*/}
+void SAs_CB (Fl_Widget* w, void* p) {/*controller.execute_cmd(9)*/}
+void ModelsCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(4)*/}
+void ComponentsCB (Fl_Widget* w, void* p) {/*controller.execute_cmd(3)*/}
 // note that this menu shows list of the create
 // all callbacks in view is a plural form of their create counterpart
 
@@ -83,6 +83,5 @@ Fl_Menu_Item menuitems[] = {
 
   {0}
  };
-
 
 

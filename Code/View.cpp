@@ -110,7 +110,7 @@ std::string list = R"(
 ==================
 List of )"+ part + R"( 
 ==================
-)";
+)"; 
 
 switch (choice) {
 
@@ -157,7 +157,7 @@ return list;
 
 std::string View::create_a_part_menu(){
 
-std::string menu = R"(
+std::string menu =R"(
 ============================================
 Which of these parts would you like to create?
 ============================================
@@ -212,7 +212,7 @@ List of Sales Associates
 
 std::string View::view_orders_menu(){
 
-std::string list = R"(
+std::string list =R"(
 =========================
 List of Orders 
 =========================
