@@ -931,6 +931,7 @@ void GuiController::execute_cmd(int cmd){
    
    switch(cmd){
       case 1: new_robot_part(); break;
+      case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
    }
    
