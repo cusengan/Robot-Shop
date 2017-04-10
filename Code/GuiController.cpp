@@ -1,5 +1,5 @@
 #include "GuiController.h"
-#
+
 
 void GuiController::execute_cmd(int cmd){
 	
@@ -59,7 +59,7 @@ std::string GuiController::get_string(std::string title, std::string prompt){
 	
 	fl_message_title (title.c_str());
 	fl_message_icon()->label("S");
-	std::string result{fl_input(prompt.c_str(), 0)};
+	std::string result = fl_input(prompt.c_str(), 0);
 	return result;
 }
 

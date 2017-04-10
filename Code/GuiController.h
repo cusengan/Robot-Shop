@@ -1,5 +1,15 @@
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
+#ifndef GUICONTROLLER_H
+#define GUICONTROLLER_H
+
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/fl_ask.H>
+#include <Fl/Fl_Menu_Bar.H>
+#include <string>
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include "View.h"
 
 
 class GuiController{

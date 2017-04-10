@@ -1,9 +1,18 @@
-
+# Makefile for Project
 CC = g++
 CFLAGS = -g -w -std=c++11 -c 
 
+CXXFLAGS = -std=c++11
+LDFLAGS = -L/usr/local/lib -lfltk -lXext -lX11 -lm
+
+all: gui
+
+rebuild: clean gui
+
+gui: GuiMain.cpp
+	$(CXX) $(CXXFLAGS) $(fltk-config --cxxflags) -o gui GuiMain.cpp $(LDFLAGS)
 main: Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Robot_part.o Controller.o Customer.o SalesAssociate.o Order.o
-	$(CC) Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Customer.o SalesAssociate.o Robot_part.o Controller.o Order.o main_cli.cpp
+	$(CC) Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Customer.o SalesAssociate.o Robot_part.o Controller.o Order.o -o cli main_cli.cpp
 Locomotor.o: Locomotor.cpp Locomotor.h
 	$(CC) $(CFLAGS) Locomotor.cpp
 Battery.o: Battery.cpp Battery.h
@@ -31,5 +40,6 @@ SalesAssociate.o: SalesAssociate.cpp SalesAssociate.h
 Order.o: Order.cpp Order.h
 	$(CC) $(CFLAGS) Order.cpp
 
+
 clean:
-	-rm *.o a.out
+	-rm  -f *.o a.out gui cli
