@@ -9,6 +9,10 @@
 #include <vector>
 
 
+//
+// 	Robot Part
+//
+
 class Robot_part{
 public:
    Robot_part(std::string _name, 
@@ -56,6 +60,10 @@ std::string Robot_part::save_to_file(){
 }
 
 
+//
+// Torso
+//
+
 class Torso : public Robot_part{
 
 public:
@@ -88,6 +96,11 @@ std::string Torso::save_to_file(){
    std::string info = "Torso_Identifier\n"  + Robot_part::save_to_file();
    return info;
 }
+
+
+//
+// 	Arm
+//
 
 class Arm : public Robot_part{
 
@@ -123,8 +136,9 @@ std::string Arm::save_to_file(){
 }
 
 
-
-
+//
+//	Head
+//
 
 
 class Head : public Robot_part{
@@ -156,6 +170,11 @@ std::string Head::save_to_file(){
    return info;
 }
 
+
+//
+//	Locomotor
+//	
+
 class Locomotor : public Robot_part{
 
 public:
@@ -184,6 +203,10 @@ std::string Locomotor::save_to_file(){
    return info;
 }
 
+
+//
+//	Battery
+//
 
 class Battery : public Robot_part{
 
@@ -216,6 +239,9 @@ std::string Battery::save_to_file(){
 }
 
 
+//
+//	Model
+//
 
 class Robot_model{
 public:
@@ -315,6 +341,11 @@ double Robot_model::max_battery_life(){
 
 }
 
+
+//
+//	Sales Associates
+//
+
 class SalesAssociate{
 
 public:
@@ -346,6 +377,11 @@ std::string SalesAssociate::save_to_file(){
                   std::to_string(id);
    return info;
 }
+
+
+//
+//	Customer
+//
 
 
 class Customer{
@@ -384,6 +420,10 @@ std::string Customer::save_to_file(){
                   email;
    return info;
 }
+
+//
+//	Order
+//
 
 class Order{
 public:
@@ -427,6 +467,9 @@ void Order::add_choice(int choice){
 }
 
 
+//
+//	Shop
+//
 
 class Shop{
 public:
@@ -650,6 +693,10 @@ Order Shop::get_order(int index){
    return orders[index];
 
 }
+
+//
+//	View
+//
 
 class View{
 public:
@@ -895,6 +942,10 @@ List of Orders
 
 }
 
+//
+//		GuiController
+//
+
 class GuiController{
 public:
    GuiController(Shop& _shop, View& _view) : shop(_shop), 
@@ -931,6 +982,7 @@ void GuiController::execute_cmd(int cmd){
    
    switch(cmd){
       case 1: new_robot_part(); break;
+      case 2: new_robot_model(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
    }
@@ -1033,6 +1085,81 @@ void GuiController::new_robot_part(){
 
 
 
+void GuiController::new_robot_model(){
+
+	//variable declarations
+        std::string name, null_part;
+        int model_num, 
+	    arm_num, 
+	    head_num,
+	    torso_num,
+	    battery_num,
+	    locomotor_num;
+	
+	//if not enough parts for a model
+        if (
+        shop.number_of_arms() == 0 ||
+        shop.number_of_heads() == 0 ||
+        shop.number_of_torsos() == 0 ||
+        shop.number_of_batteries() == 0 ||
+        shop.number_of_locomotors() == 0 ){
+ 
+	//tells you which vectors are null
+	if (shop.number_of_arms() == 0){
+		null_part = null_part + "arm \n";
+	}
+	if (shop.number_of_heads() == 0){
+		null_part = null_part + "head \n";
+	}
+	if (shop.number_of_torsos() == 0){
+		null_part = null_part + "torso \n";
+	}
+	if (shop.number_of_batteries() == 0){
+		null_part = null_part + "battery \n";
+	}
+	if (shop.number_of_locomotors() == 0) {
+		null_part = null_part + "locomotor \n";	
+	}	
+
+	fl_message_title("Invalid Input");
+        fl_message_icon()->label("!");
+	fl_message(("There are no parts available for the following component/s: \n"+ null_part).c_str() );
+	
+	}
+	
+	if ( 
+        shop.number_of_arms() != 0 &&
+        shop.number_of_heads() != 0 &&
+        shop.number_of_torsos() != 0 &&
+        shop.number_of_batteries() != 0 &&
+	shop.number_of_locomotors() != 0 ){
+	
+	name = get_string("Robot Model", "Enter a name: ");
+	
+	model_num = validate_integer(name, "Enter a model number: ", 0, 9999999);
+	arm_num = validate_integer("Please input the part # for the arm you would like for this model", view.get_robot_parts(3), 0, shop.number_of_arms()-1);
+
+	head_num = validate_integer("Please input the part # for the head you would like for this model", view.get_robot_parts(1), 0, shop.number_of_heads()-1);
+	
+	torso_num = validate_integer("Please input the part # for the torso you would like for this model", view.get_robot_parts(2), 0, shop.number_of_torsos()-1);
+	battery_num = validate_integer("Please input the part # for the battery you would like for this model", view.get_robot_parts(4), 0, shop.number_of_batteries()-1);
+
+	locomotor_num = validate_integer("Please input the part # for the locomotors you would like for this model", view.get_robot_parts(5), 0, shop.number_of_locomotors()-1);
+	
+	
+	//put the parts together
+		shop.create_new_robot_model(
+		name,
+		model_num,
+		shop.get_robot_arm(arm_num),
+		shop.get_robot_head(head_num),
+		shop.get_robot_torso(torso_num),
+		shop.get_robot_battery(battery_num),
+		shop.get_robot_locomotor(locomotor_num),
+		arm_num, head_num, torso_num, battery_num, locomotor_num);
+	}
+
+}
 
 void GuiController::cli(){
    
@@ -1048,8 +1175,9 @@ void GuiController::cli(){
 }
 
 
-
-
+//
+//	Main
+//
 
 
 int main(){
