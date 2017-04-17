@@ -734,6 +734,7 @@ Which one of these options would you like to choose?
 10)View Orders
 11)Load
 12)Save
+13)Save to specified file
 0)Exit
 
 ====================================================
@@ -968,6 +969,7 @@ public:
    void view_sales_associates();
    void load_data();
    void save_data();
+   void save_to_certain_file();
 
 
 private:
@@ -983,6 +985,17 @@ void GuiController::execute_cmd(int cmd){
    switch(cmd){
       case 1: new_robot_part(); break;
       case 2: new_robot_model(); break;
+      case 4:  fl_message(view.get_robot_models().c_str());  break;
+      case 5: create_new_customer(); break;
+      case 6: create_new_sales_associate(); break;
+      case 7: create_order(); break;
+      case 8: fl_message(view.view_customers_menu().c_str()); break;
+      case 9: fl_message(view.view_sales_associates_menu().c_str()); break;
+      case 10: fl_message(view.view_orders_menu().c_str()); break;
+      case 11: load_data(); break;
+      case 12: save_data(); break;
+      case 13: save_to_certain_file(); break;
+      case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
    }
@@ -1088,8 +1101,8 @@ void GuiController::new_robot_part(){
 void GuiController::new_robot_model(){
 
 	//variable declarations
-        std::string name, null_part;
-        int model_num, 
+      std::string name, null_part;
+      int model_num, 
 	    arm_num, 
 	    head_num,
 	    torso_num,
@@ -1161,6 +1174,278 @@ void GuiController::new_robot_model(){
 
 }
 
+void GuiController::create_new_customer(){
+  std::string name, email, input;
+    int id, phone;
+  
+    name = get_string("Customer", "Enter the name of the buyer");
+    //getline(std::cin, name);
+    
+    //ask for number and validate it is a number
+    id = validate_integer(name, "Enter the customer's id: ", 0, 9999999);
+    
+    //ask for number and validate it is a number
+    phone = validate_integer(name, "Enter the customer's phone number: ", 0, 9999999);
+    
+    email = get_string(name, "Enter the customer's email address: ");
+  
+    shop.create_new_beloved_customer(name, id, phone, email);
+
+}
+void GuiController::create_new_sales_associate(){
+  std::string name, email, input;
+    int id, phone;
+  
+    name = get_string("Customer", "Enter the name of the seller: ");
+    //getline(std::cin, name);
+    
+    //ask for number and validate it is a number
+    id = validate_integer(name, "Enter the sale associate's id: ", 0, 9999999);
+    
+    //ask for number and validate it is a number
+  
+  
+    shop.create_new_sales_associate(name, id);
+
+}
+   
+void GuiController::create_order(){
+
+  if(shop.number_of_robot_models() == 0){
+    fl_message("You do not have a robot part build");
+    return;
+
+  }
+  if(shop.number_of_customers() == 0){
+    fl_message("You do not have a customer saved");
+    return;
+  }
+  if(shop.number_of_associates() == 0){
+    fl_message("You do not have a sales associate saved");
+    return;
+  }
+
+
+  int model, seller, customer;
+
+  //////// Choose a robot model /////////
+ 
+  model = validate_integer("What robot model is being bought?: ", view.get_robot_models(), 0, shop.number_of_robot_models()-1);
+
+
+  Robot_model robot = shop.get_robot_model(model);
+
+  //////// Chose a customer ///////////
+
+  customer = validate_integer("Who is buying this robot?: ", view.view_customers_menu(), 0, shop.number_of_customers()-1);
+
+
+  Customer buyer = shop.get_customer(customer);
+
+  //////// Chose a seller ////////////
+  
+  seller = validate_integer("Who is selling this robot?: ", view.view_sales_associates_menu(), 0, shop.number_of_associates()-1);
+
+
+  SalesAssociate sales_associate = shop.get_sales_associate(seller);
+
+  //////// Creating order object and adding it to the shop //////////
+
+  shop.create_order(robot, buyer, sales_associate, model, seller, customer);
+  
+
+}
+
+void GuiController::use_test(){
+  shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
+  shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
+  shop.create_new_robot_torso("Torso1", 8211, 99, "Savaged from the power rangers' last robot");
+  shop.create_new_robot_battery("Batter1", 11711, 61, "The energizer bunny got nothing on this");
+  shop.create_new_robot_locomotor("Locomotor1", 1111, 77, "The loco locomotor" );
+  shop.create_new_robot_model("RoboMan", 999811,
+                shop.get_robot_arm(0),
+                shop.get_robot_head(0),
+                shop.get_robot_torso(0),
+                shop.get_robot_battery(0),
+                shop.get_robot_locomotor(0),
+                0, 0, 0, 0, 0);
+  shop.create_new_beloved_customer("William Truong", 5612221, 8172221345, "customer@gmail.com");
+  shop.create_new_sales_associate("Nathan Drake", 22111);
+  shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0), 0, 0, 0);
+
+
+}
+
+void GuiController::load_data(){ 
+  std::ifstream ifs{"data.txt"};
+  std::string input, name, model_num, id, email, 
+  phone, description, cost, choice1, choice2, choice3, choice4, choice5;
+
+
+  if(!ifs) //if file is not opened
+    fl_message("Can't open input file");
+  else
+    fl_message("File opened");
+  while(!ifs.eof()){ 
+    getline(ifs, input);
+    
+    if(input == "Arm_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_arm(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Head_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_head(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Torso_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_torso(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Battery_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_battery(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Locomotor_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+
+      shop.create_new_robot_locomotor(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Robot_Identifier"){
+      int model, first, second, third, fourth, fifth;
+
+      getline(ifs, name);
+      getline(ifs, model_num);
+      model = atoi(model_num.c_str());
+      getline(ifs, choice1);
+      first = atoi(choice1.c_str());
+      getline(ifs, choice2);
+      second = atoi(choice2.c_str());
+      getline(ifs, choice3);
+      third = atoi(choice3.c_str());
+      getline(ifs, choice4);
+      fourth = atoi(choice4.c_str());
+      getline(ifs, choice5);
+      fifth = atoi(choice5.c_str());
+
+
+      shop.create_new_robot_model(name, model,
+                      shop.get_robot_arm(first),
+                      shop.get_robot_head(second),
+                      shop.get_robot_torso(third),
+                      shop.get_robot_battery(fourth),
+                      shop.get_robot_locomotor(fifth),
+                      first, second, third, fourth, fifth);
+
+    }
+    else if(input == "Customer_Identifier"){
+      getline(ifs, name);
+      getline(ifs, id);
+      getline(ifs, phone);
+      getline(ifs, email);
+      shop.create_new_beloved_customer(name, atoi(id.c_str()), atof(phone.c_str()), email);
+
+    }
+    else if(input == "Sales_Associate_Identifier"){
+      getline(ifs, name);
+      getline(ifs, id);
+      shop.create_new_sales_associate(name, atoi(id.c_str()));
+
+    }
+    else if(input == "Order_Identifier"){
+      int first, second, third;
+      getline(ifs, choice1);
+      first = atoi(choice1.c_str());
+      getline(ifs, choice2);
+      second = atoi(choice2.c_str());
+      getline(ifs, choice3);
+      third = atoi(choice3.c_str());
+      shop.create_order(shop.get_robot_model(first), 
+              shop.get_customer(second), 
+              shop.get_sales_associate(third),
+              first, second, third);
+    }
+
+    
+
+  }
+
+}
+
+void GuiController::save_data(){
+  std::ofstream ofs{"data.txt"};
+
+  if(!ofs) 
+    std::cerr << "Can't open output file" << std::endl;
+
+  ///// Saving Arms /////
+  for(int i = 0; i < shop.number_of_arms(); i++){
+    ofs << shop.get_robot_arm(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Heads ////
+  for(int i = 0; i < shop.number_of_heads(); i++){
+    ofs << shop.get_robot_head(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Torsos ////
+  for(int i = 0; i < shop.number_of_torsos(); i++){
+    ofs << shop.get_robot_torso(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Batteries ////
+  for(int i = 0; i < shop.number_of_batteries(); i++){
+    ofs << shop.get_robot_battery(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Locomotors ////
+  for(int i = 0; i < shop.number_of_locomotors(); i++){
+    ofs << shop.get_robot_locomotor(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Robot Models///
+  for(int i = 0; i < shop.number_of_robot_models(); i++){
+    ofs << shop.get_robot_model(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Customers ////
+  for(int i = 0; i < shop.number_of_customers(); i++){
+    ofs << shop.get_customer(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Sales Associates ////
+  for(int i = 0; i < shop.number_of_associates(); i++){
+    ofs << shop.get_sales_associate(i).save_to_file() << std::endl;
+  }
+
+  //// Saving orders ////
+  for(int i = 0; i < shop.number_of_orders(); i++){
+    ofs << shop.get_order(i).save_to_file() << std::endl;
+  }
+
+  fl_message("Information saved");
+
+}
+
 void GuiController::cli(){
    
    int cmd = -1;
@@ -1171,6 +1456,66 @@ void GuiController::cli(){
       execute_cmd(cmd);
 
    } //loops till manual exit at 0
+
+}
+
+void GuiController::save_to_certain_file(){
+
+  std::string fileName = get_string("File name", "Enter the name of the file you wish to save to");
+  std::string info = "Information saved to " + fileName;
+  std::ofstream ofs{fileName};
+
+  if(!ofs) 
+    std::cerr << "Can't open output file" << std::endl;
+
+  ///// Saving Arms /////
+  for(int i = 0; i < shop.number_of_arms(); i++){
+    ofs << shop.get_robot_arm(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Heads ////
+  for(int i = 0; i < shop.number_of_heads(); i++){
+    ofs << shop.get_robot_head(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Torsos ////
+  for(int i = 0; i < shop.number_of_torsos(); i++){
+    ofs << shop.get_robot_torso(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Batteries ////
+  for(int i = 0; i < shop.number_of_batteries(); i++){
+    ofs << shop.get_robot_battery(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Locomotors ////
+  for(int i = 0; i < shop.number_of_locomotors(); i++){
+    ofs << shop.get_robot_locomotor(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Robot Models///
+  for(int i = 0; i < shop.number_of_robot_models(); i++){
+    ofs << shop.get_robot_model(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Customers ////
+  for(int i = 0; i < shop.number_of_customers(); i++){
+    ofs << shop.get_customer(i).save_to_file() << std::endl;
+  }
+
+  //// Saving Sales Associates ////
+  for(int i = 0; i < shop.number_of_associates(); i++){
+    ofs << shop.get_sales_associate(i).save_to_file() << std::endl;
+  }
+
+  //// Saving orders ////
+  for(int i = 0; i < shop.number_of_orders(); i++){
+    ofs << shop.get_order(i).save_to_file() << std::endl;
+  }
+
+
+  fl_message(info.c_str());
+
 
 }
 
