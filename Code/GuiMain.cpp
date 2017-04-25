@@ -466,27 +466,17 @@ private:
 };
 
 void Order::change_state(Progress new_state, int order_num){
-<<<<<<< HEAD
+
 	int choice;	
 	this->current_state = new_state;
 	switch (new_state){
 		case building: choice = 1; break;
-        	case built: choice = 2; break;
+    	case built: choice = 2; break;
 		case shipped: choice = 3; break;
 		case delivered: choice = 4; break;
 	}
 	this->choices[3] = choice;
-=======
-  int choice; 
-  this->current_state = new_state;
-  switch (new_state){
-    case building: choice = 1; break;
-          case built: choice = 2; break;
-    case shipped: choice = 3; break;
-    case delivered: choice = 4; break;
-  }
-  this->choices[3] = choice;
->>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
+
 
 }
 
@@ -748,13 +738,10 @@ Order Shop::get_order(int index){
 }
 
 void Shop::change_order_progress(int order_position, Progress new_state){
-<<<<<<< HEAD
+
 	
 	orders[order_position].change_state(new_state, order_position);
-=======
-  
-  orders[order_position].change_state(new_state, order_position);
->>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
+
 
 }
 
@@ -1485,29 +1472,19 @@ void GuiController::load_data(){
       getline(ifs, choice4);
       fourth = atoi(choice4.c_str());
       switch (fourth){
-<<<<<<< HEAD
+
 		case 1: state = building; break;
-        	case 2: state = built; break;
+        case 2: state = built; break;
 		case 3: state = shipped; break;
 		case 4: state = delivered; break;
 	     	}
-=======
-    case 1: state = building; break;
-          case 2: state = built; break;
-    case 3: state = shipped; break;
-    case 4: state = delivered; break;
-        }
->>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
+
       shop.create_order(shop.get_robot_model(first), 
       shop.get_customer(second), 
       shop.get_sales_associate(third), 
       state,
       first, second, third, fourth);
-<<<<<<< HEAD
-   	     	
-=======
-          
->>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
+
     }
   }
 }
