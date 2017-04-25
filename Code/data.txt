@@ -36,9 +36,18 @@ William Truong
 5612221
 -417713247
 customer@gmail.com
+Customer_Identifier
+1
+1
+1
+1
 Sales_Associate_Identifier
 Nathan Drake
 22111
+Order_Identifier
+0
+0
+0
 Order_Identifier
 0
 0
