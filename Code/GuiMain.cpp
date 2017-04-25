@@ -1,7 +1,8 @@
 #include <FL/Fl.H>
 #include <FL/Fl_Window.H>
 #include <FL/fl_ask.H>
-#include <Fl/Fl_Menu_Bar.H>
+#include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_Box.H>
 #include <string>
 #include <iostream>
 #include <sstream>
@@ -422,6 +423,17 @@ std::string Customer::save_to_file(){
 }
 
 //
+//	State Machine Header for Progress
+//
+
+enum Progress {	building,
+		built,
+		shipped,
+		delivered	};
+
+
+
+//
 //	Order
 //
 
@@ -429,28 +441,43 @@ class Order{
 public:
    Order(Robot_model _model, 
       Customer _customer, 
-      SalesAssociate _seller) : 
+      SalesAssociate _seller,
+      Progress _current_state) : 
          
       model(_model), 
       customer(_customer),
-      seller(_seller) {}
+      seller(_seller),
+      current_state (_current_state) {}
+   
    std::string save_to_file();
    std::string get_info();
    void add_choice(int choice);
+   void change_state(Progress new_state);
 
 private:
    Robot_model model;
    Customer customer;
    SalesAssociate seller;
+   Progress current_state;
    std::vector<int> choices;
 
 
 };
 
+void Order::change_state(Progress new_state){
+	this->current_state = new_state;
+
+}
 
 std::string Order::get_info(){
-
-   std::string info = model.get_info() + '\n' + seller.get_info() + '\n' + customer.get_info() + '\n';
+   std::string state = "progress: ";
+   switch (current_state){
+	case building: state += "buidling"; break;
+        case built: state += "built"; break;
+	case shipped: state += "shipped"; break;
+	case delivered: state += "delivered"; break;
+	}
+   std::string info = model.get_info() + '\n' + seller.get_info() + '\n' + customer.get_info() + '\n' + state + '\n';
    return info;
 }
 
@@ -511,6 +538,7 @@ public:
    int number_of_customers();
    int number_of_orders();
    
+   void change_order_progress(int order_position, Progress new_state);
 
 
 private:
@@ -682,7 +710,8 @@ Customer Shop::get_customer(int index){
 }
 
 void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller, int model, int buyer, int associate){
-   Order order(robot, customer, seller);
+   Progress state = building;
+   Order order(robot, customer, seller, state);
    order.add_choice(model);
    order.add_choice(buyer);
    order.add_choice(associate);
@@ -693,6 +722,14 @@ Order Shop::get_order(int index){
    return orders[index];
 
 }
+
+void Shop::change_order_progress(int order_position, Progress new_state){
+	
+	orders[order_position].change_state(new_state);
+
+}
+
+
 
 //
 //	View
@@ -709,6 +746,7 @@ public:
    std::string view_customers_menu();
    std::string view_sales_associates_menu();
    std::string view_orders_menu();
+   std::string state_menu();
 
 
 private:
@@ -943,6 +981,26 @@ List of Orders
 
 }
 
+std::string View::state_menu(){
+
+std::string list =R"(
+===============
+Progress state		
+===============	
+
+1)Building
+2)Built
+3)Shipped
+4)Delivered
+
+===============
+)";
+
+return list;
+
+}
+
+
 //
 //		GuiController
 //
@@ -970,6 +1028,7 @@ public:
    void load_data();
    void save_data();
    void save_to_certain_file();
+   void edit_order_progress();
 
 
 private:
@@ -995,6 +1054,7 @@ void GuiController::execute_cmd(int cmd){
       case 11: load_data(); break;
       case 12: save_data(); break;
       case 13: save_to_certain_file(); break;
+      case 14: edit_order_progress(); break; 
       case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -1225,7 +1285,6 @@ void GuiController::create_order(){
     return;
   }
 
-
   int model, seller, customer;
 
   //////// Choose a robot model /////////
@@ -1256,7 +1315,23 @@ void GuiController::create_order(){
 
 }
 
-void GuiController::use_test(){
+void GuiController::edit_order_progress(){
+
+Progress selected_state;
+int order_num = validate_integer("Pick an order to edit", view.view_orders_menu(), 0, shop.number_of_orders());
+int choice = validate_integer("Pick a new progress state", view.state_menu(), 1, 4);
+	switch (choice){
+		case 1: selected_state = building; break;
+		case 2: selected_state = built; break;
+		case 3: selected_state = shipped; break;
+		case 4: selected_state = delivered; break;
+	}	
+
+shop.change_order_progress(order_num, selected_state);
+
+}
+
+void GuiController::use_test(){ 
   shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
   shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
   shop.create_new_robot_torso("Torso1", 8211, 99, "Savaged from the power rangers' last robot");
@@ -1519,22 +1594,127 @@ void GuiController::save_to_certain_file(){
 
 }
 
+//
+//	Callback
+//
+
+// Widgets
+
+Fl_Window *win;
+Fl_Menu_Bar *menubar;
+Shop shop;
+View view{shop};
+GuiController controller(shop, view);
+
+// callbacks
+
+//File submenu callbacks
+void NewCB (Fl_Widget* w, void* p) {std::cout<<"New Shop"<<std::endl;}
+void LoadCB (Fl_Widget* w, void* p) {controller.execute_cmd(11);}
+void SaveCB (Fl_Widget* w, void* p) {controller.execute_cmd(12);}
+void ExitCB (Fl_Widget* w, void* p) {win->hide();}
+
+//Edit submenu callbacks
+void Order_ProgressCB (Fl_Widget* w, void* p) {controller.execute_cmd(14);}
+void CopyCB (Fl_Widget* w, void* p) {std::cout<<"Copy"<<std::endl;}
+void PasteCB (Fl_Widget* w, void* p) {std::cout<<"Paste"<<std::endl;}
+void PrefCB (Fl_Widget* w, void* p) {std::cout<<"Preferences"<<std::endl;}
+
+//Create submenu callbacks
+void OrderCB (Fl_Widget* w, void* p) {controller.execute_cmd(7);}
+void BL_CB (Fl_Widget* w, void* p) {controller.execute_cmd(5);}
+void SA_CB (Fl_Widget* w, void* p) {controller.execute_cmd(6);}
+void ModelCB (Fl_Widget* w, void* p) {controller.execute_cmd(2);}
+void ComponentCB (Fl_Widget* w, void* p) {controller.execute_cmd(1);}
+
+//View submenu callbacks
+void OrdersCB (Fl_Widget* w, void* p) {controller.execute_cmd(10);}
+void BLs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(8);}
+void SAs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(9);}
+void ModelsCB (Fl_Widget* w, void* p) {controller.execute_cmd(4);}
+void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
+// note that this menu shows list of the create
+// all callbacks in view is a plural form of their create counterpart
+
+//Tools submenu callbacks
+//nothing so far (extra credit stuff)
+
+//Help submenu callbacks
+void QuickCB (Fl_Widget* w, void* p) {std::cout<<"Quick Start"<<std::endl;}
+void ManualCB (Fl_Widget* w, void* p) {std::cout<<"Manual"<<std::endl;}
+void AboutCB (Fl_Widget* w, void* p) {std::cout<<"About"<<std::endl;}
+
+
+//Menu
+
+Fl_Menu_Item menuitems[] = {
+
+   {"&File", 0, 0, 0, FL_SUBMENU},
+    {"&New Shop", 0, (Fl_Callback *) NewCB}, 
+    //use FL_ALT + 'key' as 2nd parameter for shortcut
+    {"&Load Shop", 0, (Fl_Callback *) LoadCB},
+    {"&Save Shop", 0, (Fl_Callback *) SaveCB},
+    {"&Exit", 0, (Fl_Callback *) ExitCB},
+    {0},
+ 
+   {"&Edit", 0,0,0, FL_SUBMENU},
+    {"&Order Progress", 0, (Fl_Callback *) Order_ProgressCB},
+    {"&Copy", 0, (Fl_Callback *) CopyCB},
+    {"&Paste", 0, (Fl_Callback *) PasteCB},
+    {"&Preferences", 0, (Fl_Callback *) PrefCB},
+    {0},
+
+   {"&Create", 0, 0, 0, FL_SUBMENU},
+    {"&Order", 0, (Fl_Callback *) OrderCB},
+    {"&Customer", 0, (Fl_Callback *) BL_CB},
+    {"&Sales Associate", 0, (Fl_Callback *) SA_CB},
+    {"&Robot Model", 0, (Fl_Callback *) ModelCB},
+    {"&Robot Component", 0, (Fl_Callback *) ComponentCB},
+    {0},
+   
+   {"&View", 0, 0, 0, FL_SUBMENU},
+    {"&Orders", 0, (Fl_Callback *) OrdersCB},
+    {"&Customers", 0, (Fl_Callback *) BLs_CB},
+    {"&Sales Associates", 0, (Fl_Callback *) SAs_CB},
+    {"&Robot Models", 0, (Fl_Callback *) ModelsCB},
+    {"&Robot Components", 0, (Fl_Callback *) ComponentsCB},
+    {0},
+
+   {"&Tools", 0, 0, 0, FL_SUBMENU},
+    //has nothing yet
+    {0},
+   
+   {"&Help", 0, 0, 0, FL_SUBMENU},
+    {"&Quick Start", 0, (Fl_Callback *) QuickCB},
+    {"&Manual", 0, (Fl_Callback *) ManualCB},
+    {"&About", 0, (Fl_Callback *) AboutCB},
+    {0}, 
+   
+  {0}
+ };
+
 
 //
-//	Main
+//main
 //
-
 
 int main(){
 
-   Fl_Window beacon (1,1);
-   beacon.show();
-   Shop shop;
-   View view{shop};
-   GuiController controller(shop, view);
-   controller.cli();
+   
 
+   const int x = 540;
+   const int y = 330;
 
-	
+   // create window
+   win = new Fl_Window(x,y, "Can't think of a name robot shop");
+   win->color(FL_WHITE);
+
+   //install menu bar
+   menubar = new Fl_Menu_Bar (0, 0, x, 30);
+   menubar->menu(menuitems);
+
+   //wrap it up and let FLTK do the rest
+   win->end();
+   win->show();
+   return(Fl::run());
 }
-
