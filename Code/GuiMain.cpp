@@ -11,7 +11,7 @@
 
 
 //
-// 	Robot Part
+//  Robot Part
 //
 
 class Robot_part{
@@ -100,7 +100,7 @@ std::string Torso::save_to_file(){
 
 
 //
-// 	Arm
+//  Arm
 //
 
 class Arm : public Robot_part{
@@ -138,7 +138,7 @@ std::string Arm::save_to_file(){
 
 
 //
-//	Head
+//  Head
 //
 
 
@@ -173,8 +173,8 @@ std::string Head::save_to_file(){
 
 
 //
-//	Locomotor
-//	
+//  Locomotor
+//  
 
 class Locomotor : public Robot_part{
 
@@ -206,7 +206,7 @@ std::string Locomotor::save_to_file(){
 
 
 //
-//	Battery
+//  Battery
 //
 
 class Battery : public Robot_part{
@@ -241,7 +241,7 @@ std::string Battery::save_to_file(){
 
 
 //
-//	Model
+//  Model
 //
 
 class Robot_model{
@@ -344,7 +344,7 @@ double Robot_model::max_battery_life(){
 
 
 //
-//	Sales Associates
+//  Sales Associates
 //
 
 class SalesAssociate{
@@ -381,7 +381,7 @@ std::string SalesAssociate::save_to_file(){
 
 
 //
-//	Customer
+//  Customer
 //
 
 
@@ -423,18 +423,18 @@ std::string Customer::save_to_file(){
 }
 
 //
-//	State Machine Header for Progress
+//  State Machine Header for Progress
 //
 
-enum Progress {	building,
-		built,
-		shipped,
-		delivered	};
+enum Progress { building,
+    built,
+    shipped,
+    delivered };
 
 
 
 //
-//	Order
+//  Order
 //
 
 class Order{
@@ -466,6 +466,7 @@ private:
 };
 
 void Order::change_state(Progress new_state, int order_num){
+<<<<<<< HEAD
 	int choice;	
 	this->current_state = new_state;
 	switch (new_state){
@@ -475,6 +476,17 @@ void Order::change_state(Progress new_state, int order_num){
 		case delivered: choice = 4; break;
 	}
 	this->choices[3] = choice;
+=======
+  int choice; 
+  this->current_state = new_state;
+  switch (new_state){
+    case building: choice = 1; break;
+          case built: choice = 2; break;
+    case shipped: choice = 3; break;
+    case delivered: choice = 4; break;
+  }
+  this->choices[3] = choice;
+>>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
 
 }
 
@@ -482,11 +494,11 @@ void Order::change_state(Progress new_state, int order_num){
 std::string Order::get_info(){
    std::string state = "progress: ";
    switch (current_state){
-	case building: state += "buidling"; break;
+  case building: state += "buidling"; break;
         case built: state += "built"; break;
-	case shipped: state += "shipped"; break;
-	case delivered: state += "delivered"; break;
-	}
+  case shipped: state += "shipped"; break;
+  case delivered: state += "delivered"; break;
+  }
    std::string info = model.get_info() + '\n' + seller.get_info() + '\n' + customer.get_info() + '\n' + state + '\n';
    return info;
 }
@@ -506,7 +518,7 @@ void Order::add_choice(int choice){
 
 
 //
-//	Shop
+//  Shop
 //
 
 class Shop{
@@ -736,15 +748,20 @@ Order Shop::get_order(int index){
 }
 
 void Shop::change_order_progress(int order_position, Progress new_state){
+<<<<<<< HEAD
 	
 	orders[order_position].change_state(new_state, order_position);
+=======
+  
+  orders[order_position].change_state(new_state, order_position);
+>>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
 
 }
 
 
 
 //
-//	View
+//  View
 //
 
 class View{
@@ -771,7 +788,6 @@ std::string menu = R"(
 ====================================================
 Which one of these options would you like to choose? 
 ====================================================
-
 1)Create a robot part 
 2)Create a robot model 
 3)View robot parts 
@@ -786,7 +802,6 @@ Which one of these options would you like to choose?
 12)Save
 13)Save to specified file
 0)Exit
-
 ====================================================
 )";
 
@@ -838,7 +853,6 @@ std::string menu = R"(
 ============================================
 Which of these parts would you like to view?
 ============================================
-
 1) Head
 2) Torso
 3) Arm
@@ -926,7 +940,6 @@ std::string menu =R"(
 ============================================
 Which of these parts would you like to create?
 ============================================
-
 1) Head
 2) Torso
 3) Arm
@@ -997,14 +1010,12 @@ std::string View::state_menu(){
 
 std::string list =R"(
 ===============
-Progress state		
-===============	
-
+Progress state    
+=============== 
 1)Building
 2)Built
 3)Shipped
 4)Delivered
-
 ===============
 )";
 
@@ -1014,7 +1025,7 @@ return list;
 
 
 //
-//		GuiController
+//    GuiController
 //
 
 class GuiController{
@@ -1172,16 +1183,16 @@ void GuiController::new_robot_part(){
 
 void GuiController::new_robot_model(){
 
-	//variable declarations
+  //variable declarations
       std::string name, null_part;
       int model_num, 
-	    arm_num, 
-	    head_num,
-	    torso_num,
-	    battery_num,
-	    locomotor_num;
-	
-	//if not enough parts for a model
+      arm_num, 
+      head_num,
+      torso_num,
+      battery_num,
+      locomotor_num;
+  
+  //if not enough parts for a model
         if (
         shop.number_of_arms() == 0 ||
         shop.number_of_heads() == 0 ||
@@ -1189,60 +1200,60 @@ void GuiController::new_robot_model(){
         shop.number_of_batteries() == 0 ||
         shop.number_of_locomotors() == 0 ){
  
-	//tells you which vectors are null
-	if (shop.number_of_arms() == 0){
-		null_part = null_part + "arm \n";
-	}
-	if (shop.number_of_heads() == 0){
-		null_part = null_part + "head \n";
-	}
-	if (shop.number_of_torsos() == 0){
-		null_part = null_part + "torso \n";
-	}
-	if (shop.number_of_batteries() == 0){
-		null_part = null_part + "battery \n";
-	}
-	if (shop.number_of_locomotors() == 0) {
-		null_part = null_part + "locomotor \n";	
-	}	
+  //tells you which vectors are null
+  if (shop.number_of_arms() == 0){
+    null_part = null_part + "arm \n";
+  }
+  if (shop.number_of_heads() == 0){
+    null_part = null_part + "head \n";
+  }
+  if (shop.number_of_torsos() == 0){
+    null_part = null_part + "torso \n";
+  }
+  if (shop.number_of_batteries() == 0){
+    null_part = null_part + "battery \n";
+  }
+  if (shop.number_of_locomotors() == 0) {
+    null_part = null_part + "locomotor \n"; 
+  } 
 
-	fl_message_title("Invalid Input");
+  fl_message_title("Invalid Input");
         fl_message_icon()->label("!");
-	fl_message(("There are no parts available for the following component/s: \n"+ null_part).c_str() );
-	
-	}
-	
-	if ( 
+  fl_message(("There are no parts available for the following component/s: \n"+ null_part).c_str() );
+  
+  }
+  
+  if ( 
         shop.number_of_arms() != 0 &&
         shop.number_of_heads() != 0 &&
         shop.number_of_torsos() != 0 &&
         shop.number_of_batteries() != 0 &&
-	shop.number_of_locomotors() != 0 ){
-	
-	name = get_string("Robot Model", "Enter a name: ");
-	
-	model_num = validate_integer(name, "Enter a model number: ", 0, 9999999);
-	arm_num = validate_integer("Please input the part # for the arm you would like for this model", view.get_robot_parts(3), 0, shop.number_of_arms()-1);
+  shop.number_of_locomotors() != 0 ){
+  
+  name = get_string("Robot Model", "Enter a name: ");
+  
+  model_num = validate_integer(name, "Enter a model number: ", 0, 9999999);
+  arm_num = validate_integer("Please input the part # for the arm you would like for this model", view.get_robot_parts(3), 0, shop.number_of_arms()-1);
 
-	head_num = validate_integer("Please input the part # for the head you would like for this model", view.get_robot_parts(1), 0, shop.number_of_heads()-1);
-	
-	torso_num = validate_integer("Please input the part # for the torso you would like for this model", view.get_robot_parts(2), 0, shop.number_of_torsos()-1);
-	battery_num = validate_integer("Please input the part # for the battery you would like for this model", view.get_robot_parts(4), 0, shop.number_of_batteries()-1);
+  head_num = validate_integer("Please input the part # for the head you would like for this model", view.get_robot_parts(1), 0, shop.number_of_heads()-1);
+  
+  torso_num = validate_integer("Please input the part # for the torso you would like for this model", view.get_robot_parts(2), 0, shop.number_of_torsos()-1);
+  battery_num = validate_integer("Please input the part # for the battery you would like for this model", view.get_robot_parts(4), 0, shop.number_of_batteries()-1);
 
-	locomotor_num = validate_integer("Please input the part # for the locomotors you would like for this model", view.get_robot_parts(5), 0, shop.number_of_locomotors()-1);
-	
-	
-	//put the parts together
-		shop.create_new_robot_model(
-		name,
-		model_num,
-		shop.get_robot_arm(arm_num),
-		shop.get_robot_head(head_num),
-		shop.get_robot_torso(torso_num),
-		shop.get_robot_battery(battery_num),
-		shop.get_robot_locomotor(locomotor_num),
-		arm_num, head_num, torso_num, battery_num, locomotor_num);
-	}
+  locomotor_num = validate_integer("Please input the part # for the locomotors you would like for this model", view.get_robot_parts(5), 0, shop.number_of_locomotors()-1);
+  
+  
+  //put the parts together
+    shop.create_new_robot_model(
+    name,
+    model_num,
+    shop.get_robot_arm(arm_num),
+    shop.get_robot_head(head_num),
+    shop.get_robot_torso(torso_num),
+    shop.get_robot_battery(battery_num),
+    shop.get_robot_locomotor(locomotor_num),
+    arm_num, head_num, torso_num, battery_num, locomotor_num);
+  }
 
 }
 
@@ -1333,12 +1344,12 @@ void GuiController::edit_order_progress(){
 Progress selected_state;
 int order_num = validate_integer("Pick an order to edit", view.view_orders_menu(), 0, shop.number_of_orders());
 int choice = validate_integer("Pick a new progress state", view.state_menu(), 1, 4);
-	switch (choice){
-		case 1: selected_state = building; break;
-		case 2: selected_state = built; break;
-		case 3: selected_state = shipped; break;
-		case 4: selected_state = delivered; break;
-	}	
+  switch (choice){
+    case 1: selected_state = building; break;
+    case 2: selected_state = built; break;
+    case 3: selected_state = shipped; break;
+    case 4: selected_state = delivered; break;
+  } 
 
 shop.change_order_progress(order_num, selected_state);
 
@@ -1360,7 +1371,10 @@ void GuiController::use_test(){
   shop.create_new_beloved_customer("William Truong", 5612221, 8172221345, "customer@gmail.com");
   shop.create_new_sales_associate("Nathan Drake", 22111);
   shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0), 0, 0, 0);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
 }*/
 
 void GuiController::load_data(){ 
@@ -1471,17 +1485,29 @@ void GuiController::load_data(){
       getline(ifs, choice4);
       fourth = atoi(choice4.c_str());
       switch (fourth){
+<<<<<<< HEAD
 		case 1: state = building; break;
         	case 2: state = built; break;
 		case 3: state = shipped; break;
 		case 4: state = delivered; break;
 	     	}
+=======
+    case 1: state = building; break;
+          case 2: state = built; break;
+    case 3: state = shipped; break;
+    case 4: state = delivered; break;
+        }
+>>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
       shop.create_order(shop.get_robot_model(first), 
       shop.get_customer(second), 
       shop.get_sales_associate(third), 
       state,
       first, second, third, fourth);
+<<<<<<< HEAD
    	     	
+=======
+          
+>>>>>>> 4a9d09eef1cb688a70c34b4438cc89ddbf9eb655
     }
   }
 }
@@ -1615,7 +1641,7 @@ void GuiController::save_to_certain_file(){
 }
 
 //
-//	Callback
+//  Callback
 //
 
 // Widgets
