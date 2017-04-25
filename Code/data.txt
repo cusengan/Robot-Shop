@@ -1,54 +1,46 @@
 Arm_Identifier
-Arm1
-900
-87.000000
-One piece's Franky style arm
+brogrammer's arm
+2
+0.000000
+we
 Head_Identifier
-Head1
-12221
-145.000000
-itd compatiple
+ex
+1
+12.000000
+itd compatible
 Torso_Identifier
-Torso1
-8211
-99.000000
-Savaged from the power rangers' last robot
+ex
+2
+3.000000
+macarena compatible
 Battery_Identifier
-Batter1
-11711
-61.000000
-The energizer bunny got nothing on this
+ex
+23
+423.000000
+23
 Locomotor_Identifier
-Locomotor1
-1111
-77.000000
-The loco locomotor
+2
+1
+3.000000
+4
 Robot_Identifier
-RoboMan
-999811
+ex
+323
 0
 0
 0
 0
 0
 Customer_Identifier
-William Truong
-5612221
--417713247
-customer@gmail.com
-Customer_Identifier
-1
-1
-1
-1
+Nhan
+123
+123
+123
 Sales_Associate_Identifier
-Nathan Drake
-22111
+William
+234
 Order_Identifier
 0
 0
 0
-Order_Identifier
-0
-0
-0
+3
