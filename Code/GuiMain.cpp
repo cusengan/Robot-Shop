@@ -452,7 +452,8 @@ public:
    std::string save_to_file();
    std::string get_info();
    void add_choice(int choice);
-   void change_state(Progress new_state);
+   void change_state(Progress new_state, int order_num);
+
 
 private:
    Robot_model model;
@@ -464,10 +465,19 @@ private:
 
 };
 
-void Order::change_state(Progress new_state){
+void Order::change_state(Progress new_state, int order_num){
+	int choice;	
 	this->current_state = new_state;
+	switch (new_state){
+		case building: choice = 1; break;
+        	case built: choice = 2; break;
+		case shipped: choice = 3; break;
+		case delivered: choice = 4; break;
+	}
+	this->choices[3] = choice;
 
 }
+
 
 std::string Order::get_info(){
    std::string state = "progress: ";
@@ -484,7 +494,8 @@ std::string Order::get_info(){
 std::string Order::save_to_file(){
    std::string info = "Order_Identifier\n" + std::to_string(choices[0]) + "\n"
                   + std::to_string(choices[1]) + "\n"
-                  + std::to_string(choices[2]);
+                  + std::to_string(choices[2]) + "\n"
+                  + std::to_string(choices[3]);
    return info;
 
 }
@@ -507,7 +518,7 @@ public:
    void create_new_robot_locomotor(std::string name, int model_num, double price, std::string description);
    void create_new_sales_associate(std::string name, int id);
    void create_new_beloved_customer(std::string name, int id, int phone, std::string email); 
-   void create_order(Robot_model robot, Customer customer, SalesAssociate seller, int model, int buyer, int associate);
+   void create_order(Robot_model robot, Customer customer, SalesAssociate seller, Progress state, int model, int buyer, int associate, int state_num);
    void create_new_robot_model(std::string name,
                         int model_num,
                         Arm arm, 
@@ -709,12 +720,13 @@ Customer Shop::get_customer(int index){
 
 }
 
-void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller, int model, int buyer, int associate){
-   Progress state = building;
+void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller, Progress state, int model, int buyer, int associate, int state_num){
+
    Order order(robot, customer, seller, state);
    order.add_choice(model);
    order.add_choice(buyer);
    order.add_choice(associate);
+   order.add_choice(state_num);
    orders.push_back(order);
 }
 
@@ -725,7 +737,7 @@ Order Shop::get_order(int index){
 
 void Shop::change_order_progress(int order_position, Progress new_state){
 	
-	orders[order_position].change_state(new_state);
+	orders[order_position].change_state(new_state, order_position);
 
 }
 
@@ -1055,7 +1067,7 @@ void GuiController::execute_cmd(int cmd){
       case 12: save_data(); break;
       case 13: save_to_certain_file(); break;
       case 14: edit_order_progress(); break; 
-      case 99: use_test(); break;
+      //case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
    }
@@ -1286,6 +1298,7 @@ void GuiController::create_order(){
   }
 
   int model, seller, customer;
+  Progress starting_state = building;
 
   //////// Choose a robot model /////////
  
@@ -1310,7 +1323,7 @@ void GuiController::create_order(){
 
   //////// Creating order object and adding it to the shop //////////
 
-  shop.create_order(robot, buyer, sales_associate, model, seller, customer);
+  shop.create_order(robot, buyer, sales_associate, starting_state, model, seller, customer, 1);
   
 
 }
@@ -1330,7 +1343,7 @@ int choice = validate_integer("Pick a new progress state", view.state_menu(), 1,
 shop.change_order_progress(order_num, selected_state);
 
 }
-
+/*
 void GuiController::use_test(){ 
   shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
   shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
@@ -1348,8 +1361,7 @@ void GuiController::use_test(){
   shop.create_new_sales_associate("Nathan Drake", 22111);
   shop.create_order(shop.get_robot_model(0), shop.get_customer(0), shop.get_sales_associate(0), 0, 0, 0);
 
-
-}
+}*/
 
 void GuiController::load_data(){ 
   std::ifstream ifs{"data.txt"};
@@ -1357,10 +1369,11 @@ void GuiController::load_data(){
   phone, description, cost, choice1, choice2, choice3, choice4, choice5;
 
 
-  if(!ifs) //if file is not opened
+  if(!ifs){ //if file is not opened
     fl_message("Can't open input file");
-  else
-    fl_message("File opened");
+    }
+  else{
+    fl_message("File opened");}
   while(!ifs.eof()){ 
     getline(ifs, input);
     
@@ -1447,23 +1460,30 @@ void GuiController::load_data(){
 
     }
     else if(input == "Order_Identifier"){
-      int first, second, third;
+      int first, second, third, fourth;
+      Progress state;
       getline(ifs, choice1);
       first = atoi(choice1.c_str());
       getline(ifs, choice2);
       second = atoi(choice2.c_str());
       getline(ifs, choice3);
       third = atoi(choice3.c_str());
+      getline(ifs, choice4);
+      fourth = atoi(choice4.c_str());
+      switch (fourth){
+		case 1: state = building; break;
+        	case 2: state = built; break;
+		case 3: state = shipped; break;
+		case 4: state = delivered; break;
+	     	}
       shop.create_order(shop.get_robot_model(first), 
-              shop.get_customer(second), 
-              shop.get_sales_associate(third),
-              first, second, third);
+      shop.get_customer(second), 
+      shop.get_sales_associate(third), 
+      state,
+      first, second, third, fourth);
+   	     	
     }
-
-    
-
   }
-
 }
 
 void GuiController::save_data(){
