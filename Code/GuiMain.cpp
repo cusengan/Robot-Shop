@@ -423,6 +423,17 @@ std::string Customer::save_to_file(){
 }
 
 //
+//	State Machine Header for Progress
+//
+
+enum Progress {	building,
+		built,
+		shipped,
+		delivered	};
+
+
+
+//
 //	Order
 //
 
@@ -430,28 +441,43 @@ class Order{
 public:
    Order(Robot_model _model, 
       Customer _customer, 
-      SalesAssociate _seller) : 
+      SalesAssociate _seller,
+      Progress _current_state) : 
          
       model(_model), 
       customer(_customer),
-      seller(_seller) {}
+      seller(_seller),
+      current_state (_current_state) {}
+   
    std::string save_to_file();
    std::string get_info();
    void add_choice(int choice);
+   void change_state(Progress new_state);
 
 private:
    Robot_model model;
    Customer customer;
    SalesAssociate seller;
+   Progress current_state;
    std::vector<int> choices;
 
 
 };
 
+void Order::change_state(Progress new_state){
+	this->current_state = new_state;
+
+}
 
 std::string Order::get_info(){
-
-   std::string info = model.get_info() + '\n' + seller.get_info() + '\n' + customer.get_info() + '\n';
+   std::string state = "progress: ";
+   switch (current_state){
+	case building: state += "buidling"; break;
+        case built: state += "built"; break;
+	case shipped: state += "shipped"; break;
+	case delivered: state += "delivered"; break;
+	}
+   std::string info = model.get_info() + '\n' + seller.get_info() + '\n' + customer.get_info() + '\n' + state + '\n';
    return info;
 }
 
@@ -512,6 +538,7 @@ public:
    int number_of_customers();
    int number_of_orders();
    
+   void change_order_progress(int order_position, Progress new_state);
 
 
 private:
@@ -683,7 +710,8 @@ Customer Shop::get_customer(int index){
 }
 
 void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate seller, int model, int buyer, int associate){
-   Order order(robot, customer, seller);
+   Progress state = building;
+   Order order(robot, customer, seller, state);
    order.add_choice(model);
    order.add_choice(buyer);
    order.add_choice(associate);
@@ -694,6 +722,14 @@ Order Shop::get_order(int index){
    return orders[index];
 
 }
+
+void Shop::change_order_progress(int order_position, Progress new_state){
+	
+	orders[order_position].change_state(new_state);
+
+}
+
+
 
 //
 //	View
@@ -710,6 +746,7 @@ public:
    std::string view_customers_menu();
    std::string view_sales_associates_menu();
    std::string view_orders_menu();
+   std::string state_menu();
 
 
 private:
@@ -944,6 +981,26 @@ List of Orders
 
 }
 
+std::string View::state_menu(){
+
+std::string list =R"(
+===============
+Progress state		
+===============	
+
+1)Building
+2)Built
+3)Shipped
+4)Delivered
+
+===============
+)";
+
+return list;
+
+}
+
+
 //
 //		GuiController
 //
@@ -971,6 +1028,7 @@ public:
    void load_data();
    void save_data();
    void save_to_certain_file();
+   void edit_order_progress();
 
 
 private:
@@ -996,6 +1054,7 @@ void GuiController::execute_cmd(int cmd){
       case 11: load_data(); break;
       case 12: save_data(); break;
       case 13: save_to_certain_file(); break;
+      case 14: edit_order_progress(); break; 
       case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -1226,7 +1285,6 @@ void GuiController::create_order(){
     return;
   }
 
-
   int model, seller, customer;
 
   //////// Choose a robot model /////////
@@ -1257,7 +1315,23 @@ void GuiController::create_order(){
 
 }
 
-void GuiController::use_test(){
+void GuiController::edit_order_progress(){
+
+Progress selected_state;
+int order_num = validate_integer("Pick an order to edit", view.view_orders_menu(), 0, shop.number_of_orders());
+int choice = validate_integer("Pick a new progress state", view.state_menu(), 1, 4);
+	switch (choice){
+		case 1: selected_state = building; break;
+		case 2: selected_state = built; break;
+		case 3: selected_state = shipped; break;
+		case 4: selected_state = delivered; break;
+	}	
+
+shop.change_order_progress(order_num, selected_state);
+
+}
+
+void GuiController::use_test(){ 
   shop.create_new_robot_arm("Arm1", 900, 87, "One piece's Franky style arm");
   shop.create_new_robot_head("Head1", 12221, 145, "itd compatiple");
   shop.create_new_robot_torso("Torso1", 8211, 99, "Savaged from the power rangers' last robot");
@@ -1541,7 +1615,7 @@ void SaveCB (Fl_Widget* w, void* p) {controller.execute_cmd(12);}
 void ExitCB (Fl_Widget* w, void* p) {win->hide();}
 
 //Edit submenu callbacks
-void CutCB (Fl_Widget* w, void* p) {std::cout<<"Cut"<<std::endl;}
+void Order_ProgressCB (Fl_Widget* w, void* p) {controller.execute_cmd(14);}
 void CopyCB (Fl_Widget* w, void* p) {std::cout<<"Copy"<<std::endl;}
 void PasteCB (Fl_Widget* w, void* p) {std::cout<<"Paste"<<std::endl;}
 void PrefCB (Fl_Widget* w, void* p) {std::cout<<"Preferences"<<std::endl;}
@@ -1584,7 +1658,7 @@ Fl_Menu_Item menuitems[] = {
     {0},
  
    {"&Edit", 0,0,0, FL_SUBMENU},
-    {"&Cut", 0, (Fl_Callback *) CutCB},
+    {"&Order Progress", 0, (Fl_Callback *) Order_ProgressCB},
     {"&Copy", 0, (Fl_Callback *) CopyCB},
     {"&Paste", 0, (Fl_Callback *) PasteCB},
     {"&Preferences", 0, (Fl_Callback *) PrefCB},
@@ -1628,8 +1702,8 @@ int main(){
 
    
 
-   const int x = 1080;
-   const int y = 660;
+   const int x = 540;
+   const int y = 330;
 
    // create window
    win = new Fl_Window(x,y, "Can't think of a name robot shop");
