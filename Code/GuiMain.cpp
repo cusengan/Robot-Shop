@@ -1632,6 +1632,7 @@ GuiController controller(shop, view);
 void NewCB (Fl_Widget* w, void* p) {std::cout<<"New Shop"<<std::endl;}
 void LoadCB (Fl_Widget* w, void* p) {controller.execute_cmd(11);}
 void SaveCB (Fl_Widget* w, void* p) {controller.execute_cmd(12);}
+void SaveAsCB (Fl_Widget* w, void* p) {controller.execute_cmd(13);}
 void ExitCB (Fl_Widget* w, void* p) {win->hide();}
 
 //Edit submenu callbacks
@@ -1674,6 +1675,7 @@ Fl_Menu_Item menuitems[] = {
     //use FL_ALT + 'key' as 2nd parameter for shortcut
     {"&Load Shop", 0, (Fl_Callback *) LoadCB},
     {"&Save Shop", 0, (Fl_Callback *) SaveCB},
+    {"&Save As", 0, (Fl_Callback *) SaveAsCB},
     {"&Exit", 0, (Fl_Callback *) ExitCB},
     {0},
  
