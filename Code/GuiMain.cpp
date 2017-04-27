@@ -392,8 +392,8 @@ std::string SalesAssociate::get_info(){
 
    std::string info = 
    "Sales Associate's Name: " + name + '\n'+
-   "Sales Associate's ID Number: " + std::to_string(id) + '\n' +
-   "Number of Orders Sold: " + std::to_string(sales) +  '\n';
+   "Sales Associate's ID Number: " + std::to_string(id) + '\n'; 
+   //+"Number of Orders Sold: " + std::to_string(sales) +  '\n';
    
    return info;
 
@@ -515,7 +515,7 @@ std::string Order::get_info(){
    std::string state = "progress: ";
    switch (current_state){
   case building: state += "buidling"; break;
-        case built: state += "built"; break;
+  case built: state += "built"; break;
   case shipped: state += "shipped"; break;
   case delivered: state += "delivered"; break;
   }
@@ -1657,7 +1657,7 @@ void GuiController::Num_Orders_per_SA(){
 	std::string info = "";
 	for (int i = 0; i < shop.number_of_associates(); ++i){
 	info += "Name: " + shop.get_sales_associate(i).get_name() + "\n" 
-	+ "Numbers of orders sold: " + shop.get_sales_associate(i).get_sales()+"\n";
+	+ "Numbers of orders sold: " + shop.get_sales_associate(i).get_sales()+"\n\n";
 	}
 	fl_message(info.c_str());
 
@@ -1666,7 +1666,7 @@ void GuiController::Num_Orders_per_SA(){
 void GuiController::Orders_per_SA(){
    std::string info;
    std::string name;
-   std::string losers = "------------------------------------------------------------------------\nList of loser, free-loading, useless employees that haven't sold anything: \n";
+   std::string losers = "List of loser, free-loading, useless employees that haven't sold anything:\n------------------------------------------------------------------------\n";
    //std::vector<int> losers1;
    for (int a = 0; a < shop.number_of_associates(); ++a){
       	name = shop.get_sales_associate(a).get_name();
@@ -1684,7 +1684,7 @@ void GuiController::Orders_per_SA(){
 	}//close outer if loop
 	//this keeps track of SAs that haven't done anything
 	if(shop.get_sales_associate(a).get_sales_num() == 0){	
-		losers += shop.get_sales_associate(a).get_name() + '\n';
+		losers += "-"+shop.get_sales_associate(a).get_name() + '\n';
         }// close else
    }//close outer for loop
  
