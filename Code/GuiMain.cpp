@@ -356,6 +356,7 @@ public:
    std::string get_info();
    std::string get_name();
    std::string get_sales();
+   int get_sales_num();
    
    void Increase_sales();
 
@@ -374,6 +375,11 @@ void SalesAssociate::Increase_sales(){
 std::string SalesAssociate::get_sales(){
 	std::string info = std::to_string(sales);
 	return info;
+
+}
+
+int SalesAssociate::get_sales_num(){
+	return sales;
 
 }
 
@@ -473,7 +479,7 @@ public:
    std::string get_info();
    void add_choice(int choice);
    void change_state(Progress new_state, int order_num);
-
+   SalesAssociate get_SA();
 
 private:
    Robot_model model;
@@ -484,6 +490,10 @@ private:
 
 
 };
+
+SalesAssociate Order::get_SA(){
+   	return seller; 
+}
 
 void Order::change_state(Progress new_state, int order_num){
 
@@ -1654,10 +1664,36 @@ void GuiController::Num_Orders_per_SA(){
 }
 
 void GuiController::Orders_per_SA(){
+   std::string info;
+   std::string name;
+   std::string losers = "------------------------------------------------------------------------\nList of loser, free-loading, useless employees that haven't sold anything: \n";
+   //std::vector<int> losers1;
+   for (int a = 0; a < shop.number_of_associates(); ++a){
+      	name = shop.get_sales_associate(a).get_name();
+        //this if makes sure not to print te same frmat for those that haven't sold
+	//if you want the same treatment then SELL SOMETHING
+	if (shop.get_sales_associate(a).get_sales_num() != 0){ 
+	info += name+"'s sales: "+'\n'+ 
+	"----------------------------------------------" + '\n';
+		for (int b = 0; b < shop.number_of_orders(); ++b){
+		std::string temp_name = shop.get_order(b).get_SA().get_name();
+			if (temp_name.compare(name) == 0){
+			info += shop.get_order(b).get_info()+'\n';
+			} //close inner if loop
+		}//close inner for loop
+	}//close outer if loop
+	//this keeps track of SAs that haven't done anything
+	if(shop.get_sales_associate(a).get_sales_num() == 0){	
+		losers += shop.get_sales_associate(a).get_name() + '\n';
+        }// close else
+   }//close outer for loop
+ 
+   //time to add the losers
+   info += losers;
 
+   fl_message(info.c_str()); //can finally print 
 }
-
-
+	
 //
 //  Callback
 //
@@ -1697,7 +1733,7 @@ void OrdersCB (Fl_Widget* w, void* p) {controller.execute_cmd(10);}
 void BLs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(8);}
 void SAs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(9);}
 void ModelsCB (Fl_Widget* w, void* p) {controller.execute_cmd(4);}
-void OrdersPerSACB (Fl_Widget* w, void* p) {}
+void OrdersPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(16);}
 void SalesPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(15);}
 void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
 // note that this menu shows list of the create
