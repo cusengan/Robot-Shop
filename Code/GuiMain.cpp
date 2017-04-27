@@ -350,24 +350,50 @@ double Robot_model::max_battery_life(){
 class SalesAssociate{
 
 public:
-   SalesAssociate(std::string _name, int _id):
-   name (_name), id (_id) {}
+   SalesAssociate(std::string _name, int _id, int _sales):
+   name (_name), id (_id), sales(_sales) {}
    std::string save_to_file();
    std::string get_info();
+   std::string get_name();
+   std::string get_sales();
+   int get_sales_num();
+   
+   void Increase_sales();
 
 private:
    std::string name;
    int id;
-
-
+   int sales;
 
 };
+
+void SalesAssociate::Increase_sales(){
+	sales+=1;
+
+}
+
+std::string SalesAssociate::get_sales(){
+	std::string info = std::to_string(sales);
+	return info;
+
+}
+
+int SalesAssociate::get_sales_num(){
+	return sales;
+
+}
+
+std::string SalesAssociate::get_name(){
+	std::string info = name;
+ 	return info;
+}
 
 std::string SalesAssociate::get_info(){
 
    std::string info = 
    "Sales Associate's Name: " + name + '\n'+
-   "Sales Associate's ID Number: " + std::to_string(id) + '\n';
+   "Sales Associate's ID Number: " + std::to_string(id) + '\n' +
+   "Number of Orders Sold: " + std::to_string(sales) +  '\n';
    
    return info;
 
@@ -453,7 +479,7 @@ public:
    std::string get_info();
    void add_choice(int choice);
    void change_state(Progress new_state, int order_num);
-
+   SalesAssociate get_SA();
 
 private:
    Robot_model model;
@@ -464,6 +490,10 @@ private:
 
 
 };
+
+SalesAssociate Order::get_SA(){
+   	return seller; 
+}
 
 void Order::change_state(Progress new_state, int order_num){
 
@@ -518,7 +548,7 @@ public:
    void create_new_robot_torso(std::string name, int model_num, double price, std::string description);
    void create_new_robot_battery(std::string name, int model_num, double price, std::string description);
    void create_new_robot_locomotor(std::string name, int model_num, double price, std::string description);
-   void create_new_sales_associate(std::string name, int id);
+   void create_new_sales_associate(std::string name, int id, int sales);
    void create_new_beloved_customer(std::string name, int id, int phone, std::string email); 
    void create_order(Robot_model robot, Customer customer, SalesAssociate seller, Progress state, int model, int buyer, int associate, int state_num);
    void create_new_robot_model(std::string name,
@@ -605,9 +635,9 @@ void Shop::create_new_robot_locomotor(std::string name, int model_num, double pr
 
 }
 
-void Shop::create_new_sales_associate(std::string name, int id){
+void Shop::create_new_sales_associate(std::string name, int id, int sales){
    
-   SalesAssociate associate(name, id);
+   SalesAssociate associate(name, id, sales);
    associates.push_back(associate);
 
 }
@@ -727,6 +757,10 @@ void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate sel
    Order order(robot, customer, seller, state);
    order.add_choice(model);
    order.add_choice(buyer);
+
+   //increase the saller's sales count
+   associates[associate].Increase_sales();  
+
    order.add_choice(associate);
    order.add_choice(state_num);
    orders.push_back(order);
@@ -965,7 +999,7 @@ List of Sales Associates
 =========================
 )";
 
-   for (int i = 0; i < shop.number_of_customers(); ++i) {
+   for (int i = 0; i < shop.number_of_associates(); ++i) {
       list += "Sales Associate #"+std::to_string(i)+'\n';
       list += shop.get_sales_associate(i).get_info() +'\n';
       list += "--------------------------------------------\n";
@@ -1039,7 +1073,9 @@ public:
    void save_data();
    void save_to_certain_file();
    void edit_order_progress();
-
+   void Orders_per_SA();
+   void Num_Orders_per_SA();
+   
 
 private:
    Shop& shop;
@@ -1065,6 +1101,8 @@ void GuiController::execute_cmd(int cmd){
       case 12: save_data(); break;
       case 13: save_to_certain_file(); break;
       case 14: edit_order_progress(); break; 
+      case 15: Num_Orders_per_SA(); break;
+      case 16: Orders_per_SA(); break; 
       //case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -1275,7 +1313,7 @@ void GuiController::create_new_sales_associate(){
     //ask for number and validate it is a number
   
   
-    shop.create_new_sales_associate(name, id);
+    shop.create_new_sales_associate(name, id, 0);
 
 }
    
@@ -1315,7 +1353,6 @@ void GuiController::create_order(){
   //////// Chose a seller ////////////
   
   seller = validate_integer("Who is selling this robot?: ", view.view_sales_associates_menu(), 0, shop.number_of_associates()-1);
-
 
   SalesAssociate sales_associate = shop.get_sales_associate(seller);
 
@@ -1457,8 +1494,7 @@ void GuiController::load_data(){
     else if(input == "Sales_Associate_Identifier"){
       getline(ifs, name);
       getline(ifs, id);
-      shop.create_new_sales_associate(name, atoi(id.c_str()));
-
+      shop.create_new_sales_associate(name, atoi(id.c_str()), 0);
     }
     else if(input == "Order_Identifier"){
       int first, second, third, fourth;
@@ -1617,6 +1653,47 @@ void GuiController::save_to_certain_file(){
 
 }
 
+void GuiController::Num_Orders_per_SA(){	
+	std::string info = "";
+	for (int i = 0; i < shop.number_of_associates(); ++i){
+	info += "Name: " + shop.get_sales_associate(i).get_name() + "\n" 
+	+ "Numbers of orders sold: " + shop.get_sales_associate(i).get_sales()+"\n";
+	}
+	fl_message(info.c_str());
+
+}
+
+void GuiController::Orders_per_SA(){
+   std::string info;
+   std::string name;
+   std::string losers = "------------------------------------------------------------------------\nList of loser, free-loading, useless employees that haven't sold anything: \n";
+   //std::vector<int> losers1;
+   for (int a = 0; a < shop.number_of_associates(); ++a){
+      	name = shop.get_sales_associate(a).get_name();
+        //this if makes sure not to print te same frmat for those that haven't sold
+	//if you want the same treatment then SELL SOMETHING
+	if (shop.get_sales_associate(a).get_sales_num() != 0){ 
+	info += name+"'s sales: "+'\n'+ 
+	"----------------------------------------------" + '\n';
+		for (int b = 0; b < shop.number_of_orders(); ++b){
+		std::string temp_name = shop.get_order(b).get_SA().get_name();
+			if (temp_name.compare(name) == 0){
+			info += shop.get_order(b).get_info()+'\n';
+			} //close inner if loop
+		}//close inner for loop
+	}//close outer if loop
+	//this keeps track of SAs that haven't done anything
+	if(shop.get_sales_associate(a).get_sales_num() == 0){	
+		losers += shop.get_sales_associate(a).get_name() + '\n';
+        }// close else
+   }//close outer for loop
+ 
+   //time to add the losers
+   info += losers;
+
+   fl_message(info.c_str()); //can finally print 
+}
+	
 //
 //  Callback
 //
@@ -1656,6 +1733,8 @@ void OrdersCB (Fl_Widget* w, void* p) {controller.execute_cmd(10);}
 void BLs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(8);}
 void SAs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(9);}
 void ModelsCB (Fl_Widget* w, void* p) {controller.execute_cmd(4);}
+void OrdersPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(16);}
+void SalesPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(15);}
 void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
 // note that this menu shows list of the create
 // all callbacks in view is a plural form of their create counterpart
@@ -1698,9 +1777,13 @@ Fl_Menu_Item menuitems[] = {
     {0},
    
    {"&View", 0, 0, 0, FL_SUBMENU},
-    {"&Orders", 0, (Fl_Callback *) OrdersCB},
     {"&Customers", 0, (Fl_Callback *) BLs_CB},
     {"&Sales Associates", 0, (Fl_Callback *) SAs_CB},
+    {"&Orders", 0, 0, 0, FL_SUBMENU},
+      {"&All Orders", 0, (Fl_Callback *) OrdersCB},
+      {"&Orders by Sales Associates", 0, (Fl_Callback *) OrdersPerSACB},
+      {"&Number of Orders sold per Sales Associate", 0, (Fl_Callback *) SalesPerSACB},
+      {0},
     {"&Robot Models", 0, (Fl_Callback *) ModelsCB},
     {"&Robot Components", 0, (Fl_Callback *) ComponentsCB},
     {0},
@@ -1731,7 +1814,7 @@ int main(){
    const int y = 330;
 
    // create window
-   win = new Fl_Window(x,y, "Can't think of a name robot shop");
+   win = new Fl_Window(x,y, "lRobot");
    win->color(FL_WHITE);
 
    //install menu bar
