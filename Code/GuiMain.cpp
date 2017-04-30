@@ -788,7 +788,7 @@ void Shop::change_order_progress(int order_position, Progress new_state){
 class View{
 public:
    View(Shop& market) : shop(market){}
-   std::string get_menu();
+   //std::string get_menu(); not needed when you have a menu or toolbar
    std::string get_robot_models();
    std::string parts_menu();
    std::string get_robot_parts(int choice);
@@ -802,7 +802,7 @@ public:
 private:
    Shop& shop;
 };
-
+/*
 std::string View::get_menu(){
 
 std::string menu = R"(
@@ -828,7 +828,7 @@ Which one of these options would you like to choose?
 
 return menu;
 
-}
+} */
 
 std::string View::get_robot_models(){
 
@@ -1168,8 +1168,11 @@ std::string GuiController::get_string(std::string title, std::string prompt){
 }
 
 void GuiController::view_robot_parts(){
+	
+	int choice; 
+	choice = validate_integer("Which type of part would you like to see?", view.parts_menu(), 1, 5);
 
-
+	fl_message(view.get_robot_parts(choice).c_str());
 
 }
 
@@ -1590,7 +1593,7 @@ void GuiController::save_data(){
   fl_message("Information saved");
 
 }
-
+/*
 void GuiController::cli(){
    
    int cmd = -1;
@@ -1602,8 +1605,8 @@ void GuiController::cli(){
 
    } //loops till manual exit at 0
 
-}
-
+}	not needed when a menu/toolbar is present
+*/
 void GuiController::save_to_certain_file(){
 
   std::string fileName = get_string("File name", "Enter the name of the file you wish to save to");
