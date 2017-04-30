@@ -1071,7 +1071,7 @@ public:
    void view_sales_associates();
    void view_robt_parts();
    void load_data();
-   void load_to_certain_file();
+   void load_from_certain_file();
    void save_data();
    void save_to_certain_file();
    void edit_order_progress();
@@ -1107,6 +1107,7 @@ void GuiController::execute_cmd(int cmd){
       case 14: edit_order_progress(); break; 
       case 15: Num_Orders_per_SA(); break;
       case 16: Orders_per_SA(); break; 
+      case 17: load_from_certain_file(); break;
       //case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -1539,6 +1540,132 @@ void GuiController::load_data(){
   }
 }
 
+void GuiController::load_from_certain_file(){ 
+  
+  std::string fileName = get_string("File name", "Enter the name of the file you wish to load");
+  std::ifstream ifs{fileName};
+  std::string input, name, model_num, id, email, 
+  phone, description, cost, choice1, choice2, choice3, choice4, choice5;
+
+
+  if(!ifs){ //if file is not opened
+    fl_message("Can't open input file");
+    }
+  else{
+    fl_message("File opened");}
+  while(!ifs.eof()){ 
+    getline(ifs, input);
+    
+    if(input == "Arm_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_arm(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Head_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_head(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Torso_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_torso(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Battery_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_battery(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Locomotor_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+
+      shop.create_new_robot_locomotor(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Robot_Identifier"){
+      int model, first, second, third, fourth, fifth;
+
+      getline(ifs, name);
+      getline(ifs, model_num);
+      model = atoi(model_num.c_str());
+      getline(ifs, choice1);
+      first = atoi(choice1.c_str());
+      getline(ifs, choice2);
+      second = atoi(choice2.c_str());
+      getline(ifs, choice3);
+      third = atoi(choice3.c_str());
+      getline(ifs, choice4);
+      fourth = atoi(choice4.c_str());
+      getline(ifs, choice5);
+      fifth = atoi(choice5.c_str());
+
+
+      shop.create_new_robot_model(name, model,
+                      shop.get_robot_arm(first),
+                      shop.get_robot_head(second),
+                      shop.get_robot_torso(third),
+                      shop.get_robot_battery(fourth),
+                      shop.get_robot_locomotor(fifth),
+                      first, second, third, fourth, fifth);
+
+    }
+    else if(input == "Customer_Identifier"){
+      getline(ifs, name);
+      getline(ifs, id);
+      getline(ifs, phone);
+      getline(ifs, email);
+      shop.create_new_beloved_customer(name, atoi(id.c_str()), atof(phone.c_str()), email);
+
+    }
+    else if(input == "Sales_Associate_Identifier"){
+      getline(ifs, name);
+      getline(ifs, id);
+      shop.create_new_sales_associate(name, atoi(id.c_str()), 0);
+    }
+    else if(input == "Order_Identifier"){
+      int first, second, third, fourth;
+      Progress state;
+      getline(ifs, choice1);
+      first = atoi(choice1.c_str());
+      getline(ifs, choice2);
+      second = atoi(choice2.c_str());
+      getline(ifs, choice3);
+      third = atoi(choice3.c_str());
+      getline(ifs, choice4);
+      fourth = atoi(choice4.c_str());
+      switch (fourth){
+
+		case 1: state = building; break;
+        case 2: state = built; break;
+		case 3: state = shipped; break;
+		case 4: state = delivered; break;
+	     	}
+
+      shop.create_order(shop.get_robot_model(first), 
+      shop.get_customer(second), 
+      shop.get_sales_associate(third), 
+      state,
+      first, second, third, fourth);
+
+    }
+  }
+}
+
 void GuiController::save_data(){
   std::ofstream ofs{"data.txt"};
 
@@ -1725,8 +1852,9 @@ GuiController controller(shop, view);
 //File submenu callbacks
 void NewCB (Fl_Widget* w, void* p) {std::cout<<"New Shop"<<std::endl;}
 void LoadCB (Fl_Widget* w, void* p) {controller.execute_cmd(11);}
+void LoadFromCB (Fl_Widget* w, void* p) {controller.execute_cmd(17);}
 void SaveCB (Fl_Widget* w, void* p) {controller.execute_cmd(12);}
-void SaveAsCB (Fl_Widget* w, void* p) {controller.execute_cmd(13);}
+void SaveToCB (Fl_Widget* w, void* p) {controller.execute_cmd(13);}
 void ExitCB (Fl_Widget* w, void* p) {win->hide();}
 
 //Edit submenu callbacks
@@ -1770,8 +1898,9 @@ Fl_Menu_Item menuitems[] = {
     {"&New Shop", 0, (Fl_Callback *) NewCB}, 
     //use FL_ALT + 'key' as 2nd parameter for shortcut
     {"&Load Shop", 0, (Fl_Callback *) LoadCB},
+    {"&Load From", 0, (Fl_Callback *) LoadFromCB},
     {"&Save Shop", 0, (Fl_Callback *) SaveCB},
-    {"&Save As", 0, (Fl_Callback *) SaveAsCB},
+    {"&Save To", 0, (Fl_Callback *) SaveToCB},
     {"&Exit", 0, (Fl_Callback *) ExitCB},
     {0},
  
