@@ -1069,12 +1069,15 @@ public:
    void use_test();
    void view_customers();
    void view_sales_associates();
+   void view_robt_parts();
    void load_data();
+   void load_to_certain_file();
    void save_data();
    void save_to_certain_file();
    void edit_order_progress();
    void Orders_per_SA();
    void Num_Orders_per_SA();
+   
    
 
 private:
@@ -1090,7 +1093,8 @@ void GuiController::execute_cmd(int cmd){
    switch(cmd){
       case 1: new_robot_part(); break;
       case 2: new_robot_model(); break;
-      case 4:  fl_message(view.get_robot_models().c_str());  break;
+      case 3: view_robot_parts();break;
+      case 4: fl_message(view.get_robot_models().c_str());  break;
       case 5: create_new_customer(); break;
       case 6: create_new_sales_associate(); break;
       case 7: create_order(); break;
@@ -1162,6 +1166,13 @@ std::string GuiController::get_string(std::string title, std::string prompt){
    std::string result = fl_input(prompt.c_str(), 0);
    return result;
 }
+
+void GuiController::view_robot_parts(){
+
+
+
+}
+
 
 void GuiController::new_robot_part(){
    //variable declarations
@@ -1735,7 +1746,7 @@ void SAs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(9);}
 void ModelsCB (Fl_Widget* w, void* p) {controller.execute_cmd(4);}
 void OrdersPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(16);}
 void SalesPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(15);}
-void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
+void ComponentsCB (Fl_Widget* w, void* p) {controller.execute_cmd(3);}
 // note that this menu shows list of the create
 // all callbacks in view is a plural form of their create counterpart
 
