@@ -3,14 +3,14 @@ CC = g++
 CFLAGS = -g -w -std=c++11 -c 
 
 CXXFLAGS = -std=c++11
-LDFLAGS = -L/usr/local/lib -lfltk -lXext -lX11 -lm
+LDFLAGS = -L/usr/local/lib -lfltk -lXext -lX11 -lm -Wl,-Bsymbolic-functions -lfltk_images -lfltk -lX11
 
 all: gui
 
 rebuild: clean gui
 
 gui: GuiMain.cpp
-	$(CXX) $(CXXFLAGS) $(fltk-config --cxxflags) -o gui GuiMain.cpp $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) $(fltk-config --use-images --cxxflags) -o gui GuiMain.cpp $(LDFLAGS)
 main: Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Robot_part.o Controller.o Customer.o SalesAssociate.o Order.o
 	$(CC) Robot_model.o Shop.o View.o Battery.o Head.o Arm.o Torso.o Locomotor.o Customer.o SalesAssociate.o Robot_part.o Controller.o Order.o -o cli main_cli.cpp
 Locomotor.o: Locomotor.cpp Locomotor.h

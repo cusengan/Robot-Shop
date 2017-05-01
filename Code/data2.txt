@@ -1,0 +1,59 @@
+Arm_Identifier
+brogrammer's arm
+2
+0.000000
+we
+Head_Identifier
+ex
+1
+12.000000
+itd compatible
+Torso_Identifier
+ex
+2
+3.000000
+macarena compatible
+Battery_Identifier
+ex
+23
+423.000000
+23
+Locomotor_Identifier
+2
+1
+3.000000
+4
+Robot_Identifier
+military bot
+full_humanoid_soldier.jpg
+323
+0
+0
+0
+0
+0
+Robot_Identifier
+busyboty
+full_business_can.jpg
+32
+0
+0
+0
+0
+0
+Customer_Identifier
+Nhan
+123
+123
+123
+Sales_Associate_Identifier
+William
+234
+Sales_Associate_Identifier
+the new guy
+7
+Order_Identifier
+0
+0
+0
+2

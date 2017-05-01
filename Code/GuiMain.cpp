@@ -2,6 +2,10 @@
 #include <FL/Fl_Window.H>
 #include <FL/fl_ask.H>
 #include <FL/Fl_Menu_Bar.H>
+#include <FL/Fl_Shared_Image.H>
+#include <FL/Fl_Double_Window.H>
+#include <FL/Fl_Scroll.H>
+#include <FL/Fl_JPEG_Image.H>
 #include <FL/Fl_Box.H>
 #include <string>
 #include <iostream>
@@ -246,7 +250,8 @@ std::string Battery::save_to_file(){
 
 class Robot_model{
 public:
-   Robot_model(std::string _name,
+   Robot_model(std::string _name, 
+	    std::string _image,
             int _model_num,
             Arm _arm, 
             Head _head, 
@@ -255,12 +260,13 @@ public:
             Locomotor _locomotor) : 
 
             name(_name), 
+	    image(_image),
             model_number(_model_num), 
             arm(_arm),
             head(_head),
             torso(_torso),
             battery(_battery),
-            locomotor(_locomotor) { }
+            locomotor(_locomotor){ }
    std::string save_to_file();
    std::string get_info();
    Arm get_robot_arm();
@@ -272,8 +278,10 @@ public:
    double cost();
    double max_speed();
    double max_battery_life();
+   std::string get_image();
 
 private:
+   std::string image;
    std::string name;
    int model_number;
    Torso torso;
@@ -285,6 +293,11 @@ private:
 
 };
 
+std::string Robot_model::get_image(){
+	std::string result = image;
+	return result;
+}
+
 std::string Robot_model::get_info(){
    std::string info = "Name: " + name + "\n" 
                   "Model number: " + std::to_string(model_number) + "\n"
@@ -293,7 +306,9 @@ std::string Robot_model::get_info(){
 }
 
 std::string Robot_model::save_to_file(){
-   std::string info = "Robot_Identifier\n" + name + "\n" 
+   std::string info = "Robot_Identifier\n" 
+		  + name + "\n" 
+		  + image + "\n"
                   + std::to_string(model_number) + "\n"
                   + std::to_string(choices[0]) + "\n"
                   + std::to_string(choices[1]) + "\n"
@@ -392,8 +407,8 @@ std::string SalesAssociate::get_info(){
 
    std::string info = 
    "Sales Associate's Name: " + name + '\n'+
-   "Sales Associate's ID Number: " + std::to_string(id) + '\n' +
-   "Number of Orders Sold: " + std::to_string(sales) +  '\n';
+   "Sales Associate's ID Number: " + std::to_string(id) + '\n'; 
+   //+"Number of Orders Sold: " + std::to_string(sales) +  '\n';
    
    return info;
 
@@ -515,7 +530,7 @@ std::string Order::get_info(){
    std::string state = "progress: ";
    switch (current_state){
   case building: state += "buidling"; break;
-        case built: state += "built"; break;
+  case built: state += "built"; break;
   case shipped: state += "shipped"; break;
   case delivered: state += "delivered"; break;
   }
@@ -552,6 +567,7 @@ public:
    void create_new_beloved_customer(std::string name, int id, int phone, std::string email); 
    void create_order(Robot_model robot, Customer customer, SalesAssociate seller, Progress state, int model, int buyer, int associate, int state_num);
    void create_new_robot_model(std::string name,
+			std::string image,
                         int model_num,
                         Arm arm, 
                         Head head, 
@@ -582,7 +598,6 @@ public:
    int number_of_orders();
    
    void change_order_progress(int order_position, Progress new_state);
-
 
 private:
    std::vector<Robot_model> robot_models;
@@ -678,19 +693,19 @@ Robot_model Shop::get_robot_model(int index){
    return robot_models[index];
 }
 
-void Shop::create_new_robot_model(std::string name,
+void Shop::create_new_robot_model(std::string name, std::string image,
                         int model_num,
                         Arm arm, 
                         Head head, 
                         Torso torso,
                         Battery battery, 
                         Locomotor locomotor,
-                        int arm_num, int head_num, int torso_num,  int battery_num,  int locomotor_num){
+                        int arm_num, int head_num, int torso_num,  int 				battery_num,  int locomotor_num){
 
 
 
 
-   Robot_model Robot(name, model_num, arm, head, torso,
+   Robot_model Robot(name, image, model_num, arm, head, torso,
                   battery, locomotor);
    Robot.add_choice(arm_num);
    Robot.add_choice(head_num);
@@ -788,8 +803,9 @@ void Shop::change_order_progress(int order_position, Progress new_state){
 class View{
 public:
    View(Shop& market) : shop(market){}
-   std::string get_menu();
+   //std::string get_menu(); not needed when you have a menu or toolbar
    std::string get_robot_models();
+   std::string get_each_model(int i);
    std::string parts_menu();
    std::string get_robot_parts(int choice);
    std::string create_a_part_menu();
@@ -802,7 +818,7 @@ public:
 private:
    Shop& shop;
 };
-
+/*
 std::string View::get_menu(){
 
 std::string menu = R"(
@@ -828,7 +844,7 @@ Which one of these options would you like to choose?
 
 return menu;
 
-}
+} */
 
 std::string View::get_robot_models(){
 
@@ -868,6 +884,37 @@ return list;
 
 }
 
+std::string View::get_each_model(int i){
+
+std::string list = R"(
+=====================
+   Robot Model 
+=====================
+)";
+
+        list += "Robot Model #"+std::to_string(i)+'\n';
+         list += shop.get_robot_model(i).get_info();
+
+         list += "\nHead info:\n";
+         list += shop.get_robot_model(i).get_robot_head().get_info();
+
+         list +="\nTorso info:\n";
+         list += shop.get_robot_model(i).get_robot_torso().get_info();
+
+         list += "\nArm info:\n";
+         list += shop.get_robot_model(i).get_robot_arm().get_info();
+
+         list += "\nBattery info:\n";
+         list += shop.get_robot_model(i).get_robot_battery().get_info();
+
+         list += "\nLocomotor info:\n";
+         list += shop.get_robot_model(i).get_robot_locomotor().get_info();
+
+         list += "\n================================================\n";
+
+return list;
+
+}
 std::string View::parts_menu(){
 
 std::string menu = R"(
@@ -901,7 +948,7 @@ if(choice == 1){
 }else if(choice == 4){
    part = "Batteries";
 }else if(choice == 5){
-   part = "Batteries";
+   part = "Locomotors";
 }
 
 
@@ -1070,11 +1117,15 @@ public:
    void view_customers();
    void view_sales_associates();
    void load_data();
+   void load_from_certain_file();
    void save_data();
    void save_to_certain_file();
    void edit_order_progress();
    void Orders_per_SA();
    void Num_Orders_per_SA();
+   void view_model(int i);
+   void view_all_models();
+   
    
 
 private:
@@ -1090,7 +1141,8 @@ void GuiController::execute_cmd(int cmd){
    switch(cmd){
       case 1: new_robot_part(); break;
       case 2: new_robot_model(); break;
-      case 4:  fl_message(view.get_robot_models().c_str());  break;
+      case 3: view_robot_parts(); break;
+      case 4: view_all_models(); break;
       case 5: create_new_customer(); break;
       case 6: create_new_sales_associate(); break;
       case 7: create_order(); break;
@@ -1103,6 +1155,7 @@ void GuiController::execute_cmd(int cmd){
       case 14: edit_order_progress(); break; 
       case 15: Num_Orders_per_SA(); break;
       case 16: Orders_per_SA(); break; 
+      case 17: load_from_certain_file(); break;
       //case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -1163,6 +1216,65 @@ std::string GuiController::get_string(std::string title, std::string prompt){
    return result;
 }
 
+void GuiController::view_robot_parts(){
+	
+	int choice; 
+	choice = validate_integer("Which type of part would you like to see?", view.parts_menu(), 1, 5);
+
+	fl_message(view.get_robot_parts(choice).c_str());
+
+}
+
+
+void GuiController::view_all_models(){
+   
+   int cmd = 0, option = 0;
+   if (shop.number_of_models() == 0){
+      	fl_message("There are no models");
+   }else{
+   	while(cmd != -1){
+      		std::string menu = "Type 1 to see next model.\nType 2 to see current model.\nType 3 to see previous model.\nType 0 to exit or continue till exit\n";
+     		option = atoi(fl_input(menu.c_str(),0)); 
+   		switch(option){
+			case 0: cmd = -1; break;
+			case 1: if (cmd == shop.number_of_models()){
+					cmd = -1;
+				}else{
+					cmd += 1; 
+					view_model(cmd); 
+				};
+					 break;
+			case 2: view_model(cmd); break;
+			case 3: if (cmd != 0){
+					cmd -= 1;
+					view_model(cmd);
+				}else{
+					fl_message("There is no previous model");
+				}; 	
+					break;
+			}	
+		} 
+	}
+}
+
+//fl_message(view.get_robot_models().c_str());
+void GuiController::view_model(int i){
+   
+    std::string ImageName = shop.get_robot_model(i).get_image();
+    Fl_JPEG_Image *jpg = new Fl_JPEG_Image(ImageName.c_str());
+    Fl_Image *pic = jpg->copy(100,100);
+    std::string no_label = "";
+
+    fl_message_title("Robot Model");
+    fl_message_icon()->label(no_label.c_str());
+    fl_message_icon()->labelsize(1);
+    fl_message_icon()->image(*pic);
+    fl_message(view.get_each_model(i).c_str());
+    fl_message_icon()->image(0);
+
+   	
+}
+
 void GuiController::new_robot_part(){
    //variable declarations
       std::string name, description, part;
@@ -1209,7 +1321,7 @@ void GuiController::new_robot_part(){
 void GuiController::new_robot_model(){
 
   //variable declarations
-      std::string name, null_part;
+      std::string name, null_part, image;
       int model_num, 
       arm_num, 
       head_num,
@@ -1256,6 +1368,8 @@ void GuiController::new_robot_model(){
   shop.number_of_locomotors() != 0 ){
   
   name = get_string("Robot Model", "Enter a name: ");
+
+  image = get_string("Robot Model", "Enter image file name: ");
   
   model_num = validate_integer(name, "Enter a model number: ", 0, 9999999);
   arm_num = validate_integer("Please input the part # for the arm you would like for this model", view.get_robot_parts(3), 0, shop.number_of_arms()-1);
@@ -1271,6 +1385,7 @@ void GuiController::new_robot_model(){
   //put the parts together
     shop.create_new_robot_model(
     name,
+    image,
     model_num,
     shop.get_robot_arm(arm_num),
     shop.get_robot_head(head_num),
@@ -1403,7 +1518,7 @@ void GuiController::use_test(){
 
 void GuiController::load_data(){ 
   std::ifstream ifs{"data.txt"};
-  std::string input, name, model_num, id, email, 
+  std::string input, name, image, model_num, id, email, 
   phone, description, cost, choice1, choice2, choice3, choice4, choice5;
 
 
@@ -1460,6 +1575,7 @@ void GuiController::load_data(){
       int model, first, second, third, fourth, fifth;
 
       getline(ifs, name);
+      getline(ifs, image);
       getline(ifs, model_num);
       model = atoi(model_num.c_str());
       getline(ifs, choice1);
@@ -1474,7 +1590,134 @@ void GuiController::load_data(){
       fifth = atoi(choice5.c_str());
 
 
-      shop.create_new_robot_model(name, model,
+      shop.create_new_robot_model(name, image, model,
+                      shop.get_robot_arm(first),
+                      shop.get_robot_head(second),
+                      shop.get_robot_torso(third),
+                      shop.get_robot_battery(fourth),
+                      shop.get_robot_locomotor(fifth),
+                      first, second, third, fourth, fifth);
+
+    }
+    else if(input == "Customer_Identifier"){
+      getline(ifs, name);
+      getline(ifs, id);
+      getline(ifs, phone);
+      getline(ifs, email);
+      shop.create_new_beloved_customer(name, atoi(id.c_str()), atof(phone.c_str()), email);
+
+    }
+    else if(input == "Sales_Associate_Identifier"){
+      getline(ifs, name);
+      getline(ifs, id);
+      shop.create_new_sales_associate(name, atoi(id.c_str()), 0);
+    }
+    else if(input == "Order_Identifier"){
+      int first, second, third, fourth;
+      Progress state;
+      getline(ifs, choice1);
+      first = atoi(choice1.c_str());
+      getline(ifs, choice2);
+      second = atoi(choice2.c_str());
+      getline(ifs, choice3);
+      third = atoi(choice3.c_str());
+      getline(ifs, choice4);
+      fourth = atoi(choice4.c_str());
+      switch (fourth){
+
+		case 1: state = building; break;
+        case 2: state = built; break;
+		case 3: state = shipped; break;
+		case 4: state = delivered; break;
+	     	}
+
+      shop.create_order(shop.get_robot_model(first), 
+      shop.get_customer(second), 
+      shop.get_sales_associate(third), 
+      state,
+      first, second, third, fourth);
+
+    }
+  }
+}
+
+void GuiController::load_from_certain_file(){ 
+  
+  std::string fileName = get_string("File name", "Enter the name of the file you wish to load");
+  std::ifstream ifs{fileName};
+  std::string input, name, image, model_num, id, email, 
+  phone, description, cost, choice1, choice2, choice3, choice4, choice5;
+
+
+  if(!ifs){ //if file is not opened
+    fl_message("Can't open input file");
+    }
+  else{
+    fl_message("File opened");}
+  while(!ifs.eof()){ 
+    getline(ifs, input);
+    
+    if(input == "Arm_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_arm(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Head_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_head(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Torso_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_torso(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Battery_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+      shop.create_new_robot_battery(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Locomotor_Identifier"){
+      getline(ifs, name);
+      getline(ifs, model_num);
+      getline(ifs, cost);
+      getline(ifs, description);
+
+      shop.create_new_robot_locomotor(name, atoi(model_num.c_str()), atof(cost.c_str()), description);
+
+    }
+    else if(input == "Robot_Identifier"){
+      int model, first, second, third, fourth, fifth;
+
+      getline(ifs, name);
+      getline (ifs, image);
+      getline(ifs, model_num);
+      model = atoi(model_num.c_str());
+      getline(ifs, choice1);
+      first = atoi(choice1.c_str());
+      getline(ifs, choice2);
+      second = atoi(choice2.c_str());
+      getline(ifs, choice3);
+      third = atoi(choice3.c_str());
+      getline(ifs, choice4);
+      fourth = atoi(choice4.c_str());
+      getline(ifs, choice5);
+      fifth = atoi(choice5.c_str());
+
+
+      shop.create_new_robot_model(name, image, model,
                       shop.get_robot_arm(first),
                       shop.get_robot_head(second),
                       shop.get_robot_torso(third),
@@ -1579,7 +1822,7 @@ void GuiController::save_data(){
   fl_message("Information saved");
 
 }
-
+/*
 void GuiController::cli(){
    
    int cmd = -1;
@@ -1591,8 +1834,8 @@ void GuiController::cli(){
 
    } //loops till manual exit at 0
 
-}
-
+}	not needed when a menu/toolbar is present
+*/
 void GuiController::save_to_certain_file(){
 
   std::string fileName = get_string("File name", "Enter the name of the file you wish to save to");
@@ -1657,7 +1900,7 @@ void GuiController::Num_Orders_per_SA(){
 	std::string info = "";
 	for (int i = 0; i < shop.number_of_associates(); ++i){
 	info += "Name: " + shop.get_sales_associate(i).get_name() + "\n" 
-	+ "Numbers of orders sold: " + shop.get_sales_associate(i).get_sales()+"\n";
+	+ "Numbers of orders sold: " + shop.get_sales_associate(i).get_sales()+"\n\n";
 	}
 	fl_message(info.c_str());
 
@@ -1666,7 +1909,7 @@ void GuiController::Num_Orders_per_SA(){
 void GuiController::Orders_per_SA(){
    std::string info;
    std::string name;
-   std::string losers = "------------------------------------------------------------------------\nList of loser, free-loading, useless employees that haven't sold anything: \n";
+   std::string losers = "List of loser, free-loading, useless employees that haven't sold anything:\n------------------------------------------------------------------------\n";
    //std::vector<int> losers1;
    for (int a = 0; a < shop.number_of_associates(); ++a){
       	name = shop.get_sales_associate(a).get_name();
@@ -1684,7 +1927,7 @@ void GuiController::Orders_per_SA(){
 	}//close outer if loop
 	//this keeps track of SAs that haven't done anything
 	if(shop.get_sales_associate(a).get_sales_num() == 0){	
-		losers += shop.get_sales_associate(a).get_name() + '\n';
+		losers += "-"+shop.get_sales_associate(a).get_name() + '\n';
         }// close else
    }//close outer for loop
  
@@ -1711,8 +1954,9 @@ GuiController controller(shop, view);
 //File submenu callbacks
 void NewCB (Fl_Widget* w, void* p) {std::cout<<"New Shop"<<std::endl;}
 void LoadCB (Fl_Widget* w, void* p) {controller.execute_cmd(11);}
+void LoadFromCB (Fl_Widget* w, void* p) {controller.execute_cmd(17);}
 void SaveCB (Fl_Widget* w, void* p) {controller.execute_cmd(12);}
-void SaveAsCB (Fl_Widget* w, void* p) {controller.execute_cmd(13);}
+void SaveToCB (Fl_Widget* w, void* p) {controller.execute_cmd(13);}
 void ExitCB (Fl_Widget* w, void* p) {win->hide();}
 
 //Edit submenu callbacks
@@ -1735,7 +1979,7 @@ void SAs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(9);}
 void ModelsCB (Fl_Widget* w, void* p) {controller.execute_cmd(4);}
 void OrdersPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(16);}
 void SalesPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(15);}
-void ComponentsCB (Fl_Widget* w, void* p) {std::cout<<"Robot Components"<<std::endl;}
+void ComponentsCB (Fl_Widget* w, void* p) {controller.execute_cmd(3);}
 // note that this menu shows list of the create
 // all callbacks in view is a plural form of their create counterpart
 
@@ -1756,8 +2000,9 @@ Fl_Menu_Item menuitems[] = {
     {"&New Shop", 0, (Fl_Callback *) NewCB}, 
     //use FL_ALT + 'key' as 2nd parameter for shortcut
     {"&Load Shop", 0, (Fl_Callback *) LoadCB},
+    {"&Load From", 0, (Fl_Callback *) LoadFromCB},
     {"&Save Shop", 0, (Fl_Callback *) SaveCB},
-    {"&Save As", 0, (Fl_Callback *) SaveAsCB},
+    {"&Save To", 0, (Fl_Callback *) SaveToCB},
     {"&Exit", 0, (Fl_Callback *) ExitCB},
     {0},
  

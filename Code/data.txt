@@ -24,7 +24,8 @@ Locomotor_Identifier
 3.000000
 4
 Robot_Identifier
-ex
+millitary bot
+full_humanoid_soldier.jpg
 323
 0
 0
