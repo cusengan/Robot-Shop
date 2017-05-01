@@ -24,8 +24,18 @@ Locomotor_Identifier
 3.000000
 4
 Robot_Identifier
-ex
+military bot
+full_humanoid_soldier.jpg
 323
+0
+0
+0
+0
+0
+Robot_Identifier
+busyboty
+full_business_can.jpg
+32
 0
 0
 0
@@ -46,4 +56,4 @@ Order_Identifier
 0
 0
 0
-4
+2
