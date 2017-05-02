@@ -1992,7 +1992,9 @@ void ManualCB (Fl_Widget* w, void* p) {std::cout<<"Manual"<<std::endl;}
 void AboutCB (Fl_Widget* w, void* p) {std::cout<<"About"<<std::endl;}
 
 
-//Menu
+//
+//	Master Menu
+//
 
 Fl_Menu_Item menuitems[] = {
 
@@ -2048,26 +2050,176 @@ Fl_Menu_Item menuitems[] = {
 
 
 //
+//	Sales Associate Menu
+//
+
+//	features removed:
+//	1) make a customer
+//	2) create order
+
+Fl_Menu_Item SA_menuitems[] = {
+
+   {"&File", 0, 0, 0, FL_SUBMENU},
+    {"&New Shop", 0, (Fl_Callback *) NewCB}, 
+    //use FL_ALT + 'key' as 2nd parameter for shortcut
+    {"&Load Shop", 0, (Fl_Callback *) LoadCB},
+    {"&Load From", 0, (Fl_Callback *) LoadFromCB},
+    {"&Save Shop", 0, (Fl_Callback *) SaveCB},
+    {"&Save To", 0, (Fl_Callback *) SaveToCB},
+    {"&Exit", 0, (Fl_Callback *) ExitCB},
+    {0},
+ 
+   {"&Edit", 0,0,0, FL_SUBMENU},
+    {"&Order Progress", 0, (Fl_Callback *) Order_ProgressCB},
+    {"&Copy", 0, (Fl_Callback *) CopyCB},
+    {"&Paste", 0, (Fl_Callback *) PasteCB},
+    {"&Preferences", 0, (Fl_Callback *) PrefCB},
+    {0},
+
+   {"&Create", 0, 0, 0, FL_SUBMENU},
+    {"&Sales Associate", 0, (Fl_Callback *) SA_CB},
+    {"&Robot Model", 0, (Fl_Callback *) ModelCB},
+    {"&Robot Component", 0, (Fl_Callback *) ComponentCB},
+    {0},
+   
+   {"&View", 0, 0, 0, FL_SUBMENU},
+    {"&Customers", 0, (Fl_Callback *) BLs_CB},
+    {"&Sales Associates", 0, (Fl_Callback *) SAs_CB},
+    {"&Orders", 0, 0, 0, FL_SUBMENU},
+      {"&All Orders", 0, (Fl_Callback *) OrdersCB},
+      {"&Orders by Sales Associates", 0, (Fl_Callback *) OrdersPerSACB},
+      {"&Number of Orders sold per Sales Associate", 0, (Fl_Callback *) SalesPerSACB},
+      {0},
+    {"&Robot Models", 0, (Fl_Callback *) ModelsCB},
+    {"&Robot Components", 0, (Fl_Callback *) ComponentsCB},
+    {0},
+
+   {"&Tools", 0, 0, 0, FL_SUBMENU},
+    //has nothing yet
+    {0},
+   
+   {"&Help", 0, 0, 0, FL_SUBMENU},
+    {"&Quick Start", 0, (Fl_Callback *) QuickCB},
+    {"&Manual", 0, (Fl_Callback *) ManualCB},
+    {"&About", 0, (Fl_Callback *) AboutCB},
+    {0}, 
+   
+  {0}
+ };
+
+
+//
+//	Beloved Customer Menu
+//
+
+//	Features remove
+//	1) change order progress
+//	2) create sales associate
+//	3) create robot model
+//	4) create robot component
+//	5) view orders by SA
+//	6) views orders # of orders sold per SA
+
+Fl_Menu_Item BC_menuitems[] = {
+
+   {"&File", 0, 0, 0, FL_SUBMENU},
+    {"&New Shop", 0, (Fl_Callback *) NewCB}, 
+    //use FL_ALT + 'key' as 2nd parameter for shortcut
+    {"&Load Shop", 0, (Fl_Callback *) LoadCB},
+    {"&Load From", 0, (Fl_Callback *) LoadFromCB},
+    {"&Save Shop", 0, (Fl_Callback *) SaveCB},
+    {"&Save To", 0, (Fl_Callback *) SaveToCB},
+    {"&Exit", 0, (Fl_Callback *) ExitCB},
+    {0},
+ 
+   {"&Edit", 0,0,0, FL_SUBMENU},
+    {"&Copy", 0, (Fl_Callback *) CopyCB},
+    {"&Paste", 0, (Fl_Callback *) PasteCB},
+    {"&Preferences", 0, (Fl_Callback *) PrefCB},
+    {0},
+
+   {"&Create", 0, 0, 0, FL_SUBMENU},
+    {"&Order", 0, (Fl_Callback *) OrderCB},
+    {"&Customer", 0, (Fl_Callback *) BL_CB},
+    {0},
+   
+   {"&View", 0, 0, 0, FL_SUBMENU},
+    {"&Customers", 0, (Fl_Callback *) BLs_CB},
+    {"&Sales Associates", 0, (Fl_Callback *) SAs_CB},
+    {"&All Orders", 0, (Fl_Callback *) OrdersCB},
+    {"&Robot Models", 0, (Fl_Callback *) ModelsCB},
+    {"&Robot Components", 0, (Fl_Callback *) ComponentsCB},
+    {0},
+
+   {"&Tools", 0, 0, 0, FL_SUBMENU},
+    //has nothing yet
+    {0},
+   
+   {"&Help", 0, 0, 0, FL_SUBMENU},
+    {"&Quick Start", 0, (Fl_Callback *) QuickCB},
+    {"&Manual", 0, (Fl_Callback *) ManualCB},
+    {"&About", 0, (Fl_Callback *) AboutCB},
+    {0}, 
+   
+  {0}
+ };
+
+
+//
 //main
 //
 
 int main(){
 
-   
-
    const int x = 540;
    const int y = 330;
 
+   std::string usr, password;
+   bool run = true;
+
+   //usr and password via fl_input throws segmentation fault
+   //std::string usr = controller.get_string("", "Please enter a username: ");
+   //std::string password = controller.get_string("", "Please enter a password: ");
+
+   //basic, simple login via terminal
+  
+   //entering usr and password
+   std::cout<<"Username is SA for sales associate, BC for beloved customer, Master for all options."<<std::endl<<"All password is currently 1\n"<<std::endl;
+
+   std::cout<<"Enter your user name: "<<std::endl;
+   getline(std::cin, usr);
+   
+   std::cout<<"Enter your password: "<<std::endl;
+   getline(std::cin, password);
+   
    // create window
    win = new Fl_Window(x,y, "lRobot");
    win->color(FL_WHITE);
-
+      
    //install menu bar
    menubar = new Fl_Menu_Bar (0, 0, x, 30);
-   menubar->menu(menuitems);
 
+   //checking and change menu bar
+   if (usr == "Master" && password == "1"){
+   	//std::cout<<"clear"<<std::endl;
+	menubar->menu(menuitems);
+   }
+   else if (usr == "SA" && password == "1"){
+   	//std::cout<<"clear"<<std::endl;
+	menubar->menu(SA_menuitems);
+   }
+   else if (usr == "BC" && password == "1"){
+   	//std::cout<<"clear"<<std::endl;
+	menubar->menu(BC_menuitems);
+   }else{
+	std::cout<<"Incorrect username or password"<<std::endl;	
+	run = false;
+   }
+
+   if (run){
    //wrap it up and let FLTK do the rest
    win->end();
    win->show();
    return(Fl::run());
+   }
 }
