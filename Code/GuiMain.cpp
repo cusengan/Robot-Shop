@@ -430,27 +430,48 @@ class Customer{
 
 
 public:
-   Customer(std::string _name, int _id, int _phone, std::string _email) :
-   name(_name), id(_id), phone(_phone), email(_email) {}
+   Customer(std::string _name, int _id, int _phone, std::string _email, double _debt) :
+   name(_name), id(_id), phone(_phone), email(_email), debt(_debt) {}
    std::string save_to_file();
    std::string get_info();
+   void Increase_debt(double cost);
+   std::string get_name();
+   double get_debt();
 
 private:
    std::string name, email;
    int id, phone;
+   double debt;
 
 
 
 };
 
+void Customer::Increase_debt(double cost){
+
+	debt = cost + debt;
+}
+
+double Customer::get_debt(){
+	
+	double result = debt;
+	return result;
+}
+
+std::string Customer::get_name(){
+
+	std::string result = name;
+	return result;
+
+}
 
 std::string Customer::get_info(){
 
         std::string info =
         "Beloved Customer's Name: " + name + '\n'+
         "Beloved Customer's ID Number: " + std::to_string(id) + '\n'+
-   "Beloved Customer's phone number (one continuous number): "+ std::to_string(phone) + '\n'+
-   "Beloved Customer's email: " + email +'\n';
+   	"Beloved Customer's phone number (one continuous number): "+ std::to_string(phone) + '\n'+
+   	"Beloved Customer's email: " + email +'\n'+"Bill: "+ std::to_string(debt)+'\n';
         return info;
 
 }
@@ -495,6 +516,7 @@ public:
    void add_choice(int choice);
    void change_state(Progress new_state, int order_num);
    SalesAssociate get_SA();
+   Customer get_BC();
 
 private:
    Robot_model model;
@@ -508,6 +530,10 @@ private:
 
 SalesAssociate Order::get_SA(){
    	return seller; 
+}
+
+Customer Order::get_BC(){
+   	return customer; 
 }
 
 void Order::change_state(Progress new_state, int order_num){
@@ -660,7 +686,7 @@ void Shop::create_new_sales_associate(std::string name, int id, int sales){
 void Shop::create_new_beloved_customer
 (std::string name, int id, int phone, std::string email){
 
-   Customer customer(name, id, phone, email);
+   Customer customer(name, id, phone, email, 0);
    customers.push_back(customer);
 
 }
@@ -773,8 +799,9 @@ void Shop::create_order(Robot_model robot, Customer customer, SalesAssociate sel
    order.add_choice(model);
    order.add_choice(buyer);
 
-   //increase the saller's sales count
-   associates[associate].Increase_sales();  
+   //increase the saller's sales count and customer's debt
+   associates[associate].Increase_sales(); 
+   customers[buyer].Increase_debt(robot.cost()); 
 
    order.add_choice(associate);
    order.add_choice(state_num);
@@ -1122,9 +1149,11 @@ public:
    void save_to_certain_file();
    void edit_order_progress();
    void Orders_per_SA();
+   void Orders_per_BC();
    void Num_Orders_per_SA();
    void view_model(int i);
    void view_all_models();
+   void view_bill();
    
    
 
@@ -1156,6 +1185,8 @@ void GuiController::execute_cmd(int cmd){
       case 15: Num_Orders_per_SA(); break;
       case 16: Orders_per_SA(); break; 
       case 17: load_from_certain_file(); break;
+      case 18: view_bill(); break;
+      case 19: Orders_per_BC(); break;
       //case 99: use_test(); break;
       case 0: break;
       default: std::cerr << "Error! Invalid input" << std::endl; break;
@@ -1906,14 +1937,23 @@ void GuiController::Num_Orders_per_SA(){
 
 }
 
+void GuiController::view_bill(){
+	std::string info = "";
+	for (int i = 0; i < shop.number_of_customers(); ++i){
+	info += "Name: " + shop.get_customer(i).get_name() + "\n" 
+	+ "Amount own: " + std::to_string(shop.get_customer(i).get_debt())+"\n\n";
+	}
+	fl_message(info.c_str());
+
+}
+
 void GuiController::Orders_per_SA(){
    std::string info;
    std::string name;
    std::string losers = "List of loser, free-loading, useless employees that haven't sold anything:\n------------------------------------------------------------------------\n";
-   //std::vector<int> losers1;
    for (int a = 0; a < shop.number_of_associates(); ++a){
       	name = shop.get_sales_associate(a).get_name();
-        //this if makes sure not to print te same frmat for those that haven't sold
+        //this if makes sure not to print for those that haven't sold
 	//if you want the same treatment then SELL SOMETHING
 	if (shop.get_sales_associate(a).get_sales_num() != 0){ 
 	info += name+"'s sales: "+'\n'+ 
@@ -1928,6 +1968,37 @@ void GuiController::Orders_per_SA(){
 	//this keeps track of SAs that haven't done anything
 	if(shop.get_sales_associate(a).get_sales_num() == 0){	
 		losers += "-"+shop.get_sales_associate(a).get_name() + '\n';
+        }// close else
+   }//close outer for loop
+ 
+   //time to add the losers
+   info += losers;
+
+   fl_message(info.c_str()); //can finally print 
+}
+
+void GuiController::Orders_per_BC(){
+
+ std::string info;
+   std::string name;
+   std::string losers = "List of loser, free-loading, useless customers that haven't bought anything:\n----------------------------------------------------------------------------\n";
+   for (int a = 0; a < shop.number_of_customers(); ++a){
+      	name = shop.get_customer(a).get_name();
+        //this if makes sure not to print for those that haven't bought
+	//if you want the same treatment then BUY SOMETHING
+	if (shop.get_customer(a).get_debt() != 0){ 
+	info += name+"'s orders: "+'\n'+ 
+	"----------------------------------------------" + '\n';
+		for (int b = 0; b < shop.number_of_orders(); ++b){
+		std::string temp_name = shop.get_order(b).get_BC().get_name();
+			if (temp_name.compare(name) == 0){
+			info += shop.get_order(b).get_info()+'\n';
+			} //close inner if loop
+		}//close inner for loop
+	}//close outer if loop
+	//this keeps track of SAs that haven't done anything
+	if(shop.get_customer(a).get_debt() == 0){	
+		losers += "-"+shop.get_customer(a).get_name() + '\n';
         }// close else
    }//close outer for loop
  
@@ -1975,9 +2046,11 @@ void ComponentCB (Fl_Widget* w, void* p) {controller.execute_cmd(1);}
 //View submenu callbacks
 void OrdersCB (Fl_Widget* w, void* p) {controller.execute_cmd(10);}
 void BLs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(8);}
+void BillCB (Fl_Widget* w, void* p) {controller.execute_cmd(18);}
 void SAs_CB (Fl_Widget* w, void* p) {controller.execute_cmd(9);}
 void ModelsCB (Fl_Widget* w, void* p) {controller.execute_cmd(4);}
 void OrdersPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(16);}
+void OrdersPerBCCB (Fl_Widget* w, void* p) {controller.execute_cmd(19);}
 void SalesPerSACB (Fl_Widget* w, void* p) {controller.execute_cmd(15);}
 void ComponentsCB (Fl_Widget* w, void* p) {controller.execute_cmd(3);}
 // note that this menu shows list of the create
@@ -2025,10 +2098,12 @@ Fl_Menu_Item menuitems[] = {
    
    {"&View", 0, 0, 0, FL_SUBMENU},
     {"&Customers", 0, (Fl_Callback *) BLs_CB},
+    {"&Bills", 0, (Fl_Callback *) BillCB},
     {"&Sales Associates", 0, (Fl_Callback *) SAs_CB},
     {"&Orders", 0, 0, 0, FL_SUBMENU},
       {"&All Orders", 0, (Fl_Callback *) OrdersCB},
       {"&Orders by Sales Associates", 0, (Fl_Callback *) OrdersPerSACB},
+      {"&Orders by Customers", 0, (Fl_Callback *) OrdersPerBCCB},
       {"&Number of Orders sold per Sales Associate", 0, (Fl_Callback *) SalesPerSACB},
       {0},
     {"&Robot Models", 0, (Fl_Callback *) ModelsCB},
@@ -2056,6 +2131,8 @@ Fl_Menu_Item menuitems[] = {
 //	features removed:
 //	1) make a customer
 //	2) create order
+//	3) view customer's bill
+//	4) view orders per customer 
 
 Fl_Menu_Item SA_menuitems[] = {
 
@@ -2145,8 +2222,12 @@ Fl_Menu_Item BC_menuitems[] = {
    
    {"&View", 0, 0, 0, FL_SUBMENU},
     {"&Customers", 0, (Fl_Callback *) BLs_CB},
+    {"&Bills", 0, (Fl_Callback *) BillCB},
     {"&Sales Associates", 0, (Fl_Callback *) SAs_CB},
-    {"&All Orders", 0, (Fl_Callback *) OrdersCB},
+    {"&Orders", 0, 0, 0, FL_SUBMENU},
+       {"&All Orders", 0, (Fl_Callback *) OrdersCB},
+       {"&Orders by Customers", 0, (Fl_Callback *) OrdersPerBCCB},
+       {0},
     {"&Robot Models", 0, (Fl_Callback *) ModelsCB},
     {"&Robot Components", 0, (Fl_Callback *) ComponentsCB},
     {0},
