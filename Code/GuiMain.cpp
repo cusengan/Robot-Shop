@@ -1264,12 +1264,12 @@ void GuiController::view_all_models(){
       	fl_message("There are no models");
    }else{
    	while(cmd != -1){
-      		std::string menu = "Type 1 to see next model.\nType 2 to see current model.\nType 3 to see previous model.\nType 0 to exit or continue till exit\n";
+      		std::string menu = "Type 1 to see next model.\nType 2 to see current model.\nType 3 to see previous model.\nType 0 to exit\n";
      		option = atoi(fl_input(menu.c_str(),0)); 
    		switch(option){
 			case 0: cmd = -1; break;
-			case 1: if (cmd == shop.number_of_models()){
-					cmd = -1;
+			case 1: if (cmd == shop.number_of_models()-1){
+					fl_message("There is no next model");
 				}else{
 					cmd += 1; 
 					view_model(cmd); 
