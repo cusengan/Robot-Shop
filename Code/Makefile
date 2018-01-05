@@ -3,7 +3,7 @@ CC = g++
 CFLAGS = -g -w -std=c++11 -c 
 
 CXXFLAGS = -std=c++11
-LDFLAGS = -L/usr/local/lib -lfltk -lXext -lX11 -lm -Wl,-Bsymbolic-functions -lfltk_images -lfltk -lX11
+LDFLAGS = -L/usr/local/lib -lfltk -lX11 -lm -Wl,-Bsymbolic-functions -lfltk_images -lfltk -lX11
 
 all: gui
 
