@@ -40,7 +40,7 @@ sudo-get install libx11-dev
 
 ## Authors
 
-* **William Truong**
-* **Nhan Vu**
+* **William Truong** - [Cusengan](https://github.com/cusengan)
+* **Nhan Vu** - [NhanTVu](https://github.com/NhanTVu)
 
 
